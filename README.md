@@ -44,3 +44,5 @@ React Native frontend of the QTime mobile application.
 - With the app running locally use the `i` command to connect to the emulated device. Reload the app with the `r` command.
 
 ## Dependencies
+
+- QTime leverages the [Ant Design Mobile React Native Component Library](https://rn.mobile.ant.design/docs/react/introduce).
