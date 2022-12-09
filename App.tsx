@@ -3,12 +3,12 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, WhiteSpace } from "@ant-design/react-native";
 
-import { StyledText } from "./src/components/StyledText";
+import { StyledText } from "@components/StyledText";
 
 const App = () => {
   // Load fonts
   const [fontsLoaded] = useFonts({
-    WorkSans: require("./assets/fonts/WorkSans.ttf"),
+    WorkSans: require("@assets/fonts/WorkSans.ttf"),
   });
 
   if (!fontsLoaded) {
