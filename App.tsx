@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { Button, WhiteSpace } from "@ant-design/react-native";
 
-import { StyledText } from "@components/StyledText";
+import { NavigationContainer } from "@react-navigation/native";
+
+import { TabNavigator } from "@navigators/TabNavigator";
 
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
@@ -34,30 +33,10 @@ const App = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.huge}>Default Font Family Sample Text</Text>
-      <StyledText style={styles.huge}>
-        WorkSans Font Family Sample Text
-      </StyledText>
-      <WhiteSpace />
-      <Button type={"primary"}>
-        <StyledText>Sample Button Text</StyledText>
-      </Button>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <TabNavigator />
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  huge: {
-    fontSize: 20,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 export default App;
