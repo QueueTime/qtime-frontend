@@ -5,6 +5,9 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
+      "@navigators/*": ["src/navigators/*"],
+      "@screens/*": ["src/screens/*"],
+      "@constants/*": ["src/constants/*"],
       "@assets/*": ["assets/*"]
     }
   },
