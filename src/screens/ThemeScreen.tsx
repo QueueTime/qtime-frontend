@@ -1,0 +1,19 @@
+import { Text, View, StyleSheet } from "react-native";
+
+export const ThemeScreen = ({ navigate }: any) => (
+  <View style={styles.container}>
+    <Text style={styles.huge}>App Appearance Screen</Text>
+  </View>
+);
+
+const styles = StyleSheet.create({
+  huge: {
+    fontSize: 20,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
