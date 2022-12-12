@@ -1,0 +1,20 @@
+name: Run jest tests
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run jest tests
+        run: npm run test
