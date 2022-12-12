@@ -1,0 +1,23 @@
+name: Lint and verify format
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Lint project # Check for any errors identified by eslint
+        run: npm run lint:errors
+
+      - name: Check formatting
+        run: npm run format:check
