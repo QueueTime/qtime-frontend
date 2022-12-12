@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const ThemeScreen = ({ navigate }: any) => (
+export const ThemeScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>App Appearance Screen</Text>
   </View>

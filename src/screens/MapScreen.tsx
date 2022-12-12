@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const MapScreen = ({ navigate }: any) => (
+export const MapScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>Map Screen</Text>
   </View>

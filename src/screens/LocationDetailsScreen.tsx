@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const LocationDetailsScreen = ({ navigate }: any) => (
+export const LocationDetailsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>Location Details Screen</Text>
   </View>

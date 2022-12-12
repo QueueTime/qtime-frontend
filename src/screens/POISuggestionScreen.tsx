@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const POISuggestionScreen = ({ navigate }: any) => (
+export const POISuggestionScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>POI Suggestion Screen</Text>
   </View>
