@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const NotificationsScreen = ({ navigate }: any) => (
+export const NotificationsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>Notifications Screen</Text>
   </View>

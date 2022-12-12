@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export const RewardsScreen = ({ navigate }: any) => (
+export const RewardsScreen = () => (
   <View style={styles.container}>
     <Text style={styles.huge}>Rewards Screen</Text>
   </View>

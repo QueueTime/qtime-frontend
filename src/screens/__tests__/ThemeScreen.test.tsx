@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import { ThemeScreen } from "@screens/ThemeScreen";
 
 describe("<ThemeScreen />", () => {
