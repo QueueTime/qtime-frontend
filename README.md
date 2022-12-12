@@ -43,6 +43,15 @@ React Native frontend of the QTime mobile application.
 - In the simulartor launch your device under File > Oepn Device > iOS version > Device Name.
 - With the app running locally use the `i` command to connect to the emulated device. Reload the app with the `r` command.
 
-## Dependencies
+## Development
 
 - QTime leverages the [Ant Design Mobile React Native Component Library](https://rn.mobile.ant.design/docs/react/introduce).
+
+## Testing
+
+This project leverages [jest](https://jestjs.io/) to run unit and snapshot tests of components. You can run all tests in this repo with `npm run tests`. The following libraries are installed to use when writing tests:
+
+- [`react-test-renderer`](https://reactjs.org/docs/test-renderer.html): React renderer that can be used to render React components to pure JavaScript objects, without depending on the DOM or a native mobile environment.
+- [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/): testing library for React Native inspired by `React Testing Library`.
+
+> Tip: Install the jest vscode extension to simplify running single tests directly from the editor.
