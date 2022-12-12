@@ -40,7 +40,7 @@ React Native frontend of the QTime mobile application.
 ### Run on iOS emulator
 
 - Follow the [Expo iOS guide steps](https://docs.expo.dev/workflow/ios-simulator/) to setup your iOS virtual device.
-- In the simulartor launch your device under File > Oepn Device > iOS version > Device Name.
+- In the simulartor launch your device under File > Open Device > iOS version > Device Name.
 - With the app running locally use the `i` command to connect to the emulated device. Reload the app with the `r` command.
 
 ## Development
