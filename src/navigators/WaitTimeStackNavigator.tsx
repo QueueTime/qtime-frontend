@@ -12,8 +12,8 @@ type WaitTimeStackNavigatorParams = {
 };
 
 // Prop types for each of the screen in the navigator
-// ... ({ navigator, route }: RouteNameScreenProps)
-// OR navigator: RouteNameScreenProps['navigator']
+// ... ({ navigation, route }: RouteNameScreenProps)
+// OR navigator: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
 export type WaitTimeScreenProps = NativeStackScreenProps<
   WaitTimeStackNavigatorParams,
