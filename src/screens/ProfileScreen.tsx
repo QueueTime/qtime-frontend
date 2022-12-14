@@ -4,8 +4,9 @@ import { Button, WhiteSpace } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import * as ROUTES from "@constants/routes";
+import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 
-export const ProfileScreen = ({ navigation }: any) => (
+export const ProfileScreen = ({ navigation }: IProfileScreenProps) => (
   <View style={styles.container}>
     <StyledText style={styles.huge}>Profile Page</StyledText>
     <WhiteSpace />
@@ -38,3 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+interface IProfileScreenProps {
+  navigation: ProfileScreenProps["navigation"];
+}

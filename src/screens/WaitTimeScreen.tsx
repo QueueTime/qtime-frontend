@@ -5,8 +5,9 @@ import { Button, WhiteSpace } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
+import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 
-export const WaitTimeScreen = ({ navigation }: any) => {
+export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   return (
     <View style={styles.container}>
       <StyledText style={styles.huge}>Wait Times</StyledText>
@@ -35,3 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+interface IWaitTimeScreenProps {
+  navigation: LocationDetailsScreenProps["navigation"];
+}
