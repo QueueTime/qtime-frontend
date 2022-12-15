@@ -23,8 +23,8 @@ export const ThemeContext = React.createContext({
  * `changeTheme()` is a function that changes the app's theme preferences.
  *
  * Usage:
- * import { ThemeContext } from "@contexts/theme"
- * const { theme, changeTheme } = useContext(ThemeContext)
+ * import { ThemeContext } from "@contexts/theme";
+ * const { theme, changeTheme } = useContext(ThemeContext);
  *
  * <... style={{ theme.brand_primary }} ...
  * <... onPress{() => changeTheme('dark')} ...
