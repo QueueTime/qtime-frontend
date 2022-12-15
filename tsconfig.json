@@ -5,11 +5,12 @@
     "module": "ES6",
     "baseUrl": ".",
     "paths": {
+      "@assets/*": ["assets/*"],
       "@components/*": ["src/components/*"],
-      "@navigators/*": ["src/navigators/*"],
-      "@screens/*": ["src/screens/*"],
       "@constants/*": ["src/constants/*"],
-      "@assets/*": ["assets/*"]
+      "@contexts/*": ["src/contexts/*"],
+      "@navigators/*": ["src/navigators/*"],
+      "@screens/*": ["src/screens/*"]
     }
   },
   "exclude": ["node_modules"]
