@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { TabNavigator } from "@navigators/TabNavigator";
+import { AntProvider } from "@components/AntProvider";
 import { ThemeProvider } from "@contexts/theme";
 
 // Keep the splash screen visible fetching resources
@@ -35,9 +36,11 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
+      <AntProvider>
+        <NavigationContainer>
+          <TabNavigator />
+        </NavigationContainer>
+      </AntProvider>
     </ThemeProvider>
   );
 };
