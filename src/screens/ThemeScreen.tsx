@@ -1,8 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 import { Button, WhiteSpace } from "@ant-design/react-native";
-import { Provider } from "@ant-design/react-native";
 
 import { ThemeContext } from "@contexts/theme";
 

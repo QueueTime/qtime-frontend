@@ -73,13 +73,13 @@ export const ThemeProvider = ({ children }: IThemeProviderProps) => {
   // is changed or the system color theme changes
   useEffect(() => {
     if (
-      themePreference == "light" ||
-      (themePreference == "system" && colorScheme == "light")
+      themePreference === "light" ||
+      (themePreference === "system" && colorScheme === "light")
     ) {
       setTheme(themes.light);
     } else if (
-      themePreference == "dark" ||
-      (themePreference == "system" && colorScheme == "dark")
+      themePreference === "dark" ||
+      (themePreference === "system" && colorScheme === "dark")
     ) {
       setTheme(themes.dark);
     } else {
