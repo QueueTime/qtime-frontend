@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useColorScheme } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
+import { Provider } from "@ant-design/react-native";
+
 import { themes, STORAGE_KEY } from "@constants/theme";
 
 // Theme Defaults
@@ -87,7 +89,7 @@ export const ThemeProvider = ({ children }: IThemeProviderProps) => {
 
   return (
     <ThemeContext.Provider value={{ theme, changeTheme }}>
-      {children}
+      <Provider theme={theme.antDesignOverride}>{children}</Provider>
     </ThemeContext.Provider>
   );
 };
