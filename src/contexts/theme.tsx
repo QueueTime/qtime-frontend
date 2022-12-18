@@ -7,33 +7,40 @@ import { Provider } from "@ant-design/react-native";
 import { themes, STORAGE_KEY } from "@constants/theme";
 
 // Theme Defaults
-const DEFAULT_CHOICE = "system";
-const DEFAULT_THEME = themes.light;
+export const DEFAULT_CHOICE = "system";
+export const DEFAULT_THEME = themes.light;
 
-type ThemeChoice = "system" | "light" | "dark";
+export type ThemeChoice = "system" | "light" | "dark";
 
 export const ThemeContext = React.createContext({
   theme: DEFAULT_THEME,
+  themePreference: DEFAULT_CHOICE,
   changeTheme: (_preference: ThemeChoice) => {},
 });
 
 /**
  * Theme context provider.
- * Exposes the `theme` and `changeTheme` properties.
+ * Exposes the `theme`, `themePreference` and `changeTheme` properties.
  *
  * `theme` is the current app theme stylesheet.
+ * `themePreference` is the choice of theme, either system, light or dark.
  * `changeTheme()` is a function that changes the app's theme preferences.
  *
  * Usage:
+ * ```js
  * import { ThemeContext } from "@contexts/theme";
- * const { theme, changeTheme } = useContext(ThemeContext);
+ * const { theme, themePreference, changeTheme } = useContext(ThemeContext);
  *
- * <... style={{ theme.brand_primary }} ...
+ * <... style={{ theme.styles.container }} ...
  * <... onPress{() => changeTheme('dark')} ...
+ * ```
  */
-export const ThemeProvider = ({ children }: IThemeProviderProps) => {
+export const ThemeProvider = ({
+  children,
+  startThemePreference = DEFAULT_CHOICE,
+}: IThemeProviderProps) => {
   const [themePreference, setThemePreference] =
-    useState<ThemeChoice>(DEFAULT_CHOICE);
+    useState<ThemeChoice>(startThemePreference);
   const [theme, setTheme] = useState(DEFAULT_THEME);
   const colorScheme = useColorScheme();
 
@@ -88,7 +95,7 @@ export const ThemeProvider = ({ children }: IThemeProviderProps) => {
   }, [themePreference, colorScheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
+    <ThemeContext.Provider value={{ theme, themePreference, changeTheme }}>
       <Provider theme={theme.antDesignOverride}>{children}</Provider>
     </ThemeContext.Provider>
   );
@@ -96,4 +103,5 @@ export const ThemeProvider = ({ children }: IThemeProviderProps) => {
 
 interface IThemeProviderProps {
   children: React.ReactNode;
+  startThemePreference: ThemeChoice;
 }
