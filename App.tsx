@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { TabNavigator } from "@navigators/TabNavigator";
+import { ThemeProvider } from "@contexts/theme";
 
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
@@ -33,9 +34,11 @@ const App = () => {
   }
 
   return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        <TabNavigator />
+      </NavigationContainer>
+    </ThemeProvider>
   );
 };
 

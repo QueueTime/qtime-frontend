@@ -22,11 +22,12 @@
     ],
     "testRegex": "\\.test\\.tsx?$",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@bang88/.*|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
     ]
   },
   "dependencies": {
-    "@ant-design/react-native": "^5.0.2",
+    "@ant-design/react-native": "git+https://github.com/QueueTime/ant-design-mobile-rn.git",
+    "@react-native-camera-roll/camera-roll": "^5.2.0",
     "@react-native-community/cameraroll": "^4.1.2",
     "@react-native-community/segmented-control": "^2.2.2",
     "@react-native-community/slider": "4.2.4",
@@ -35,12 +36,14 @@
     "@react-navigation/native": "^6.1.0",
     "@react-navigation/native-stack": "^6.9.5",
     "expo": "~47.0.8",
+    "expo-secure-store": "~12.0.0",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-gesture-handler": "^2.8.0",
+    "react-native-permissions": "^3.6.1",
     "react-native-safe-area-context": "4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.9",
@@ -49,8 +52,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@react-native-community/eslint-config": "^3.2.0",
+    "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/jest-native": "^5.3.2",
     "@testing-library/react-native": "^11.5.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/jest": "^29.2.4",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.70.6",
