@@ -7,6 +7,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { TabNavigator } from "@navigators/TabNavigator";
 import { ThemeProvider } from "@contexts/theme";
 
+import "expo-dev-client";
+
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
 

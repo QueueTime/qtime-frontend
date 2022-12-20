@@ -103,5 +103,5 @@ export const ThemeProvider = ({
 
 interface IThemeProviderProps {
   children: React.ReactNode;
-  startThemePreference: ThemeChoice;
+  startThemePreference?: ThemeChoice;
 }
