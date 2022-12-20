@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "476284740655",
+    "project_id": "qtime-bd47e",
+    "storage_bucket": "qtime-bd47e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476284740655:android:e73a959f2f67fece8492da",
+        "android_client_info": {
+          "package_name": "com.capstone.QTime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476284740655-bqi0ldc8b98jtlk5kan741lbr9tqadiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.QTime",
+            "certificate_hash": "62a73cf1a10b49e95a154737c833a56eed2da5a7"
+          }
+        },
+        {
+          "client_id": "476284740655-fdui5gpl9lrsa6ktu94jn0685gacadqm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.QTime",
+            "certificate_hash": "978fd98adf97fde4feee768022a793626d33fcae"
+          }
+        },
+        {
+          "client_id": "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBusHVNYI2EVpWUsgKJ91QF5bWnQ-eOcKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
