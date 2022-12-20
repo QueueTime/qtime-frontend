@@ -8,6 +8,8 @@ import { AuthProvider } from "@contexts/auth";
 
 import "expo-dev-client"; // Improve debugging when duing dev-client
 
+import "expo-dev-client";
+
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
 
