@@ -1,11 +1,10 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
-import { NavigationContainer } from "@react-navigation/native";
-
-import { TabNavigator } from "@navigators/TabNavigator";
+import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
+import { AuthProvider } from "@contexts/authentication";
 
 import "expo-dev-client";
 
@@ -18,12 +17,20 @@ const App = () => {
     WorkSans: require("@assets/fonts/WorkSans.ttf"),
   });
 
+  // Set an initializing state whilst Firebase connects
+  const [isFirebaseInit, setIsFirebaseInit] = useState(true);
+
   // Memoized function to remove splash screen
+  /**
+   * Must be loaded/completed before splash screen is removed:
+   * - Fonts loaded
+   * - Firebase connection finished initializing
+   */
   const onRootLayoutView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded && !isFirebaseInit) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, isFirebaseInit]);
 
   // Call the onRootLayoutView function to remove splash screen
   // This setup prevents it from being called multiple times
@@ -36,11 +43,14 @@ const App = () => {
   }
 
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>
-    </ThemeProvider>
+    <AuthProvider
+      setFirebaseInitializing={setIsFirebaseInit}
+      isFirebaseInitializing={isFirebaseInit}
+    >
+      <ThemeProvider>
+        <BaseNavigator />
+      </ThemeProvider>
+    </AuthProvider>
   );
 };
 
