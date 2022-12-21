@@ -5,12 +5,16 @@ import * as SplashScreen from "expo-splash-screen";
 import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AuthProvider } from "@contexts/auth";
 
 import "expo-dev-client"; // Improve debugging when duing dev-client
 =======
 import { AuthProvider } from "@contexts/authentication";
 >>>>>>> Add AuthProvider to base app
+=======
+import { AuthProvider } from "@contexts/auth";
+>>>>>>> Rename authentication to auth context
 
 import "expo-dev-client";
 
