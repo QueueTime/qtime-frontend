@@ -87,6 +87,7 @@ export const AuthProvider = ({
       if (isFirebaseInitializing) setFirebaseInitializing(false);
     });
     return subscriber; // unsubscribe on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
