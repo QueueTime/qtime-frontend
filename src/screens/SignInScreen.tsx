@@ -2,24 +2,15 @@ import { useContext } from "react";
 import { StyleSheet, Image } from "react-native";
 
 import { View } from "@ant-design/react-native";
-import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+// import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
 import { AuthContext } from "@contexts/auth";
+import { GoogleSignInButton } from "@components/GoogleSignInButton";
 
 export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
-  const { signIn } = useContext(AuthContext);
-
-  const googleButtonPress = async () => {
-    try {
-      await signIn();
-    } catch (error) {
-      // TODO: Error handling
-      console.log(error);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -36,12 +27,7 @@ export const SignInScreen = () => {
         style={{ resizeMode: "contain", height: 320 }}
         source={require("@assets/images/Hourglass.png")}
       />
-      <GoogleSigninButton
-        style={{ width: 200, height: 48 }}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Light}
-        onPress={() => googleButtonPress()}
-      />
+      <GoogleSignInButton />
     </View>
   );
 };
