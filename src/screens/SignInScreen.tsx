@@ -2,11 +2,9 @@ import { useContext } from "react";
 import { StyleSheet, Image } from "react-native";
 
 import { View } from "@ant-design/react-native";
-// import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
-import { AuthContext } from "@contexts/auth";
 import { GoogleSignInButton } from "@components/GoogleSignInButton";
 
 export const SignInScreen = () => {
