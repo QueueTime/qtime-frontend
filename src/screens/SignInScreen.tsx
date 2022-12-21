@@ -4,6 +4,7 @@ import { StyleSheet, Image } from "react-native";
 import { View } from "@ant-design/react-native";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
@@ -16,10 +17,11 @@ import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 =======
 // import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 >>>>>>> Rework google sign in button to be custom
+=======
+>>>>>>> Remove extra imports
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
-import { AuthContext } from "@contexts/auth";
 import { GoogleSignInButton } from "@components/GoogleSignInButton";
 
 export const SignInScreen = () => {
