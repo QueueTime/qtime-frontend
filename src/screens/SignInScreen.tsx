@@ -22,7 +22,7 @@ export const SignInScreen = () => {
         </StyledText>
       </View>
       <Image
-        style={{ resizeMode: "contain", height: 320 }}
+        style={styles.hourglass}
         source={require("@assets/images/Hourglass.png")}
       />
       <GoogleSignInButton />
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     width: 150,
     resizeMode: "contain",
   },
+  hourglass: { resizeMode: "contain", height: 320 },
   container: {
     flex: 1,
     flexDirection: "column",
