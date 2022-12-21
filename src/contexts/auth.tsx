@@ -30,6 +30,7 @@ const signIn = async () => {
  * of Firebase auth
  */
 const signOut = async () => {
+  await GoogleSignin.revokeAccess(); // Allows selection of Google account on sign-out
   await auth().signOut();
 };
 
