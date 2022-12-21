@@ -9,6 +9,7 @@ import { ThemeProvider } from "@contexts/theme";
 import { AuthProvider } from "@contexts/auth";
 
 import "expo-dev-client"; // Improve debugging when duing dev-client
+<<<<<<< HEAD
 =======
 import { AuthProvider } from "@contexts/authentication";
 >>>>>>> Add AuthProvider to base app
@@ -17,6 +18,8 @@ import { AuthProvider } from "@contexts/auth";
 >>>>>>> Rename authentication to auth context
 
 import "expo-dev-client";
+=======
+>>>>>>> Add comment for import
 
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
