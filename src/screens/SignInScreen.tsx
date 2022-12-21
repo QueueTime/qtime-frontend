@@ -3,6 +3,7 @@ import { StyleSheet, Image } from "react-native";
 
 import { View } from "@ant-design/react-native";
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
@@ -12,13 +13,18 @@ export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
 =======
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+=======
+// import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+>>>>>>> Rework google sign in button to be custom
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
 import { AuthContext } from "@contexts/auth";
+import { GoogleSignInButton } from "@components/GoogleSignInButton";
 
 export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
+<<<<<<< HEAD
   const { signIn } = useContext(AuthContext);
 
   const googleButtonPress = async () => {
@@ -30,6 +36,8 @@ export const SignInScreen = () => {
     }
   };
 >>>>>>> Create sign in screen
+=======
+>>>>>>> Rework google sign in button to be custom
 
   return (
     <View style={styles.container}>
@@ -52,6 +60,7 @@ export const SignInScreen = () => {
         style={{ resizeMode: "contain", height: 320 }}
         source={require("@assets/images/Hourglass.png")}
       />
+<<<<<<< HEAD
       <GoogleSigninButton
         style={{ width: 200, height: 48 }}
         size={GoogleSigninButton.Size.Wide}
@@ -59,6 +68,9 @@ export const SignInScreen = () => {
         onPress={() => googleButtonPress()}
       />
 >>>>>>> Create sign in screen
+=======
+      <GoogleSignInButton />
+>>>>>>> Rework google sign in button to be custom
     </View>
   );
 };
