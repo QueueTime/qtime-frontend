@@ -10,16 +10,14 @@ export const StyledText = ({
   fontWeight = "normal",
   ...otherProps
 }: Partial<IStyledTextProps>) => {
+  const styles = StyleSheet.create({
+    text: {
+      fontFamily: fontWeight === "bold" ? "WorkSansBold" : "WorkSans",
+    },
+  });
+
   return (
-    <Text
-      {...otherProps}
-      style={[
-        {
-          fontFamily: fontWeight === "bold" ? "WorkSansBold" : "WorkSans",
-        },
-        style,
-      ]}
-    >
+    <Text {...otherProps} style={[styles.text, style]}>
       {children}
     </Text>
   );
