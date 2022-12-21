@@ -1,7 +1,7 @@
 import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 const AUTH_WEB_CLIENT_ID =
   "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com";
@@ -33,7 +33,11 @@ const signOut = async () => {
   await auth().signOut();
 };
 
-export const AuthContext = React.createContext({
+export const AuthContext = React.createContext<{
+  user: FirebaseAuthTypes.User | null;
+  signIn: () => Promise<FirebaseAuthTypes.UserCredential>;
+  signOut: () => Promise<void>;
+}>({
   user: null,
   signIn,
   signOut,
@@ -74,15 +78,13 @@ export const AuthProvider = ({
   isFirebaseInitializing,
   setFirebaseInitializing,
 }: IAuthProviderProps) => {
-  const [user, setUser] = useState(null);
-
-  const onAuthStateChanged = (user: any) => {
-    setUser(user);
-    if (isFirebaseInitializing) setFirebaseInitializing(false);
-  };
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const subscriber = auth().onAuthStateChanged((userState) => {
+      setUser(userState);
+      if (isFirebaseInitializing) setFirebaseInitializing(false);
+    });
     return subscriber; // unsubscribe on unmount
   }, []);
 
