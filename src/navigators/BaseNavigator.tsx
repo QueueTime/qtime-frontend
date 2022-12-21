@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthContext } from "@contexts/authentication";
+import { AuthContext } from "@contexts/auth";
 import { TabNavigator } from "@navigators/TabNavigator";
 import { SignInScreen } from "@screens/SignInScreen";
 

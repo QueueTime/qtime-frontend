@@ -6,7 +6,7 @@ import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
-import { AuthContext } from "@contexts/authentication";
+import { AuthContext } from "@contexts/auth";
 
 export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
