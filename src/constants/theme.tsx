@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { PRIMARY_COLOR_LIGHT } from "./styles";
 
 export const themes = {
   // Light theme
@@ -8,8 +9,8 @@ export const themes = {
       container: {
         backgroundColor: "#ffffff",
       },
-      text: {
-        color: "#000000",
+      primaryColor: {
+        color: PRIMARY_COLOR_LIGHT,
       },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
@@ -27,8 +28,8 @@ export const themes = {
       container: {
         backgroundColor: "#222222",
       },
-      text: {
-        color: "#ffffff",
+      primaryColor: {
+        color: PRIMARY_COLOR_LIGHT,
       },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {

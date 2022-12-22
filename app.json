@@ -3,6 +3,7 @@
     "name": "QTime",
     "slug": "QTime",
     "version": "1.0.0",
+    "plugins": ["@react-native-google-signin/google-signin"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -20,7 +21,14 @@
       "icon": "./assets/ios-icon.png"
     },
     "android": {
-      "icon": "./assets/android-icon.png"
+      "googleServicesFile": "./google-services.json",
+      "icon": "./assets/android-icon.png",
+      "package": "com.capstone.QTime"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "087e7f31-fa81-43c9-9689-18c4052eb4e9"
+      }
     }
   }
 }
