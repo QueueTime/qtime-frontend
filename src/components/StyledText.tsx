@@ -1,5 +1,7 @@
-import React from "react";
+import { useContext } from "react";
 import { StyleSheet, Text } from "react-native";
+
+import { ThemeContext } from "@contexts/theme";
 
 /**
  * Text wrapper component with global text style applied
@@ -10,6 +12,7 @@ export const StyledText = ({
   fontWeight = "normal",
   ...otherProps
 }: Partial<IStyledTextProps>) => {
+  const { theme } = useContext(ThemeContext);
   const styles = StyleSheet.create({
     text: {
       fontFamily: fontWeight === "bold" ? "WorkSansBold" : "WorkSans",
@@ -17,7 +20,7 @@ export const StyledText = ({
   });
 
   return (
-    <Text {...otherProps} style={[styles.text, style]}>
+    <Text {...otherProps} style={[theme.styles.text, styles.text, style]}>
       {children}
     </Text>
   );
