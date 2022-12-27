@@ -9,7 +9,7 @@ import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 import { AuthContext } from "@contexts/auth";
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
-  const { user, signOut } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // TODO: Figure out better solution for lacking a user
   if (!user) {
@@ -21,10 +21,6 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
       <StyledText style={styles.huge}>Profile Page</StyledText>
       <WhiteSpace />
       <StyledText style={styles.huge}>{`Hi ${user.displayName}!`}</StyledText>
-      <WhiteSpace />
-      <Button type="warning" onPress={() => signOut()}>
-        <StyledText>Sign out</StyledText>
-      </Button>
       <WhiteSpace />
 
       <Button
