@@ -26,7 +26,12 @@ const styles = StyleSheet.create({
  * Handles tab navigation for the main section of the app
  */
 export const TabNavigator = () => (
-  <Tab.Navigator screenOptions={{ tabBarLabelStyle: styles.tabBarLabels }}>
+  <Tab.Navigator
+    screenOptions={{
+      tabBarLabelStyle: styles.tabBarLabels,
+      headerTitleAlign: "center",
+    }}
+  >
     <Tab.Screen
       name={ROUTES.WAIT_TIMES}
       component={WaitTimesNavigator}
@@ -50,7 +55,7 @@ export const TabNavigator = () => (
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Feather
-            name="map-pin" // Alternatively: "navigation"
+            name="map-pin"
             size={size - ICON_ADJUSTMENT_FACTOR}
             color={color}
           />
