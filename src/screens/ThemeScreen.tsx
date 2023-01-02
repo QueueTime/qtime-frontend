@@ -5,6 +5,7 @@ import { WhiteSpace, View, Radio } from "@ant-design/react-native";
 
 import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
+import { THEME_NAMES } from "@constants/theme";
 
 export const ThemeScreen = () => {
   const { theme, themePreference, changeTheme } = useContext(ThemeContext);
@@ -20,17 +21,17 @@ export const ThemeScreen = () => {
         onChange={(e: any) => changeTheme(e.target.value)}
         value={themePreference}
       >
-        <Radio.RadioItem style={styles.radio} value={"system"} left>
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.system} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>System</StyledText>
           </View>
         </Radio.RadioItem>
-        <Radio.RadioItem style={styles.radio} value={"light"} left>
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.light} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>Light</StyledText>
           </View>
         </Radio.RadioItem>
-        <Radio.RadioItem style={styles.radio} value={"dark"} left>
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.dark} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>Dark</StyledText>
           </View>
