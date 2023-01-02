@@ -6,6 +6,7 @@ import { Button } from "@ant-design/react-native";
 
 import { ThemeContext } from "@contexts/theme";
 import { renderWithTheme } from "@contexts/utils/theme.utils";
+import { THEME_NAMES } from "@constants/theme";
 
 import "@testing-library/jest-native/extend-expect";
 
@@ -34,9 +35,9 @@ const SampleThemeConsumer = () => {
 };
 
 describe("<ThemeProvider />", () => {
-  const LIGHT = "light";
-  const DARK = "dark";
-  const SYSTEM = "system";
+  const LIGHT = THEME_NAMES.light;
+  const DARK = THEME_NAMES.dark;
+  const SYSTEM = THEME_NAMES.system;
 
   it("renders the default theme and choice when missing a provider", () => {
     render(<SampleThemeConsumer />);
