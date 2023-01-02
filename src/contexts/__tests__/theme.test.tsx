@@ -15,7 +15,8 @@ const buttonTestId = "ant-button";
 const getThemeName = () => screen.getByText(/^Current theme:/);
 const getThemePref = () => screen.getByText(/^Current theme choice:/);
 const getButton = () => screen.getByTestId(buttonTestId);
-const flipTheme = (current: string) => (current === "light" ? "dark" : "light");
+const flipTheme = (current: string) =>
+  current === THEME_NAMES.light ? THEME_NAMES.dark : THEME_NAMES.dark;
 
 const SampleThemeConsumer = () => {
   const { theme, themePreference, changeTheme } = useContext(ThemeContext);
@@ -54,7 +55,7 @@ describe("<ThemeProvider />", () => {
     });
   });
 
-  it("correctly updates the theme and re-renders components", async () => {
+  it("correctly updates the theme and re-renders components", () => {
     renderWithTheme(<SampleThemeConsumer />, LIGHT);
     expect(getThemeName()).toHaveTextContent(`Current theme:${LIGHT}`);
     expect(getButton()).toHaveStyle({
