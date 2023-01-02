@@ -8,7 +8,7 @@ This change is a
 
 - [ ] Bug fix
 - [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that will change exisiting functionality)
+- [ ] Breaking change (fix or feature that will change existing functionality)
 - [ ] Documentation update
 
 ## Description
