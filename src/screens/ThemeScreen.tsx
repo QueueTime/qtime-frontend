@@ -22,17 +22,17 @@ export const ThemeScreen = () => {
       >
         <Radio.RadioItem value={"system"} left>
           <View style={styles.option}>
-            <StyledText>System</StyledText>
+            <StyledText style={styles.optionText}>System</StyledText>
           </View>
         </Radio.RadioItem>
         <Radio.RadioItem value={"light"} left>
           <View style={styles.option}>
-            <StyledText>Light</StyledText>
+            <StyledText style={styles.optionText}>Light</StyledText>
           </View>
         </Radio.RadioItem>
         <Radio.RadioItem value={"dark"} left>
           <View style={styles.option}>
-            <StyledText>Dark</StyledText>
+            <StyledText style={styles.optionText}>Dark</StyledText>
           </View>
         </Radio.RadioItem>
       </Radio.Group>
@@ -46,5 +46,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     marginLeft: -4,
+  },
+  optionText: {
+    fontSize: 16,
   },
 });
