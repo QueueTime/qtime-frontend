@@ -1,10 +1,14 @@
 import { StyleSheet } from "react-native";
 import { PRIMARY_COLOR_LIGHT } from "./styles";
 
+export const LIGHT = "light";
+export const DARK = "dark";
+export const SYSTEM = "system";
+
 export const themes = {
   // Light theme
   light: {
-    name: "light", // Name of theme
+    name: LIGHT, // Name of theme
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
@@ -28,7 +32,7 @@ export const themes = {
   },
   // Dark theme
   dark: {
-    name: "dark",
+    name: DARK,
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
