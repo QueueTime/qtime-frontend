@@ -20,17 +20,17 @@ export const ThemeScreen = () => {
         onChange={(e: any) => changeTheme(e.target.value)}
         value={themePreference}
       >
-        <Radio.RadioItem value={"system"} left>
+        <Radio.RadioItem style={styles.radio} value={"system"} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>System</StyledText>
           </View>
         </Radio.RadioItem>
-        <Radio.RadioItem value={"light"} left>
+        <Radio.RadioItem style={styles.radio} value={"light"} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>Light</StyledText>
           </View>
         </Radio.RadioItem>
-        <Radio.RadioItem value={"dark"} left>
+        <Radio.RadioItem style={styles.radio} value={"dark"} left>
           <View style={styles.option}>
             <StyledText style={styles.optionText}>Dark</StyledText>
           </View>
@@ -41,6 +41,9 @@ export const ThemeScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  radio: {
+    paddingVertical: 5,
+  },
   option: {
     flex: 1,
     flexDirection: "column",
