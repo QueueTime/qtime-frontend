@@ -33,13 +33,13 @@ export const GoogleSignInButton = () => {
               "Cannot complete sign in. Google Play Services not available or outdated.",
             duration: Toast.SHORT,
           });
+          break;
         default:
           // Some other unexpected error
           Toast.info({
             content: `Cannot complete sign in due to unexpected error. ${error}`,
             duration: Toast.SHORT,
           });
-          break;
       }
     }
   };
