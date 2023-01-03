@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { PRIMARY_COLOR_LIGHT } from "./styles";
+import { PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK } from "./styles";
 
 export const THEME_NAMES = {
   light: "light",
@@ -48,7 +48,7 @@ export const themes = {
         fontSize: 15,
       },
       primaryColor: {
-        color: PRIMARY_COLOR_LIGHT,
+        color: PRIMARY_COLOR_DARK,
       },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
@@ -57,6 +57,7 @@ export const themes = {
         https://github.com/ant-design/ant-design-mobile-rn/blob/master/components/style/themes/default.tsx
       */
       primary_button_fill: "#a00ceb",
+      ghost_button_color: "#a00ceb", // Ghost button outline
       checkbox_fill: "#bf40bf", // Radio/checkbox button color
       fill_base: "#222222", // Background color
       border_color_base: "#fffff", // Line color
