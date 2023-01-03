@@ -17,7 +17,10 @@ export const SignInScreen = () => {
           style={styles.logo}
           source={require("@assets/images/QTimeLogoName.png")}
         />
-        <StyledText style={[styles.title, theme.styles.primaryColor]}>
+        <StyledText
+          fontWeight="bold"
+          style={[styles.title, theme.styles.primaryColor]}
+        >
           Your time is valuable.
         </StyledText>
       </View>
@@ -35,10 +38,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontFamily: "WorkSans",
-    fontWeight: "normal", // 700+ broken on Android. TODO: fix font weights
     fontSize: 26,
-    letterSpacing: -0.5,
   },
   logo: {
     width: 150,

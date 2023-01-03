@@ -14,7 +14,8 @@ SplashScreen.preventAutoHideAsync();
 const App = () => {
   // Load fonts
   const [fontsLoaded] = useFonts({
-    WorkSans: require("@assets/fonts/WorkSans.ttf"),
+    WorkSans: require("@assets/fonts/WorkSans-Regular.ttf"),
+    WorkSansBold: require("@assets/fonts/WorkSans-Bold.ttf"),
   });
 
   // Set an initializing state whilst Firebase connects
