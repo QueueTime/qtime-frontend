@@ -39,6 +39,7 @@ export const GoogleSignInButton = () => {
             content: `Cannot complete sign in due to unexpected error. ${error}`,
             duration: Toast.SHORT,
           });
+          break;
       }
     }
   };
