@@ -72,7 +72,19 @@ We use expo's `expo-dev-client` to run development builds to iterate quickly for
 
 ## Development
 
-- QTime leverages the [Ant Design Mobile React Native Component Library](https://rn.mobile.ant.design/docs/react/introduce).
+### Component Library
+
+QTime leverages the [Ant Design Mobile React Native Component Library](https://rn.mobile.ant.design/docs/react/introduce).
+
+### Regenerate OpenAPI client code
+
+QTime leverages an API interface designed with [OpenAPI 3.0](https://swagger.io/specification/) exposed by its backend. Regenerate the api client code with [@openapitools/openapi-generator-cli](https://www.npmjs.com/package/@openapitools/openapi-generator-cli) using the following command:
+
+```sh
+npm run generate:api "<PATH TO spec.json>"
+```
+
+Replacing the path/url to the openapi 3.0 json spec to use when generating the client code. Generated code is found in [src/api/generated](src/api/generated).
 
 ## Testing
 
