@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,6 +13,8 @@ import { NotificationsScreen } from "@screens/NotificationScreen";
 import { ThemeScreen } from "@screens/ThemeScreen";
 import { ProfileScreen } from "@screens/ProfileScreen";
 import { AuthContext } from "@contexts/auth";
+import { ThemeContext } from "@contexts/theme";
+import { THEME_NAMES } from "@constants/theme";
 
 // Types of parameters that are passed for each screen
 type ProfileStackNavigatorParams = {
@@ -54,24 +56,36 @@ const Stack = createNativeStackNavigator<ProfileStackNavigatorParams>();
  */
 export const ProfileStackNavigator = () => {
   const { signOut } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error: any) {
-      if (error.statusCodes === statusCodes.SIGN_IN_REQUIRED) {
-        Toast.info({
-          content: `No user signed in. Cannot sign out.`,
-          duration: Toast.SHORT,
-        });
-      } else {
-        Toast.info({
-          content: `Failed to sign user out with error: ${error}`,
-          duration: Toast.SHORT,
-        });
+  const logoutButton = useMemo(() => {
+    const handleSignOut = async () => {
+      try {
+        await signOut();
+      } catch (error: any) {
+        if (error.statusCodes === statusCodes.SIGN_IN_REQUIRED) {
+          Toast.info({
+            content: `No user signed in. Cannot sign out.`,
+            duration: Toast.SHORT,
+          });
+        } else {
+          Toast.info({
+            content: `Failed to sign user out with error: ${error}`,
+            duration: Toast.SHORT,
+          });
+        }
       }
-    }
-  };
+    };
+    return (
+      <TouchableOpacity onPress={() => handleSignOut()}>
+        <AntDesign
+          name="logout"
+          size={24}
+          color={theme.name === THEME_NAMES.light ? "black" : "white"}
+        />
+      </TouchableOpacity>
+    );
+  }, [signOut, theme.name]);
 
   return (
     <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
@@ -80,11 +94,7 @@ export const ProfileStackNavigator = () => {
         component={ProfileScreen}
         options={{
           title: "Profile",
-          headerRight: () => (
-            <TouchableOpacity onPress={() => handleSignOut()}>
-              <AntDesign name="logout" size={24} color="black" />
-            </TouchableOpacity>
-          ),
+          headerRight: () => logoutButton,
         }}
       />
       <Stack.Screen
