@@ -4,13 +4,16 @@ import * as SecureStore from "expo-secure-store";
 
 import { Provider } from "@ant-design/react-native";
 
-import { themes, STORAGE_KEY } from "@constants/theme";
+import { themes, STORAGE_KEY, THEME_NAMES } from "@constants/theme";
 
 // Theme Defaults
-export const DEFAULT_CHOICE = "system";
+export const DEFAULT_CHOICE = THEME_NAMES.system;
 export const DEFAULT_THEME = themes.light;
 
-export type ThemeChoice = "system" | "light" | "dark";
+export type ThemeChoice =
+  | typeof THEME_NAMES.system
+  | typeof THEME_NAMES.light
+  | typeof THEME_NAMES.dark;
 
 export const ThemeContext = React.createContext({
   theme: DEFAULT_THEME,
@@ -80,13 +83,15 @@ export const ThemeProvider = ({
   // is changed or the system color theme changes
   useEffect(() => {
     if (
-      themePreference === "light" ||
-      (themePreference === "system" && colorScheme === "light")
+      themePreference === THEME_NAMES.light ||
+      (themePreference === THEME_NAMES.system &&
+        colorScheme === THEME_NAMES.light)
     ) {
       setTheme(themes.light);
     } else if (
-      themePreference === "dark" ||
-      (themePreference === "system" && colorScheme === "dark")
+      themePreference === THEME_NAMES.dark ||
+      (themePreference === THEME_NAMES.system &&
+        colorScheme === THEME_NAMES.dark)
     ) {
       setTheme(themes.dark);
     } else {

@@ -1,40 +1,57 @@
 import { useContext } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
-import { Button, WhiteSpace } from "@ant-design/react-native";
+import { WhiteSpace, View, Radio } from "@ant-design/react-native";
 
 import { ThemeContext } from "@contexts/theme";
+import { StyledText } from "@components/StyledText";
+import { THEME_NAMES } from "@constants/theme";
 
 export const ThemeScreen = () => {
-  const { theme, changeTheme } = useContext(ThemeContext);
-
-  const styles = StyleSheet.create({
-    huge: {
-      fontSize: 20,
-    },
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
+  const { theme, themePreference, changeTheme } = useContext(ThemeContext);
 
   return (
-    <View style={[styles.container, theme.styles.container]}>
-      <Text style={[styles.huge, theme.styles.text]}>
-        App Appearance Screen
-      </Text>
-      <Text style={[styles.huge, theme.styles.text]}>Theme: {theme.name}</Text>
+    <View style={[theme.styles.screenContainer]}>
+      <StyledText>
+        Customize the app experience by choosing a theme preference:
+      </StyledText>
       <WhiteSpace />
-      <Button type={"primary"} onPress={() => changeTheme("light")}>
-        Set light theme
-      </Button>
-      <Button type={"primary"} onPress={() => changeTheme("dark")}>
-        Set dark theme
-      </Button>
-      <Button type={"primary"} onPress={() => changeTheme("system")}>
-        Set system theme
-      </Button>
+
+      <Radio.Group
+        onChange={(e: any) => changeTheme(e.target.value)}
+        value={themePreference}
+      >
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.system} left>
+          <View style={styles.option}>
+            <StyledText style={styles.optionText}>System</StyledText>
+          </View>
+        </Radio.RadioItem>
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.light} left>
+          <View style={styles.option}>
+            <StyledText style={styles.optionText}>Light</StyledText>
+          </View>
+        </Radio.RadioItem>
+        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.dark} left>
+          <View style={styles.option}>
+            <StyledText style={styles.optionText}>Dark</StyledText>
+          </View>
+        </Radio.RadioItem>
+      </Radio.Group>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  radio: {
+    paddingVertical: 5,
+  },
+  option: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    marginLeft: -4,
+  },
+  optionText: {
+    fontSize: 16,
+  },
+});

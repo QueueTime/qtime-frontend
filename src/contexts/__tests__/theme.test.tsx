@@ -4,7 +4,9 @@ import { View, Text } from "react-native";
 import { render, screen, fireEvent } from "@testing-library/react-native";
 import { Button } from "@ant-design/react-native";
 
-import { ThemeProvider, ThemeContext } from "@contexts/theme";
+import { ThemeContext } from "@contexts/theme";
+import { renderWithTheme } from "@contexts/utils/theme.utils";
+import { THEME_NAMES } from "@constants/theme";
 
 import "@testing-library/jest-native/extend-expect";
 
@@ -13,7 +15,8 @@ const buttonTestId = "ant-button";
 const getThemeName = () => screen.getByText(/^Current theme:/);
 const getThemePref = () => screen.getByText(/^Current theme choice:/);
 const getButton = () => screen.getByTestId(buttonTestId);
-const flipTheme = (current: string) => (current === "light" ? "dark" : "light");
+const flipTheme = (current: string) =>
+  current === THEME_NAMES.light ? THEME_NAMES.dark : THEME_NAMES.dark;
 
 const SampleThemeConsumer = () => {
   const { theme, themePreference, changeTheme } = useContext(ThemeContext);
@@ -33,26 +36,9 @@ const SampleThemeConsumer = () => {
 };
 
 describe("<ThemeProvider />", () => {
-  const LIGHT = "light";
-  const DARK = "dark";
-  const SYSTEM = "system";
-
-  /**
-   * A custom render to setup providers. Extends regular
-   * render options with `providerProps` to allow injecting
-   * different scenarios to test with.
-   *
-   * @see https://testing-library.com/docs/react-testing-library/setup#custom-render
-   */
-  const customRender = (
-    children: React.ReactNode,
-    { providerProps, ...renderOptions }: any = {}
-  ) => {
-    return render(
-      <ThemeProvider {...providerProps}>{children}</ThemeProvider>,
-      renderOptions
-    );
-  };
+  const LIGHT = THEME_NAMES.light;
+  const DARK = THEME_NAMES.dark;
+  const SYSTEM = THEME_NAMES.system;
 
   it("renders the default theme and choice when missing a provider", () => {
     render(<SampleThemeConsumer />);
@@ -61,9 +47,7 @@ describe("<ThemeProvider />", () => {
   });
 
   it("renders the correct theme passed", () => {
-    customRender(<SampleThemeConsumer />, {
-      providerProps: { startThemePreference: DARK },
-    });
+    renderWithTheme(<SampleThemeConsumer />, DARK);
     expect(getThemeName()).toHaveTextContent(`Current theme:${DARK}`);
     expect(getThemePref()).toHaveTextContent(`Current theme choice:${DARK}`);
     expect(getButton()).toHaveStyle({
@@ -71,10 +55,8 @@ describe("<ThemeProvider />", () => {
     });
   });
 
-  it("correctly updates the theme and re-renders components", async () => {
-    customRender(<SampleThemeConsumer />, {
-      providerProps: { startThemePreference: LIGHT },
-    });
+  it("correctly updates the theme and re-renders components", () => {
+    renderWithTheme(<SampleThemeConsumer />, LIGHT);
     expect(getThemeName()).toHaveTextContent(`Current theme:${LIGHT}`);
     expect(getButton()).toHaveStyle({
       backgroundColor: "#108ee9",
