@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { OpaqueColorValue, StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
@@ -46,76 +46,78 @@ export type ProfileScreenProps = BottomTabScreenProps<
 // Tab component to use for navigation
 const Tab = createBottomTabNavigator<TabNavigatorParams>();
 
+// Icon display functions
+// These need to be defined outside the component to avoid unstable-nested-components warning
+const renderFeatherIcon = (
+  name: any,
+  color: string | OpaqueColorValue,
+  size: number
+) => <Feather name={name} size={size - ICON_ADJUSTMENT_FACTOR} color={color} />;
+
+const renderSimpleLineIcon = (
+  name: any,
+  color: string | OpaqueColorValue,
+  size: number
+) => (
+  <SimpleLineIcons
+    name={name}
+    size={size - ICON_ADJUSTMENT_FACTOR}
+    color={color}
+  />
+);
+
 /**
  * Handles tab navigation for the main section of the app
  */
-export const TabNavigator = () => (
-  <Tab.Navigator
-    screenOptions={{
-      tabBarLabelStyle: styles.tabBarLabels,
-      headerTitleAlign: "center",
-    }}
-  >
-    <Tab.Screen
-      name={ROUTES.WAIT_TIMES}
-      component={WaitTimesNavigator}
-      options={{
-        title: "Wait Times",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => (
-          <Feather
-            name="clock"
-            size={size - ICON_ADJUSTMENT_FACTOR}
-            color={color}
-          />
-        ),
+export const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarLabelStyle: styles.tabBarLabels,
+        headerTitleAlign: "center",
       }}
-    />
-    <Tab.Screen
-      name={ROUTES.MAP}
-      component={MapScreen}
-      options={{
-        title: "Map",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => (
-          <Feather
-            name="map-pin"
-            size={size - ICON_ADJUSTMENT_FACTOR}
-            color={color}
-          />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.REWARDS}
-      component={RewardsScreen}
-      options={{
-        title: "Rewards",
-        tabBarIcon: ({ color, size }) => (
-          <Feather
-            name="gift"
-            size={size - ICON_ADJUSTMENT_FACTOR}
-            color={color}
-          />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.PROFILE}
-      component={ProfileStackNavigator}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ color, size }) => (
-          <SimpleLineIcons
-            name="user"
-            size={size - ICON_ADJUSTMENT_FACTOR}
-            color={color}
-          />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen
+        name={ROUTES.WAIT_TIMES}
+        component={WaitTimesNavigator}
+        options={{
+          title: "Wait Times",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("clock", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.MAP}
+        component={MapScreen}
+        options={{
+          title: "Map",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("map-pin", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.REWARDS}
+        component={RewardsScreen}
+        options={{
+          title: "Rewards",
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("gift", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.PROFILE}
+        component={ProfileStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderSimpleLineIcon("user", color, size),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const ICON_ADJUSTMENT_FACTOR = 5;
 
