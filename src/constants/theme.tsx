@@ -20,6 +20,7 @@ export const themes = {
       },
       text: {
         color: "#000000",
+        fontSize: 15,
       },
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
@@ -44,6 +45,7 @@ export const themes = {
       },
       text: {
         color: "#ffffff",
+        fontSize: 15,
       },
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
