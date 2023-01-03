@@ -1,11 +1,18 @@
+import { useContext } from "react";
+import { TouchableOpacity } from "react-native";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AntDesign } from "@expo/vector-icons";
+import { statusCodes } from "@react-native-google-signin/google-signin";
+import { Toast } from "@ant-design/react-native";
 
 import { POISuggestionScreen } from "@screens/POISuggestionScreen";
 import * as ROUTES from "@constants/routes";
 import { NotificationsScreen } from "@screens/NotificationScreen";
 import { ThemeScreen } from "@screens/ThemeScreen";
 import { ProfileScreen } from "@screens/ProfileScreen";
+import { AuthContext } from "@contexts/auth";
 
 // Types of parameters that are passed for each screen
 type ProfileStackNavigatorParams = {
@@ -45,27 +52,56 @@ const Stack = createNativeStackNavigator<ProfileStackNavigatorParams>();
 /**
  * Handles navigation for the profile section of the app
  */
-export const ProfileStackNavigator = () => (
-  <Stack.Navigator>
-    <Stack.Screen
-      options={{ title: "Profile" }}
-      name={ROUTES.PROFILE_HOME}
-      component={ProfileScreen}
-    />
-    <Stack.Screen
-      options={{ title: "Suggest a new POI" }}
-      name={ROUTES.SUGGEST_POI}
-      component={POISuggestionScreen}
-    />
-    <Stack.Screen
-      options={{ title: "Notification Settings" }}
-      name={ROUTES.NOTIFICATIONS}
-      component={NotificationsScreen}
-    />
-    <Stack.Screen
-      options={{ title: "App Appearance" }}
-      name={ROUTES.THEME}
-      component={ThemeScreen}
-    />
-  </Stack.Navigator>
-);
+export const ProfileStackNavigator = () => {
+  const { signOut } = useContext(AuthContext);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error: any) {
+      if (error.statusCodes === statusCodes.SIGN_IN_REQUIRED) {
+        Toast.info({
+          content: `No user signed in. Cannot sign out.`,
+          duration: Toast.SHORT,
+        });
+      } else {
+        Toast.info({
+          content: `Failed to sign user out with error: ${error}`,
+          duration: Toast.SHORT,
+        });
+      }
+    }
+  };
+
+  return (
+    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+      <Stack.Screen
+        name={ROUTES.PROFILE_HOME}
+        component={ProfileScreen}
+        options={{
+          title: "Profile",
+          headerRight: () => (
+            <TouchableOpacity onPress={() => handleSignOut()}>
+              <AntDesign name="logout" size={24} color="black" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name={ROUTES.SUGGEST_POI}
+        component={POISuggestionScreen}
+        options={{ title: "Suggest a new POI" }}
+      />
+      <Stack.Screen
+        options={{ title: "Notification Settings" }}
+        name={ROUTES.NOTIFICATIONS}
+        component={NotificationsScreen}
+      />
+      <Stack.Screen
+        options={{ title: "App Appearance" }}
+        name={ROUTES.THEME}
+        component={ThemeScreen}
+      />
+    </Stack.Navigator>
+  );
+};
