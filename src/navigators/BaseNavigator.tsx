@@ -7,6 +7,7 @@ import { AuthContext } from "@contexts/auth";
 import { TabNavigator } from "@navigators/TabNavigator";
 import { SignInScreen } from "@screens/SignInScreen";
 import { ThemeContext } from "@contexts/theme";
+import { ReferralScreen } from "@screens/ReferralScreen";
 
 export const BaseNavigator = () => {
   const { user } = useContext(AuthContext);
