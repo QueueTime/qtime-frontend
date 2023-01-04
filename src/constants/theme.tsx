@@ -22,6 +22,10 @@ export const themes = {
         color: "#000000",
         fontSize: 15,
       },
+      subText: {
+        color: "#808080",
+        fontSize: 14,
+      },
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
       },
@@ -46,6 +50,10 @@ export const themes = {
       text: {
         color: "#ffffff",
         fontSize: 15,
+      },
+      subText: {
+        color: "#808080",
+        fontSize: 14,
       },
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
