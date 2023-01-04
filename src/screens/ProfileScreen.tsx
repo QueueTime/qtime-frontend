@@ -13,6 +13,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
+  // Navigation details for the list of buttons at the bottom of the screen
   const navigationOptions = [
     {
       name: "Suggest a new POI",
@@ -33,9 +34,13 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     {
       name: "Delete Account",
       onPress: () => {},
+      style: {
+        color: "red",
+      },
     },
   ];
 
+  // Helper sub-component to render the info sections of the profile screen
   const InfoSection = ({ text, subtext }: IInfoSectionProps) =>
     useMemo(
       () => (
@@ -86,14 +91,17 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           BodyBottomLine: { borderBottomWidth: 0 },
         }}
       >
-        {navigationOptions.map(({ name, onPress }) => (
+        {navigationOptions.map(({ name, onPress, style }) => (
           <List.Item
             key={name}
             style={styles.navigationOption}
             arrow="horizontal"
             onPress={onPress}
           >
-            <StyledText style={styles.navigationText} fontWeight="bold">
+            <StyledText
+              style={[styles.navigationText, style]}
+              fontWeight="bold"
+            >
               {name}
             </StyledText>
           </List.Item>
