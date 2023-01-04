@@ -16,6 +16,8 @@ const App = () => {
   const [fontsLoaded] = useFonts({
     WorkSans: require("@assets/fonts/WorkSans-Regular.ttf"),
     WorkSansBold: require("@assets/fonts/WorkSans-Bold.ttf"),
+    antoutline: require("@ant-design/icons-react-native/fonts/antoutline.ttf"),
+    antfill: require("@ant-design/icons-react-native/fonts/antfill.ttf"),
   });
 
   // Set an initializing state whilst Firebase connects
