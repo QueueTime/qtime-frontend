@@ -7,6 +7,22 @@ import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { THEME_NAMES } from "@constants/theme";
 
+// Sub-component for displaying the radio item option
+const RadioOption = ({ text, value }: IRadioOptionProps) => (
+  <Radio.RadioItem
+    listItemStyles={{
+      Line: { borderBottomWidth: 0 }, // Remove bottom lines under each option
+    }}
+    style={styles.radio}
+    value={value}
+    left
+  >
+    <View style={styles.option}>
+      <StyledText style={styles.optionText}>{text}</StyledText>
+    </View>
+  </Radio.RadioItem>
+);
+
 export const ThemeScreen = () => {
   const { theme, themePreference, changeTheme } = useContext(ThemeContext);
 
@@ -21,21 +37,9 @@ export const ThemeScreen = () => {
         onChange={(e: any) => changeTheme(e.target.value)}
         value={themePreference}
       >
-        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.system} left>
-          <View style={styles.option}>
-            <StyledText style={styles.optionText}>System</StyledText>
-          </View>
-        </Radio.RadioItem>
-        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.light} left>
-          <View style={styles.option}>
-            <StyledText style={styles.optionText}>Light</StyledText>
-          </View>
-        </Radio.RadioItem>
-        <Radio.RadioItem style={styles.radio} value={THEME_NAMES.dark} left>
-          <View style={styles.option}>
-            <StyledText style={styles.optionText}>Dark</StyledText>
-          </View>
-        </Radio.RadioItem>
+        <RadioOption text="System" value={THEME_NAMES.system} />
+        <RadioOption text="Light" value={THEME_NAMES.light} />
+        <RadioOption text="Dark" value={THEME_NAMES.dark} />
       </Radio.Group>
     </View>
   );
@@ -55,3 +59,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+interface IRadioOptionProps {
+  text: string;
+  value: string;
+}
