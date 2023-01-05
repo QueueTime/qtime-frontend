@@ -63,7 +63,7 @@ export const ProfileStackNavigator = () => {
       try {
         await signOut();
       } catch (error: any) {
-        if (error.statusCodes === statusCodes.SIGN_IN_REQUIRED) {
+        if (error.code === statusCodes.SIGN_IN_REQUIRED) {
           Toast.info({
             content: `No user signed in. Cannot sign out.`,
             duration: Toast.SHORT,
