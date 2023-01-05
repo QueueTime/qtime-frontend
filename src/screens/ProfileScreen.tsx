@@ -1,64 +1,161 @@
-import { useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { useContext, useMemo } from "react";
+import { StyleSheet, ScrollView, Image } from "react-native";
 
-import { Button, WhiteSpace } from "@ant-design/react-native";
+import { View, List } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import * as ROUTES from "@constants/routes";
 import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 import { AuthContext } from "@contexts/auth";
+import { ThemeContext } from "@contexts/theme";
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
 
-  // TODO: Figure out better solution for lacking a user
-  if (!user) {
-    return null;
-  }
+  // Navigation details for the list of buttons at the bottom of the screen
+  const navigationOptions = [
+    {
+      name: "Suggest a new POI",
+      onPress: () => navigation.navigate(ROUTES.SUGGEST_POI),
+    },
+    {
+      name: "Notification Settings",
+      onPress: () => navigation.navigate(ROUTES.NOTIFICATIONS),
+    },
+    {
+      name: "App Appearance",
+      onPress: () => navigation.navigate(ROUTES.THEME),
+    },
+    {
+      name: "Help",
+      onPress: () => {},
+    },
+    {
+      name: "Delete Account",
+      onPress: () => {},
+      style: {
+        color: "red",
+      },
+    },
+  ];
+
+  // Helper sub-component to render the info sections of the profile screen
+  const InfoSection = ({ text, subtext }: IInfoSectionProps) =>
+    useMemo(
+      () => (
+        <View style={styles.infoContainer}>
+          <StyledText fontWeight="bold">{text}</StyledText>
+          <StyledText style={theme.styles.subText}>{subtext}</StyledText>
+        </View>
+      ),
+      [text, subtext]
+    );
 
   return (
-    <View style={styles.container}>
-      <StyledText style={styles.huge}>Profile Page</StyledText>
-      <WhiteSpace />
-      <StyledText style={styles.huge}>{`Hi ${user.displayName}!`}</StyledText>
-      <WhiteSpace />
-
-      <Button
-        type={"primary"}
-        onPress={() => navigation.navigate(ROUTES.SUGGEST_POI)}
+    <ScrollView style={[theme.styles.screenContainer, styles.container]}>
+      <View style={styles.header}>
+        <Image
+          source={
+            user?.photoURL
+              ? { uri: user.photoURL }
+              : require("@assets/images/avatar.png")
+          }
+          style={styles.profileImg}
+        />
+        <View style={styles.profileInfo}>
+          <StyledText fontWeight="bold" style={styles.name}>
+            {user!.displayName}
+          </StyledText>
+          <StyledText style={styles.email}>{user!.email}</StyledText>
+          <StyledText style={styles.points}>1271 points</StyledText>
+        </View>
+      </View>
+      <List>
+        <List.Item>
+          <InfoSection
+            text="Most frequented POI"
+            subtext="Location 6 • 0.1 km away"
+          />
+        </List.Item>
+        <List.Item>
+          <InfoSection
+            text="Time spent waiting in line"
+            subtext="7 hrs 2 min"
+          />
+        </List.Item>
+      </List>
+      <List
+        styles={{
+          Body: { borderTopWidth: 0 },
+          BodyBottomLine: { borderBottomWidth: 0 },
+        }}
       >
-        <StyledText>Go to POI Suggestion</StyledText>
-      </Button>
-      <WhiteSpace />
-      <Button
-        type={"primary"}
-        onPress={() => navigation.navigate(ROUTES.NOTIFICATIONS)}
-      >
-        <StyledText>Go to notifications</StyledText>
-      </Button>
-      <WhiteSpace />
-      <Button
-        type={"primary"}
-        onPress={() => navigation.navigate(ROUTES.THEME)}
-      >
-        <StyledText>Go to appearance settings</StyledText>
-      </Button>
-    </View>
+        {navigationOptions.map(({ name, onPress, style }) => (
+          <List.Item
+            key={name}
+            style={styles.navigationOption}
+            arrow="horizontal"
+            onPress={onPress}
+          >
+            <StyledText
+              style={[styles.navigationText, style]}
+              fontWeight="bold"
+            >
+              {name}
+            </StyledText>
+          </List.Item>
+        ))}
+      </List>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  huge: {
-    fontSize: 20,
-  },
   container: {
+    padding: 0, // Override the padding on screen container to work with horizontal lines
+  },
+  header: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
+    flexDirection: "row",
     justifyContent: "center",
+    paddingTop: 10,
+    paddingHorizontal: 25,
+    paddingBottom: 30,
+  },
+  profileImg: {
+    resizeMode: "cover",
+    overflow: "hidden",
+    width: 100,
+    height: 100,
+    borderRadius: 999,
+    marginRight: 20,
+  },
+  profileInfo: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  name: { fontSize: 18 },
+  email: { fontSize: 16, marginTop: -2 },
+  points: { fontSize: 15, color: "grey", marginTop: -4 },
+  infoContainer: {
+    padding: 15,
+  },
+  navigationOption: {
+    paddingLeft: 25,
+    paddingRight: 10,
+  },
+  navigationText: {
+    paddingVertical: 8,
   },
 });
 
 interface IProfileScreenProps {
   navigation: ProfileScreenProps["navigation"];
+}
+
+interface IInfoSectionProps {
+  text: string;
+  subtext: string;
 }
