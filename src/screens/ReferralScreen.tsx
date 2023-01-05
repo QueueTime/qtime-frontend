@@ -20,7 +20,7 @@ export const ReferralScreen = ({
   const [errorCode, setErrorCode] = useState("");
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const cannonColors = ["#1677ff", "#5c5c5c", "#16adff"];
+  const confettiColors = ["#1677ff", "#5c5c5c", "#16adff"];
   const inputTextStyle = {
     color: hasError ? "red" : theme.styles.text.color,
   };
@@ -110,7 +110,7 @@ export const ReferralScreen = ({
           count={80}
           origin={{ x: Dimensions.get("window").width / 2, y: -15 }}
           fadeOut
-          colors={cannonColors}
+          colors={confettiColors}
         />
       )}
     </View>
