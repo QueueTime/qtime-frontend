@@ -11,7 +11,7 @@ export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <View style={styles.container}>
+    <View style={[theme.styles.screenContainer, styles.container]}>
       <View style={styles.titleBox}>
         <Image
           style={styles.logo}
@@ -46,10 +46,8 @@ const styles = StyleSheet.create({
   },
   hourglass: { resizeMode: "contain", height: 320 },
   container: {
-    flex: 1,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-around",
-    padding: 10,
   },
 });
