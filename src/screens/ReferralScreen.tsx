@@ -21,9 +21,17 @@ export const ReferralScreen = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const confettiColors = ["#1677ff", "#5c5c5c", "#16adff"];
-  const inputTextStyle = {
-    color: hasError ? "red" : theme.styles.text.color,
-  };
+
+  const inputStyles = StyleSheet.create({
+    input: {
+      color: hasError ? "red" : theme.styles.text.color,
+      flex: 1,
+      textAlign: "center",
+      // Workaround on Android to ensure cursor stays centered when all input is removed
+      // https://github.com/facebook/react-native/issues/27658
+      width: Boolean(userInput) ? "100%" : "95%",
+    },
+  });
 
   const onSubmit = () => {
     if (isTransitioning) {
@@ -69,7 +77,16 @@ export const ReferralScreen = ({
       <WhiteSpace />
       <View style={styles.inputContainer}>
         <InputItem
-          style={inputTextStyle}
+          styles={{
+            // Required to ensure text in input is centered on Android
+            container: {
+              flex: 1,
+              alignItems: "center",
+              flexDirection: "column",
+              justifyContent: "center",
+            },
+          }}
+          style={inputStyles.input}
           autoCapitalize="characters"
           textAlignVertical="center"
           textAlign="center"
