@@ -95,9 +95,12 @@ export const ReferralScreen = ({
           placeholderTextColor={theme.styles.text.color}
           cursorColor={theme.styles.text.color}
           maxLength={MAX_CHARS}
-          onChange={(value) => onInput(value)}
+          onChangeText={(value) => onInput(value)}
           onSubmitEditing={onSubmit}
           returnKeyType="done"
+          testID="referral-input-textbox"
+          name="referral"
+          type="text"
         />
       </View>
       <View style={styles.errorWrapper}>
