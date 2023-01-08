@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "QTime",
+    "owner": "queuetime",
     "slug": "QTime",
     "version": "1.0.0",
     "plugins": [
@@ -44,7 +45,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "087e7f31-fa81-43c9-9689-18c4052eb4e9"
+        "projectId": "067cecb9-585a-415a-b692-afc88ed4aadd"
       }
     }
   }
