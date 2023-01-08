@@ -3,7 +3,19 @@
     "name": "QTime",
     "slug": "QTime",
     "version": "1.0.0",
-    "plugins": ["@react-native-google-signin/google-signin"],
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-build-properties",
+      "@react-native-firebase/app",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ]
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -18,7 +30,12 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "icon": "./assets/ios-icon.png"
+      "icon": "./assets/ios-icon.png",
+      "bundleIdentifier": "com.capstone.QTime",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",
