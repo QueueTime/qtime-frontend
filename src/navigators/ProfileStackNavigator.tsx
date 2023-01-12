@@ -88,7 +88,10 @@ export const ProfileStackNavigator = () => {
   }, [signOut, theme.name]);
 
   return (
-    <Stack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
+    <Stack.Navigator
+      initialRouteName={ROUTES.PROFILE_HOME}
+      screenOptions={{ headerTitleAlign: "center" }}
+    >
       <Stack.Screen
         name={ROUTES.PROFILE_HOME}
         component={ProfileScreen}
