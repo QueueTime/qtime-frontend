@@ -23,6 +23,10 @@
     "roots": [
       "src"
     ],
+    "setupFiles": [
+      "./node_modules/@react-native-google-signin/google-signin/jest/build/setup.js",
+      "./jest.setup.js"
+    ],
     "testRegex": "\\.test\\.tsx?$",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@bang88/.*|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
