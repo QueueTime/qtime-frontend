@@ -5,6 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import { Provider } from "@ant-design/react-native";
 
 import { themes, STORAGE_KEY, THEME_NAMES } from "@constants/theme";
+import { displayError } from "@utils/error";
 
 // Theme Defaults
 export const DEFAULT_CHOICE = THEME_NAMES.system;
@@ -72,8 +73,9 @@ export const ThemeProvider = ({
           await SecureStore.setItemAsync(STORAGE_KEY, DEFAULT_CHOICE);
         }
       } catch (err) {
-        // TODO: Should show a toast error here.
-        console.log(`Error trying to fetch stored preference ${err}`);
+        displayError(
+          `Failed to fetch stored preferences. Try again later. ${err}`
+        );
       }
     }
     fetchStoredThemePreference();
