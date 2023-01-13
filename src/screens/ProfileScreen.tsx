@@ -8,9 +8,11 @@ import * as ROUTES from "@constants/routes";
 import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
+import { deleteUser } from "@utils/firestore";
+import { displayError } from "@utils/error";
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
-  const { user } = useContext(AuthContext);
+  const { user, userProfile, signOut } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   // Navigation details for the list of buttons at the bottom of the screen
@@ -33,7 +35,16 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     },
     {
       name: "Delete Account",
-      onPress: () => {},
+      onPress: async () => {
+        try {
+          await signOut();
+          await deleteUser(userProfile!.email);
+        } catch (error) {
+          displayError(
+            `Failed to delete user account. Try again later. ${error}`
+          );
+        }
+      },
       style: {
         color: "red",
       },
