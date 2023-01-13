@@ -14,8 +14,7 @@ export const themes = {
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
-        padding: 15,
-        paddingTop: 20,
+        padding: 20,
         backgroundColor: "#ffffff",
       },
       text: {
