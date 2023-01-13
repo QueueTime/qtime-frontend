@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native";
 
-import { renderWithTheme } from "@contexts/utils/theme.utils";
+import { renderWithTheme } from "@utils/theme";
 import { ThemeScreen } from "@screens/ThemeScreen";
 import { THEME_NAMES } from "@constants/theme";
 
