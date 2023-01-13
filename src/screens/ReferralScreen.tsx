@@ -32,7 +32,7 @@ export const ReferralScreen = () => {
       textAlign: "center",
       // Workaround on Android to ensure cursor stays centered when all input is removed
       // https://github.com/facebook/react-native/issues/27658
-      width: Boolean(userInput) ? "100%" : "95%",
+      width: userInput ? "100%" : "95%",
     },
   });
 

@@ -89,7 +89,7 @@ export const AuthProvider = ({
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(async (userState) => {
+    const subscriber = auth().onAuthStateChanged((userState) => {
       setUser(userState);
       if (isFirebaseInitializing) setFirebaseInitializing(false);
     });
