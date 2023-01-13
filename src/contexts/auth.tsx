@@ -79,6 +79,21 @@ export const AuthContext = React.createContext<{
  *  }
  * }
  * ```
+ *
+ * Authentication Flow Details:
+ *  1. User signs-in
+ *    - Fetch user information from Google Identify provider and store in `user`
+ *    - (If new user) Create a new document in firestore collection. Set `hasCompletedOnboarding` to false.
+ *      - Once user completes onboarding flow (TOS, referral, etc.), sets `hasCompletedOnboarding` to true.
+ *    - Subscribe to updates on user document. Store the firestore document data in `userProfile`.
+ *  2. Backend updates user document (e.g. more points are added)
+ *    - Subscription to user document will update `userProfile` and re-draw all components that depend on its state.
+ *  3. User signs out
+ *    - Set `user` and `userProfile` to null. Resolve all subscriptions.
+ *  4. User deletes account
+ *    - Delete user document in firestore database containing user data.
+ *    - Cannot remove record of Google sign-in.
+ *    - Set `user` and `userProfile` to null. Resolve all subscriptions.
  */
 export const AuthProvider = ({
   children,
