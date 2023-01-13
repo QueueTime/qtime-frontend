@@ -1,26 +1,26 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
-import { DefaultTheme, DarkTheme } from "@react-navigation/native";
+import {
+  DefaultTheme,
+  DarkTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 
-import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "@contexts/auth";
 import { TabNavigator } from "@navigators/TabNavigator";
 import { SignInScreen } from "@screens/SignInScreen";
 import { ThemeContext } from "@contexts/theme";
-import { ReferralScreen } from "@screens/ReferralScreen";
+import { SignUpStackNavigator } from "./SignUpStackNavigator";
 
 export const BaseNavigator = () => {
-  const { user } = useContext(AuthContext);
+  const { user, userProfile } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
 
   /**
-   * Temporary workaround for displaying the follow up screens after you sign-in
-   * TODO: Update this to instead query the database to see if the user has
-   *       accepted the terms of service.
+   * Show sign in screen if no Google user is signed-in
+   * or if we haven't pulled the user's profile from firebase
    */
-  const [isValidUser, setIsValidUser] = useState(false);
-
-  if (!user) {
+  if (!user || !userProfile) {
     return <SignInScreen />;
   }
 
@@ -30,14 +30,10 @@ export const BaseNavigator = () => {
     <NavigationContainer
       theme={theme.name === "light" ? DefaultTheme : DarkTheme}
     >
-      {isValidUser ? (
+      {userProfile?.hasCompletedOnboarding ? (
         <TabNavigator />
       ) : (
-        <ReferralScreen
-          onReferralComplete={() => {
-            setIsValidUser(true);
-          }}
-        />
+        <SignUpStackNavigator />
       )}
     </NavigationContainer>
   );
