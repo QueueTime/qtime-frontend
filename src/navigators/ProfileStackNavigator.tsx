@@ -103,7 +103,7 @@ export const ProfileStackNavigator = () => {
       <Stack.Screen
         name={ROUTES.SUGGEST_POI}
         component={POISuggestionScreen}
-        options={{ title: "Suggest a new POI" }}
+        options={{ title: "Suggest a New Location" }}
       />
       <Stack.Screen
         options={{ title: "Notification Settings" }}
