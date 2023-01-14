@@ -5,7 +5,7 @@ import { render, screen, fireEvent } from "@testing-library/react-native";
 import { Button } from "@ant-design/react-native";
 
 import { ThemeContext } from "@contexts/theme";
-import { renderWithTheme } from "@contexts/utils/theme.utils";
+import { renderWithTheme } from "@utils/theme";
 import { THEME_NAMES } from "@constants/theme";
 
 import "@testing-library/jest-native/extend-expect";

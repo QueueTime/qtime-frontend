@@ -71,6 +71,7 @@ const renderSimpleLineIcon = (
  */
 export const TabNavigator = () => (
   <Tab.Navigator
+    initialRouteName={ROUTES.WAIT_TIMES}
     screenOptions={{
       tabBarLabelStyle: styles.tabBarLabels,
       headerTitleAlign: "center",

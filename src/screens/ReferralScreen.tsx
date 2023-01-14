@@ -6,15 +6,18 @@ import ConfettiCannon from "react-native-confetti-cannon";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
+import { AuthContext } from "@contexts/auth";
+import { completeUserOnboarding } from "@utils/firestore";
+import { displayError } from "@utils/error";
 
 const MAX_CHARS = 6;
 const PLACEHOLDER = "XCJDHC";
 const CODE = "ABCDEF";
 
-export const ReferralScreen = ({
-  onReferralComplete,
-}: IReferralScreenProps) => {
+export const ReferralScreen = () => {
   const { theme } = useContext(ThemeContext);
+  const { userProfile } = useContext(AuthContext);
+
   const [userInput, setUserInput] = useState("");
   const [hasError, setHasError] = useState(false);
   const [errorCode, setErrorCode] = useState("");
@@ -29,7 +32,7 @@ export const ReferralScreen = ({
       textAlign: "center",
       // Workaround on Android to ensure cursor stays centered when all input is removed
       // https://github.com/facebook/react-native/issues/27658
-      width: Boolean(userInput) ? "100%" : "95%",
+      width: userInput ? "100%" : "95%",
     },
   });
 
@@ -55,7 +58,7 @@ export const ReferralScreen = ({
     // TODO: Add code to attribute points
     setTimeout(() => {
       setIsTransitioning(false);
-      onReferralComplete();
+      completeOnboarding();
     }, 3000);
   };
 
@@ -64,8 +67,14 @@ export const ReferralScreen = ({
     setHasError(false);
   };
 
-  const onNoReferralCodePress = () => {
-    onReferralComplete();
+  const completeOnboarding = async () => {
+    try {
+      await completeUserOnboarding(userProfile!.email);
+    } catch (error) {
+      displayError(
+        `Failed to complete referral step. Try again later. ${error}`
+      );
+    }
   };
 
   return (
@@ -117,10 +126,7 @@ export const ReferralScreen = ({
       <WhiteSpace size="sm" />
       <StyledText>Enter your referral code to earn bonus points!</StyledText>
       <WhiteSpace size="xl" />
-      <TouchableOpacity
-        disabled={isTransitioning}
-        onPress={onNoReferralCodePress}
-      >
+      <TouchableOpacity disabled={isTransitioning} onPress={completeOnboarding}>
         <StyledText style={theme.styles.primaryColor}>
           I don't have one
         </StyledText>
@@ -163,7 +169,3 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
-
-interface IReferralScreenProps {
-  onReferralComplete: () => void;
-}

@@ -23,6 +23,10 @@
     "roots": [
       "src"
     ],
+    "setupFiles": [
+      "./node_modules/@react-native-google-signin/google-signin/jest/build/setup.js",
+      "./jest.setup.js"
+    ],
     "testRegex": "\\.test\\.tsx?$",
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@bang88/.*|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
@@ -34,6 +38,7 @@
     "@react-native-community/slider": "4.2.4",
     "@react-native-firebase/app": "^16.5.0",
     "@react-native-firebase/auth": "^16.5.0",
+    "@react-native-firebase/firestore": "^16.5.0",
     "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-native-picker/picker": "2.4.8",
     "@react-navigation/bottom-tabs": "^6.5.0",

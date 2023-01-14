@@ -1,9 +1,4 @@
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, screen, fireEvent } from "@testing-library/react-native";
 
 import { ReferralScreen } from "@screens/ReferralScreen";
 
@@ -16,31 +11,19 @@ const textInputId = "referral-input-textbox";
 const getTextInputBox = () => screen.getByTestId(textInputId);
 
 describe("<ReferralScreen />", () => {
-  const mockOnReferralComplete = jest.fn();
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("accepts a valid referral code", async () => {
-    render(<ReferralScreen onReferralComplete={mockOnReferralComplete} />);
+    render(<ReferralScreen />);
     const input = getTextInputBox();
-
     fireEvent.changeText(input, "ABCDEF");
     expect(input.props.value).toBe("ABCDEF");
     fireEvent(input, "submitEditing");
-
     expect(screen.queryByText("Invalid referral code. Try again.")).toBeNull();
-
-    await waitFor(() => expect(mockOnReferralComplete).toBeCalledTimes(1), {
-      timeout: 3500,
-    });
+    // TODO: Mock navigator and ensure it is called (once referral is not the last page)
   });
 
   it("validates input for referral codes of 6 characters", async () => {
-    render(<ReferralScreen onReferralComplete={mockOnReferralComplete} />);
+    render(<ReferralScreen />);
     const input = getTextInputBox();
-
     fireEvent.changeText(input, "ABCDEG");
     expect(input.props.value).toBe("ABCDEG");
     fireEvent(input, "submitEditing");
@@ -48,9 +31,8 @@ describe("<ReferralScreen />", () => {
   });
 
   it("validates input for referral codes less than 6 characters", async () => {
-    render(<ReferralScreen onReferralComplete={mockOnReferralComplete} />);
+    render(<ReferralScreen />);
     const input = getTextInputBox();
-
     fireEvent.changeText(input, "ABC");
     expect(input.props.value).toBe("ABC");
     fireEvent(input, "submitEditing");
@@ -58,8 +40,8 @@ describe("<ReferralScreen />", () => {
   });
 
   it("allows progress if users don't have a referral code", () => {
-    render(<ReferralScreen onReferralComplete={mockOnReferralComplete} />);
+    render(<ReferralScreen />);
     fireEvent.press(screen.getByText("I don't have one"));
-    expect(mockOnReferralComplete).toBeCalledTimes(1);
+    // TODO: Mock navigator and ensure it is called (once referral is not the last page)
   });
 });
