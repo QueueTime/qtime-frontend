@@ -21,6 +21,9 @@ export const themes = {
         color: "#000000",
         fontSize: 15,
       },
+      placeholderText: {
+        color: "#808080",
+      },
       subText: {
         color: "#808080",
         fontSize: 14,
@@ -49,6 +52,9 @@ export const themes = {
       text: {
         color: "#ffffff",
         fontSize: 15,
+      },
+      placeholderText: {
+        color: "#ffffff",
       },
       subText: {
         color: "#808080",
