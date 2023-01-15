@@ -82,7 +82,7 @@ export const AuthContext = React.createContext<{
  *
  * Authentication Flow Details:
  *  1. User signs-in
- *    - Fetch user information from Google Identify provider and store in `user`
+ *    - Fetch user information from Google Identify provider and store in `user`.
  *    - (If new user) Create a new document in firestore collection. Set `hasCompletedOnboarding` to false.
  *      - Once user completes onboarding flow (TOS, referral, etc.), sets `hasCompletedOnboarding` to true.
  *    - Subscribe to updates on user document. Store the firestore document data in `userProfile`.

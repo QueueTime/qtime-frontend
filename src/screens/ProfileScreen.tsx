@@ -18,16 +18,16 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   // Navigation details for the list of buttons at the bottom of the screen
   const navigationOptions = [
     {
-      name: "Suggest a new POI",
-      onPress: () => navigation.navigate(ROUTES.SUGGEST_POI),
-    },
-    {
       name: "Notification Settings",
       onPress: () => navigation.navigate(ROUTES.NOTIFICATIONS),
     },
     {
       name: "App Appearance",
       onPress: () => navigation.navigate(ROUTES.THEME),
+    },
+    {
+      name: "Suggest a new location",
+      onPress: () => navigation.navigate(ROUTES.SUGGEST_POI),
     },
     {
       name: "Help",
