@@ -67,7 +67,8 @@ export const POISuggestionScreen = () => {
                 }
                 name="locationName"
                 type="text"
-              ></InputItem>
+                testID="locationNameInputBox"
+              />
             </View>
             <View style={styles.addInfoContainer}>
               <TextareaItem
@@ -77,11 +78,12 @@ export const POISuggestionScreen = () => {
                 placeholder="Additional Information"
                 placeholderTextColor={theme.styles.placeholderText.color}
                 count={200}
+                testID="additionalInfoInputBox"
               />
             </View>
           </View>
         </ScrollView>
-        <Button type="primary" onPress={submitForm}>
+        <Button type="primary" onPress={submitForm} testID="submitBtn">
           <StyledText>Submit</StyledText>
         </Button>
         <SuccessModal
