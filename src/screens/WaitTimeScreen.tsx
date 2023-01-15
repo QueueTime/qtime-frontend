@@ -1,15 +1,34 @@
+import { useContext, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 
-import { Button, WhiteSpace } from "@ant-design/react-native";
+import { Button, WhiteSpace, SearchBar } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
 import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
+import { ThemeContext } from "@contexts/theme";
 
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
+  const [searchValue, setSearchValue] = useState("");
+
+  const { theme } = useContext(ThemeContext);
   return (
-    <View style={styles.container}>
+    <ScrollView style={[theme.styles.screenContainer, styles.container]}>
+      <View style={styles.searchContainer}>
+        <SearchBar
+          style={styles.searchBar}
+          value={searchValue}
+          placeholder="Search places"
+          onChange={(value) => {
+            setSearchValue(value);
+          }}
+          onSubmit={(value) => {
+            setSearchValue(value);
+          }}
+          showCancelButton={false}
+        />
+      </View>
       <StyledText style={styles.huge}>Wait Times</StyledText>
       <WhiteSpace />
       <Button
@@ -21,7 +40,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         <StyledText>Go to Location X</StyledText>
       </Button>
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 };
 
@@ -29,11 +48,17 @@ const styles = StyleSheet.create({
   huge: {
     fontSize: 20,
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  container: {},
+  searchContainer: {
+    paddingTop: 50,
+    backgroundColor: "#FFFFFF",
+  },
+  searchBar: {
+    borderRadius: 6,
+    backgroundColor: "#F5F5F5",
+  },
+  search: {
+    backgroundColor: "#F5F5F5",
   },
 });
 
