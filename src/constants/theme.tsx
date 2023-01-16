@@ -22,7 +22,7 @@ export const themes = {
         fontSize: 15,
       },
       placeholderText: {
-        color: "#808080",
+        color: "#999999",
       },
       subText: {
         color: "#808080",
@@ -37,8 +37,13 @@ export const themes = {
         Add any values from the ant default theme you want to override here
         https://github.com/ant-design/ant-design-mobile-rn/blob/master/components/style/themes/default.tsx
       */
-      color_text_base: "#999999", // Text color
       search_bar_fill: "#FFFFFF", // Search Bar fill color
+      radius_sm: 24, // Tag Radius
+      tag_height: 35, // Tag Height
+      button_font_size_sm: 15, // Tag Text Font Size
+      color_text_caption: "#000000", // Tag Text Color
+      color_link: "#FFFFFF",
+      fill_base: "#F5F5F5",
     },
   },
   // Dark theme
@@ -76,8 +81,12 @@ export const themes = {
       checkbox_fill: "#bf40bf", // Radio/checkbox button color
       fill_base: "#222222", // Background color
       border_color_base: "#fffff", // Line color
-      color_text_base: "#999999", // Text color
       search_bar_fill: "#FFFFFF", // Search Bar fill color
+      radius_sm: 24, // Tag Radius
+      tag_height: 35, // Tag Height
+      button_font_size_sm: 15, // Tag Text Font Size
+      color_text_caption: "#000000", // Tag Text Color
+      color_link: "#FFFFFF",
     },
   },
 };
