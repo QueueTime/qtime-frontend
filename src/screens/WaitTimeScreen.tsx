@@ -4,6 +4,7 @@ import {
   ScrollView,
   View,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
 
 import {
@@ -64,27 +65,21 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             >
               <StyledText style={styles.sortByText}>Sort By</StyledText>
             </Button>
-            <Tag
-              style={styles.tags}
-              styles={{
-                activeText: {
-                  color: "#F5F5F5",
-                },
-              }}
-            >
+            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
               Food
             </Tag>
-            <Tag style={styles.tags} styles={styles.tagStyles}>
+            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
               Transport
             </Tag>
-            <Tag style={styles.tags} styles={styles.tagStyles}>
+            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
               Library
             </Tag>
-            <Tag style={styles.tags} styles={styles.tagStyles}>
+            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
               Gym
             </Tag>
           </ScrollView>
         </View>
+        <WhiteSpace />
         <StyledText style={styles.huge}>Wait Times</StyledText>
         <WhiteSpace />
         <Button
@@ -96,7 +91,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
           <StyledText>Go to Location X</StyledText>
         </Button>
         <Modal
-          style={{ borderTopLeftRadius: 15, borderTopRightRadius: 15 }}
+          style={styles.modal}
           popup
           visible={isVisible}
           animationType="slide-up"
@@ -104,33 +99,30 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             setIsVisible(false);
           }}
         >
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingTop: 10,
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginBottom: 20,
-            }}
-          >
-            <StyledText
-              style={styles.modalCancel}
+          <View style={styles.modalHeader}>
+            <TouchableOpacity
               onPress={() => {
                 setIsVisible(false);
               }}
             >
-              Cancel
-            </StyledText>
+              <StyledText style={styles.modalButtons}>Cancel</StyledText>
+            </TouchableOpacity>
             <StyledText style={styles.modalSortBy}>Sort By</StyledText>
-            <StyledText
-              style={styles.modalOK}
+            <TouchableOpacity
               onPress={() => {
                 setIsVisible(false);
               }}
             >
-              OK
-            </StyledText>
+              <StyledText style={styles.modalButtons}>OK</StyledText>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Button style={{ borderColor: "#FFFFFF" }}>
+              <StyledText style={{ textAlign: "left" }}>Time</StyledText>
+            </Button>
+            <Button style={{ borderColor: "#FFFFFF" }}>
+              <StyledText>Distance</StyledText>
+            </Button>
           </View>
         </Modal>
       </ScrollView>
@@ -171,13 +163,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
   },
-  modalCancel: {
-    // textAlign: "left",
-    color: "#1677FF",
-    // marginLeft: 10,
+  modal: {
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingBottom: 10,
   },
-  modalSortBy: {
-    // textAlign: "center",
+  modalButtons: {
+    color: "#1677FF",
   },
   modalHeader: {
     paddingHorizontal: 20,
@@ -185,14 +177,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  modalOK: {
-    // textAlign: "right",
-    color: "#1677FF",
-    // marginRight: 10,
+    paddingBottom: 10,
   },
 });
+
+const StylesOverride = {
+  tagStyles: {
+    activeWrap: {
+      backgroundColor: "#1677FF",
+    },
+    activeText: {
+      color: "#F5F5F5",
+    },
+  },
+};
 
 interface IWaitTimeScreenProps {
   navigation: LocationDetailsScreenProps["navigation"];
