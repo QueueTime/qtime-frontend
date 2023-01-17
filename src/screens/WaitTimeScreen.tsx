@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   ScrollView,
@@ -7,7 +6,13 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { Button, WhiteSpace, SearchBar, Tag } from "@ant-design/react-native";
+import {
+  Button,
+  WhiteSpace,
+  SearchBar,
+  Tag,
+  Modal,
+} from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
@@ -16,6 +21,7 @@ import { ThemeContext } from "@contexts/theme";
 
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const [searchValue, setSearchValue] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   const { theme } = useContext(ThemeContext);
   let searchBar: SearchBar | null;
@@ -50,22 +56,26 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         </View>
         <View style={styles.sortContainer}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <Button style={styles.sortByTag}>
-              <StyledText style={styles.sort}>Sort By</StyledText>
-            </Button>
-            <Tag
-              style={styles.tags}
-              styles={{
-                normalWrap: {
-                  backgroundColor: "green",
-                },
+            <Button
+              style={styles.sortByTag}
+              onPress={() => {
+                setIsVisible(true);
               }}
             >
+              <StyledText style={styles.sortByText}>Sort By</StyledText>
+            </Button>
+            <Tag style={styles.tags} styles={styles.tagStyles}>
               Food
             </Tag>
-            <Tag style={styles.tags}>Transport</Tag>
-            <Tag style={styles.tags}>Library</Tag>
-            <Tag style={styles.tags}>Gym</Tag>
+            <Tag style={styles.tags} styles={styles.tagStyles}>
+              Transport
+            </Tag>
+            <Tag style={styles.tags} styles={styles.tagStyles}>
+              Library
+            </Tag>
+            <Tag style={styles.tags} styles={styles.tagStyles}>
+              Gym
+            </Tag>
           </ScrollView>
         </View>
         <StyledText style={styles.huge}>Wait Times</StyledText>
@@ -78,7 +88,35 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         >
           <StyledText>Go to Location X</StyledText>
         </Button>
-        <StatusBar style="auto" />
+        <Modal
+          style={{ height: 100 }}
+          popup
+          visible={isVisible}
+          animationType="slide-up"
+          onClose={() => {
+            setIsVisible(false);
+          }}
+        >
+          <View style={styles.modalHeader}>
+            <StyledText
+              style={styles.modalCancel}
+              onPress={() => {
+                setIsVisible(false);
+              }}
+            >
+              Cancel
+            </StyledText>
+            <StyledText style={styles.modalSortBy}>Sort By</StyledText>
+            <StyledText
+              style={styles.modalOK}
+              onPress={() => {
+                setIsVisible(false);
+              }}
+            >
+              OK
+            </StyledText>
+          </View>
+        </Modal>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
@@ -103,21 +141,48 @@ const styles = StyleSheet.create({
   sortContainer: {
     paddingTop: 20,
   },
+  tagStyles: {
+    activeWrap: {
+      backgroundColor: "#1677FF",
+    },
+    activeText: {
+      color: "#F5F5F5",
+    },
+  },
   tags: {
     paddingRight: 6,
   },
   sortByTag: {
-    paddingRight: 6,
     borderRadius: 24,
-    flexDirection: "row",
-    width: 97,
-    height: 37,
+    width: 85,
+    height: 34,
     backgroundColor: "#FFFFFF",
-    alignItems: "center",
+    marginRight: 6,
   },
-  sort: {
+  sortByText: {
     fontSize: 15,
     textAlign: "center",
+  },
+  modalCancel: {
+    // textAlign: "left",
+    color: "#1677FF",
+    // marginLeft: 10,
+  },
+  modalSortBy: {
+    // textAlign: "center",
+  },
+  modalHeader: {
+    // paddingTop: 5,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "red",
+  },
+  modalOK: {
+    // textAlign: "right",
+    color: "#1677FF",
+    // marginRight: 10,
   },
 });
 

@@ -42,8 +42,6 @@ export const themes = {
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size
       color_text_caption: "#000000", // Tag Text Color
-      color_link: "#FFFFFF",
-      fill_base: "#F5F5F5",
     },
   },
   // Dark theme
@@ -86,7 +84,6 @@ export const themes = {
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size
       color_text_caption: "#000000", // Tag Text Color
-      color_link: "#FFFFFF",
     },
   },
 };
