@@ -64,7 +64,14 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             >
               <StyledText style={styles.sortByText}>Sort By</StyledText>
             </Button>
-            <Tag style={styles.tags} styles={styles.tagStyles}>
+            <Tag
+              style={styles.tags}
+              styles={{
+                activeText: {
+                  color: "#F5F5F5",
+                },
+              }}
+            >
               Food
             </Tag>
             <Tag style={styles.tags} styles={styles.tagStyles}>
@@ -89,7 +96,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
           <StyledText>Go to Location X</StyledText>
         </Button>
         <Modal
-          style={{ height: 100 }}
+          style={{ borderTopLeftRadius: 15, borderTopRightRadius: 15 }}
           popup
           visible={isVisible}
           animationType="slide-up"
@@ -97,7 +104,16 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             setIsVisible(false);
           }}
         >
-          <View style={styles.modalHeader}>
+          <View
+            style={{
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 20,
+            }}
+          >
             <StyledText
               style={styles.modalCancel}
               onPress={() => {
@@ -141,14 +157,6 @@ const styles = StyleSheet.create({
   sortContainer: {
     paddingTop: 20,
   },
-  tagStyles: {
-    activeWrap: {
-      backgroundColor: "#1677FF",
-    },
-    activeText: {
-      color: "#F5F5F5",
-    },
-  },
   tags: {
     paddingRight: 6,
   },
@@ -172,12 +180,12 @@ const styles = StyleSheet.create({
     // textAlign: "center",
   },
   modalHeader: {
-    // paddingTop: 5,
+    paddingHorizontal: 20,
+    paddingTop: 10,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "red",
+    marginBottom: 20,
   },
   modalOK: {
     // textAlign: "right",
