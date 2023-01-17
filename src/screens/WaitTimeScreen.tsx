@@ -32,9 +32,9 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         searchBar?.inputRef?.blur();
       }}
     >
-      <ScrollView
+      <View
         style={[theme.styles.screenContainer, styles.container]}
-        keyboardShouldPersistTaps={"always"}
+        // keyboardShouldPersistTaps={"always"}
       >
         <View style={styles.searchContainer}>
           <SearchBar
@@ -90,42 +90,64 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         >
           <StyledText>Go to Location X</StyledText>
         </Button>
+
         <Modal
-          style={styles.modal}
-          popup
+          transparent={false}
           visible={isVisible}
           animationType="slide-up"
-          onClose={() => {
-            setIsVisible(false);
+          popup
+          style={{
+            height: "100%",
+            width: "100%",
+            backgroundColor: "rgba(0,0,0,0)",
           }}
         >
-          <View style={styles.modalHeader}>
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(false);
+          <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+            <View
+              style={{
+                height: "100%",
+                width: "100%",
+                justifyContent: "flex-end",
+                alignItems: "center",
               }}
             >
-              <StyledText style={styles.modalButtons}>Cancel</StyledText>
-            </TouchableOpacity>
-            <StyledText style={styles.modalSortBy}>Sort By</StyledText>
-            <TouchableOpacity
-              onPress={() => {
-                setIsVisible(false);
-              }}
-            >
-              <StyledText style={styles.modalButtons}>OK</StyledText>
-            </TouchableOpacity>
-          </View>
-          <View>
-            <Button style={{ borderColor: "#FFFFFF" }}>
-              <StyledText style={{ textAlign: "left" }}>Time</StyledText>
-            </Button>
-            <Button style={{ borderColor: "#FFFFFF" }}>
-              <StyledText>Distance</StyledText>
-            </Button>
-          </View>
+              <TouchableWithoutFeedback>
+                <View style={styles.modalHeader}>
+                  <View style={styles.modalActionRow}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsVisible(false);
+                      }}
+                    >
+                      <StyledText style={styles.modalButtons}>
+                        Cancel
+                      </StyledText>
+                    </TouchableOpacity>
+                    <StyledText style={styles.modalSortBy}>Sort By</StyledText>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setIsVisible(false);
+                      }}
+                    >
+                      <StyledText style={styles.modalButtons}>OK</StyledText>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <Button style={{ borderColor: "#FFFFFF" }}>
+                      <StyledText style={{ textAlign: "left" }}>
+                        Time
+                      </StyledText>
+                    </Button>
+                    <Button style={{ borderColor: "#FFFFFF" }}>
+                      <StyledText>Distance</StyledText>
+                    </Button>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          </TouchableWithoutFeedback>
         </Modal>
-      </ScrollView>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -163,22 +185,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
   },
-  modal: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    paddingBottom: 10,
-  },
   modalButtons: {
     color: "#1677FF",
   },
   modalHeader: {
+    width: "100%",
+    backgroundColor: "#ffffff",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    paddingBottom: 10,
     paddingHorizontal: 20,
-    paddingTop: 10,
-    flex: 1,
+    paddingTop: 20,
+  },
+  modalActionRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingBottom: 10,
   },
+  modalSortBy: {},
 });
 
 const StylesOverride = {
