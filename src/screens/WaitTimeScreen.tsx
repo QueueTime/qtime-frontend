@@ -53,7 +53,16 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             <Button style={styles.sortByTag}>
               <StyledText style={styles.sort}>Sort By</StyledText>
             </Button>
-            <Tag style={styles.tags}>Food</Tag>
+            <Tag
+              style={styles.tags}
+              styles={{
+                normalWrap: {
+                  backgroundColor: "green",
+                },
+              }}
+            >
+              Food
+            </Tag>
             <Tag style={styles.tags}>Transport</Tag>
             <Tag style={styles.tags}>Library</Tag>
             <Tag style={styles.tags}>Gym</Tag>
