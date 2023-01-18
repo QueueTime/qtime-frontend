@@ -37,18 +37,10 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
       name: "Delete Account",
       onPress: () => {
         Modal.alert(
-          <StyledText
-            style={{
-              fontSize: 18,
-            }}
-          >
+          <StyledText style={styles.deleteModalTitle}>
             Are you sure you want to delete your account?
           </StyledText>,
-          <StyledText
-            style={{
-              textAlign: "center",
-            }}
-          >
+          <StyledText style={styles.deleteModalBody}>
             All data associated with your account will be lost, including any
             reward points.
           </StyledText>,
@@ -189,6 +181,12 @@ const styles = StyleSheet.create({
   },
   navigationText: {
     paddingVertical: 8,
+  },
+  deleteModalTitle: {
+    fontSize: 18,
+  },
+  deleteModalBody: {
+    textAlign: "center",
   },
 });
 
