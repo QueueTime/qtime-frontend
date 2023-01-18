@@ -1,7 +1,7 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { StyleSheet, ScrollView, Image } from "react-native";
 
-import { View, List } from "@ant-design/react-native";
+import { View, List, Modal } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import * as ROUTES from "@constants/routes";
@@ -35,15 +35,45 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     },
     {
       name: "Delete Account",
-      onPress: async () => {
-        try {
-          await signOut();
-          await deleteUser(userProfile!.email);
-        } catch (error) {
-          displayError(
-            `Failed to delete user account. Try again later. ${error}`
-          );
-        }
+      onPress: () => {
+        Modal.alert(
+          <StyledText
+            style={{
+              fontSize: 18,
+            }}
+          >
+            Are you sure you want to delete your account?
+          </StyledText>,
+          <StyledText
+            style={{
+              textAlign: "center",
+            }}
+          >
+            All data associated with your account will be lost, including any
+            reward points.
+          </StyledText>,
+          [
+            {
+              text: "Cancel",
+              style: { color: theme.styles.text.color },
+            },
+            {
+              text: "Yes, delete it",
+              onPress: async () => {
+                try {
+                  await signOut();
+                  await deleteUser(userProfile!.email);
+                } catch (error) {
+                  displayError(
+                    `Failed to delete user account. Try again later. ${error}`
+                  );
+                }
+              },
+              style: { color: "red" },
+            },
+          ],
+          () => true
+        );
       },
       style: {
         color: "red",
