@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useMemo } from "react";
 import { StyleSheet, ScrollView, Image } from "react-native";
 
 import { View, List, Modal } from "@ant-design/react-native";
