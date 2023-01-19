@@ -5,7 +5,7 @@ import { Button, WhiteSpace } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
-import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
+import { WaitTimeScreenProps } from "@navigators/WaitTimeStackNavigator";
 
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   return (
@@ -38,5 +38,5 @@ const styles = StyleSheet.create({
 });
 
 interface IWaitTimeScreenProps {
-  navigation: LocationDetailsScreenProps["navigation"];
+  navigation: WaitTimeScreenProps["navigation"];
 }
