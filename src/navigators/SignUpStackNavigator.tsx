@@ -1,7 +1,5 @@
-import {
-  createNativeStackNavigator,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import * as ROUTES from "@constants/routes";
 import { ReferralScreen } from "@screens/ReferralScreen";
@@ -17,7 +15,7 @@ type SignUpStackNavigatorParams = {
 
 // Prop types for each of the screen in the navigator
 // ... ({ navigation, route }: RouteNameScreenProps)
-// OR navigator: RouteNameScreenProps['navigation']
+// OR navigation: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
 export type TermsOfServiceScreenProps = NativeStackScreenProps<
   SignUpStackNavigatorParams,
