@@ -62,9 +62,7 @@ export const OnboardingScreenForNavigator = () => {
     try {
       await completeUserOnboarding(userProfile!.email);
     } catch (error) {
-      displayError(
-        `Failed to complete referral step. Try again later. ${error}`
-      );
+      displayError(`Failed to complete onboarding. Try again later. ${error}`);
     }
   };
 
@@ -83,7 +81,7 @@ export const OnboardingScreen = ({
   const { theme } = useContext(ThemeContext);
   const { width } = useWindowDimensions();
 
-  // Index of current onboarding page
+  // Index of current carousel page
   const [activeIndex, setActiveIndex] = useState(0);
   // Flatlist prop that calculates current item index
   const onViewRef = useRef(({ viewableItems }: any) => {
