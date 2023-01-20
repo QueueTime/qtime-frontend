@@ -266,6 +266,6 @@ const styles = StyleSheet.create({
 });
 
 interface IOnboardingScreenProps {
-  onComplete?: () => {};
-  onExit?: () => {};
+  onComplete?: () => void;
+  onExit?: () => void;
 }
