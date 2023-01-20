@@ -3,7 +3,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 import * as ROUTES from "@constants/routes";
 import { ReferralScreen } from "@screens/ReferralScreen";
-import { OnboardingScreen } from "@screens/OnboardingScreen";
+import { OnboardingScreenForNavigator } from "@screens/OnboardingScreen";
 import { TermsOfServiceScreen } from "@screens/TermsOfServiceScreen";
 
 // Types of parameters that are passed for each screen
@@ -45,6 +45,9 @@ export const SignUpStackNavigator = () => (
       component={TermsOfServiceScreen}
     />
     <Stack.Screen name={ROUTES.REFERRAL} component={ReferralScreen} />
-    <Stack.Screen name={ROUTES.ONBOARDING} component={OnboardingScreen} />
+    <Stack.Screen
+      name={ROUTES.ONBOARDING}
+      component={OnboardingScreenForNavigator}
+    />
   </Stack.Navigator>
 );
