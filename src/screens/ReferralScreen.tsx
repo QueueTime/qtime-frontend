@@ -6,17 +6,14 @@ import ConfettiCannon from "react-native-confetti-cannon";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
-import { AuthContext } from "@contexts/auth";
-import { completeUserOnboarding } from "@utils/firestore";
-import { displayError } from "@utils/error";
+import { ReferralScreenProps } from "@navigators/SignUpStackNavigator";
+import { ONBOARDING } from "@constants/routes";
 
 const MAX_CHARS = 6;
 const PLACEHOLDER = "XCJDHC";
 const CODE = "ABCDEF";
-
-export const ReferralScreen = () => {
+export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
   const { theme } = useContext(ThemeContext);
-  const { userProfile } = useContext(AuthContext);
 
   const [userInput, setUserInput] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -58,7 +55,7 @@ export const ReferralScreen = () => {
     // TODO: Add code to attribute points
     setTimeout(() => {
       setIsTransitioning(false);
-      completeOnboarding();
+      navigateToNextPage();
     }, 3000);
   };
 
@@ -67,14 +64,8 @@ export const ReferralScreen = () => {
     setHasError(false);
   };
 
-  const completeOnboarding = async () => {
-    try {
-      await completeUserOnboarding(userProfile!.email);
-    } catch (error) {
-      displayError(
-        `Failed to complete referral step. Try again later. ${error}`
-      );
-    }
+  const navigateToNextPage = () => {
+    navigation.navigate(ONBOARDING);
   };
 
   return (
@@ -126,7 +117,7 @@ export const ReferralScreen = () => {
       <WhiteSpace size="sm" />
       <StyledText>Enter your referral code to earn bonus points!</StyledText>
       <WhiteSpace size="xl" />
-      <TouchableOpacity disabled={isTransitioning} onPress={completeOnboarding}>
+      <TouchableOpacity disabled={isTransitioning} onPress={navigateToNextPage}>
         <StyledText style={theme.styles.primaryColor}>
           I don't have one
         </StyledText>
@@ -169,3 +160,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+
+interface IReferralScreenProps {
+  navigation: ReferralScreenProps["navigation"];
+}

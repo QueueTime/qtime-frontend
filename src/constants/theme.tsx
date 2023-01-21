@@ -31,6 +31,9 @@ export const themes = {
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
       },
+      inactiveColor: {
+        color: "#ababab",
+      },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
       /*
@@ -62,6 +65,9 @@ export const themes = {
       },
       primaryColor: {
         color: PRIMARY_COLOR_DARK,
+      },
+      inactiveColor: {
+        color: "#ababab",
       },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {

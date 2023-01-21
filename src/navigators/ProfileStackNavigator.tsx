@@ -26,7 +26,7 @@ type ProfileStackNavigatorParams = {
 
 // Prop types for each of the screen in the navigator
 // ... ({ navigation, route }: RouteNameScreenProps)
-// OR navigator: RouteNameScreenProps['navigation']
+// OR navigation: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
 export type ProfileScreenProps = NativeStackScreenProps<
   ProfileStackNavigatorParams,

@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { StyleSheet, ScrollView, Image } from "react-native";
 
 import { View, List, Modal } from "@ant-design/react-native";
@@ -10,10 +10,13 @@ import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
 import { deleteUser } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { OnboardingScreen } from "@screens/OnboardingScreen";
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user, userProfile, signOut } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
+
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Navigation details for the list of buttons at the bottom of the screen
   const navigationOptions = [
@@ -31,7 +34,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     },
     {
       name: "Help",
-      onPress: () => {},
+      onPress: () => setShowHelpModal(true),
     },
     {
       name: "Delete Account",
@@ -140,6 +143,19 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           </List.Item>
         ))}
       </List>
+      <Modal
+        transparent={false}
+        visible={showHelpModal}
+        // closable={true}
+        animationType="fade"
+        onRequestClose={() => {
+          setShowHelpModal(false);
+          return false; // Allows hardware back button events
+        }}
+        style={styles.helpModal}
+      >
+        <OnboardingScreen onExit={() => setShowHelpModal(false)} />
+      </Modal>
     </ScrollView>
   );
 };
@@ -152,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingTop: 10,
+    paddingTop: 25,
     paddingHorizontal: 25,
     paddingBottom: 30,
   },
@@ -187,6 +203,11 @@ const styles = StyleSheet.create({
   },
   deleteModalBody: {
     textAlign: "center",
+  },
+  helpModal: {
+    height: "100%",
+    width: "100%",
+    paddingTop: 15,
   },
 });
 
