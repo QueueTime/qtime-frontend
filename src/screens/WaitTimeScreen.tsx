@@ -9,20 +9,30 @@ import {
 
 import {
   Button,
-  WhiteSpace,
   SearchBar,
   Tag,
   Modal,
+  WingBlank,
+  Steps,
 } from "@ant-design/react-native";
+import { Feather } from "@expo/vector-icons";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
 import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { ThemeContext } from "@contexts/theme";
 
+const Step = Steps.Step;
+
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const [searchValue, setSearchValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [sortBy, setSortBy] = useState("Distance");
+  const steps1 = [
+    { title: "5 mins", description: "Lowest" },
+    { title: "7 mins", description: "Average" },
+    { title: "17 mins", description: "Highest" },
+  ];
 
   const { theme } = useContext(ThemeContext);
   let searchBar: SearchBar | null;
@@ -32,10 +42,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         searchBar?.inputRef?.blur();
       }}
     >
-      <View
-        style={[theme.styles.screenContainer, styles.container]}
-        // keyboardShouldPersistTaps={"always"}
-      >
+      <View style={[theme.styles.screenContainer, styles.container]}>
         <View style={styles.searchContainer}>
           <SearchBar
             ref={(el) => ((searchBar as any) = el)}
@@ -79,18 +86,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             </Tag>
           </ScrollView>
         </View>
-        <WhiteSpace />
-        <StyledText style={styles.huge}>Wait Times</StyledText>
-        <WhiteSpace />
-        <Button
-          type={"primary"}
-          onPress={() =>
-            navigation.navigate(LOCATION_DETAILS, { location: "Location X" })
-          }
-        >
-          <StyledText>Go to Location X</StyledText>
-        </Button>
-
         <Modal
           transparent={false}
           visible={isVisible}
@@ -123,23 +118,45 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                         Cancel
                       </StyledText>
                     </TouchableOpacity>
-                    <StyledText style={styles.modalSortBy}>Sort By</StyledText>
+                    <StyledText>Sort By</StyledText>
                     <TouchableOpacity
                       onPress={() => {
                         setIsVisible(false);
                       }}
                     >
-                      <StyledText style={styles.modalButtons}>OK</StyledText>
+                      <StyledText style={styles.modalButtons}>Done</StyledText>
                     </TouchableOpacity>
                   </View>
                   <View>
-                    <Button style={{ borderColor: "#FFFFFF" }}>
-                      <StyledText style={{ textAlign: "left" }}>
-                        Time
-                      </StyledText>
+                    <Button
+                      style={{
+                        borderColor: "#FFFFFF",
+                        alignItems: "flex-start",
+                      }}
+                      onPress={() => {
+                        setIsVisible(false);
+                        setSortBy("Time");
+                      }}
+                    >
+                      <StyledText>Time</StyledText>
+                      {sortBy === "Time" && (
+                        <Feather name="check" size={24} color="black" />
+                      )}
                     </Button>
-                    <Button style={{ borderColor: "#FFFFFF" }}>
+                    <Button
+                      style={{
+                        borderColor: "#FFFFFF",
+                        alignItems: "flex-start",
+                      }}
+                      onPress={() => {
+                        setIsVisible(false);
+                        setSortBy("Distance");
+                      }}
+                    >
                       <StyledText>Distance</StyledText>
+                      {sortBy === "Distance" && (
+                        <Feather name="check" size={24} color="black" />
+                      )}
                     </Button>
                   </View>
                 </View>
@@ -147,6 +164,47 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
+        <View style={{ marginTop: 20 }}>
+          <WingBlank size="lg">
+            <Steps
+              styles={StylesOverride.stepsStyles}
+              size="small"
+              direction="horizontal"
+            >
+              {steps1.map((item: any, index: any) => (
+                <Step
+                  key={index}
+                  title={
+                    <View>
+                      <StyledText
+                        style={{ paddingTop: 10, textAlign: "center" }}
+                      >
+                        {item.title}
+                      </StyledText>
+                    </View>
+                  }
+                  description={
+                    <View>
+                      <StyledText
+                        style={{ color: "#999999", textAlign: "center" }}
+                      >
+                        {item.description}
+                      </StyledText>
+                    </View>
+                  }
+                  status={"wait"}
+                />
+              ))}
+            </Steps>
+          </WingBlank>
+        </View>
+        <View
+          style={{
+            paddingTop: 50,
+            borderBottomColor: "#EEEEEE",
+            borderBottomWidth: 1,
+          }}
+        />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -158,7 +216,7 @@ const styles = StyleSheet.create({
   },
   container: {},
   searchContainer: {
-    paddingTop: 50,
+    paddingTop: 20,
     backgroundColor: "#FFFFFF",
   },
   searchBar: {
@@ -200,8 +258,8 @@ const styles = StyleSheet.create({
   modalActionRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingBottom: 20,
   },
-  modalSortBy: {},
 });
 
 const StylesOverride = {
@@ -211,6 +269,24 @@ const StylesOverride = {
     },
     activeText: {
       color: "#F5F5F5",
+    },
+  },
+  stepsStyles: {
+    head_default_s: {
+      width: 10,
+      height: 10,
+      backgroundColor: "#EEEEEE",
+      borderWidth: 0,
+    },
+    tail_blue: {
+      backgroundColor: "#EEEEEE",
+    },
+    tail_gray: {
+      backgroundColor: "#EEEEEE",
+    },
+    tail_default_s_h: {
+      marginTop: 4,
+      height: 1.5,
     },
   },
 };
