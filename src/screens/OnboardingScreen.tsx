@@ -142,7 +142,7 @@ export const OnboardingScreen = ({
     <View style={[theme.styles.screenContainer, styles.container]}>
       {onExit && (
         <View style={styles.exitContainer}>
-          <TouchableOpacity onPress={() => onExit()}>
+          <TouchableOpacity onPress={() => onExit()} testID="exit-button">
             <Feather
               name="x"
               size={30}
