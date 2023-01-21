@@ -164,39 +164,43 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             </View>
           </TouchableWithoutFeedback>
         </Modal>
-        <View style={{ marginTop: 20 }}>
-          <WingBlank size="lg">
-            <Steps
-              styles={StylesOverride.stepsStyles}
-              size="small"
-              direction="horizontal"
-            >
-              {steps1.map((item: any, index: any) => (
-                <Step
-                  key={index}
-                  title={
-                    <View>
-                      <StyledText
-                        style={{ paddingTop: 10, textAlign: "center" }}
-                      >
-                        {item.title}
-                      </StyledText>
-                    </View>
-                  }
-                  description={
-                    <View>
-                      <StyledText
-                        style={{ color: "#999999", textAlign: "center" }}
-                      >
-                        {item.description}
-                      </StyledText>
-                    </View>
-                  }
-                  status={"wait"}
-                />
-              ))}
-            </Steps>
-          </WingBlank>
+        <View
+          style={{
+            marginTop: 20,
+            alignItems: "center",
+          }}
+        >
+          <Steps
+            styles={StylesOverride.stepsStyles}
+            size="small"
+            direction="horizontal"
+          >
+            {steps1.map((item: any, index: any) => (
+              <Step
+                key={index}
+                title={
+                  <View
+                    style={{
+                      backgroundColor: index === 0 ? "green" : "red",
+                      // marginLeft: -20,
+                    }}
+                  >
+                    <StyledText style={{ paddingTop: 10 }}>
+                      {item.title}
+                    </StyledText>
+                  </View>
+                }
+                description={
+                  <View>
+                    <StyledText style={{ color: "#999999" }}>
+                      {item.description}
+                    </StyledText>
+                  </View>
+                }
+                status={"wait"}
+              />
+            ))}
+          </Steps>
         </View>
         <View
           style={{
@@ -272,6 +276,10 @@ const StylesOverride = {
     },
   },
   stepsStyles: {
+    content_s_h: {},
+    tail_last: {
+      width: 0,
+    },
     head_default_s: {
       width: 10,
       height: 10,
@@ -287,6 +295,7 @@ const StylesOverride = {
     tail_default_s_h: {
       marginTop: 4,
       height: 1.5,
+      width: 55,
     },
   },
 };
