@@ -262,9 +262,9 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
           }
         >
           <List>
-            {poiData.map((poi: any, index: any) => (
+            {poiData.map((poi: any) => (
               <List.Item
-                key={index}
+                key={poi.location}
                 onPress={() => {
                   navigation.navigate(LOCATION_DETAILS, {
                     location: poi.location,

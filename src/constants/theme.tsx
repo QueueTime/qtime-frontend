@@ -16,6 +16,7 @@ export const themes = {
       screenContainer: {
         flex: 1,
         padding: 20,
+        paddingBottom: 0,
         backgroundColor: "#ffffff",
       },
       text: {
