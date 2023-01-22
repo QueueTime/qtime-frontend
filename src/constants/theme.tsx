@@ -11,12 +11,11 @@ export const themes = {
   // Light theme
   light: {
     name: THEME_NAMES.light, // Name of theme
-    waitIconColor: "black",
+    iconColor: "black",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
         padding: 20,
-        paddingBottom: 0,
         backgroundColor: "#ffffff",
       },
       text: {
@@ -36,13 +35,22 @@ export const themes = {
       inactiveColor: {
         color: "#ababab",
       },
+      waitTimeSearchBar: {
+        backgroundColor: "#F5F5F5",
+      },
+      waitTimeModalHeader: {
+        backgroundColor: "#FFFFFF",
+      },
+      waitTimeModalSortButtons: {
+        borderColor: "#FFFFFF",
+      },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
       /*
         Add any values from the ant default theme you want to override here
         https://github.com/ant-design/ant-design-mobile-rn/blob/master/components/style/themes/default.tsx
       */
-      search_bar_fill: "#FFFFFF", // Search Bar fill color
+      search_bar_fill: "#FFFFFF", // Outside search bar color
       radius_sm: 24, // Tag Radius
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size
@@ -52,7 +60,7 @@ export const themes = {
   // Dark theme
   dark: {
     name: THEME_NAMES.dark,
-    waitIconColor: "white",
+    iconColor: "white",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
@@ -77,6 +85,15 @@ export const themes = {
       inactiveColor: {
         color: "#ababab",
       },
+      waitTimeSearchBar: {
+        backgroundColor: "#222222",
+      },
+      waitTimeModalHeader: {
+        backgroundColor: "#2F2F2F",
+      },
+      waitTimeModalSortButtons: {
+        borderColor: "#2F2F2F",
+      },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
       /*
@@ -88,7 +105,7 @@ export const themes = {
       checkbox_fill: "#bf40bf", // Radio/checkbox button color
       fill_base: "#222222", // Background color
       border_color_base: "#FFFFFF", // Line color
-      search_bar_fill: "#FFFFFF", // Search Bar fill color
+      search_bar_fill: "#222222", // Outside search bar color
       radius_sm: 24, // Tag Radius
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size

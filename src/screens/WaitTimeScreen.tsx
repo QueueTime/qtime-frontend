@@ -129,7 +129,9 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
       <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
         <View style={styles.modalBackground}>
           <TouchableWithoutFeedback>
-            <View style={styles.modalHeader}>
+            <View
+              style={[styles.modalHeader, theme.styles.waitTimeModalHeader]}
+            >
               <View style={styles.modalActionRow}>
                 <TouchableOpacity
                   onPress={() => {
@@ -149,7 +151,10 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
               </View>
               <View>
                 <Button
-                  style={styles.sortButtons}
+                  style={[
+                    styles.sortButtons,
+                    theme.styles.waitTimeModalSortButtons,
+                  ]}
                   onPress={() => {
                     setIsVisible(false);
                     setSortBy(SortByEnum.TIME);
@@ -158,12 +163,15 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   <StyledText>Time</StyledText>
                   <View style={styles.checkIconTime}>
                     {sortBy === "Time" && (
-                      <Feather name="check" size={24} color="black" />
+                      <Feather name="check" size={24} color={theme.iconColor} />
                     )}
                   </View>
                 </Button>
                 <Button
-                  style={styles.sortButtons}
+                  style={[
+                    styles.sortButtons,
+                    theme.styles.waitTimeModalSortButtons,
+                  ]}
                   onPress={() => {
                     setIsVisible(false);
                     setSortBy(SortByEnum.DISTANCE);
@@ -172,7 +180,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   <StyledText>Distance</StyledText>
                   <View style={styles.checkIconDistance}>
                     {sortBy === "Distance" && (
-                      <Feather name="check" size={24} color="black" />
+                      <Feather name="check" size={24} color={theme.iconColor} />
                     )}
                   </View>
                 </Button>
@@ -190,12 +198,14 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         searchBar?.inputRef?.blur();
       }}
     >
-      <View style={theme.styles.screenContainer}>
+      <View
+        style={[theme.styles.screenContainer, styles.removeBottonScreenPadding]}
+      >
         <View style={styles.searchContainer}>
           <SearchBar
             ref={(el) => ((searchBar as any) = el)}
             placeholderTextColor={theme.styles.placeholderText.color}
-            style={styles.searchBar}
+            style={[styles.searchBar, theme.styles.waitTimeSearchBar]}
             value={searchValue}
             placeholder="Search places"
             onChange={(value) => {
@@ -280,7 +290,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 arrow="horizontal"
                 thumb={
                   <View style={styles.poiIcon}>
-                    {renderIcon(poi.type, theme.waitIconColor)}
+                    {renderIcon(poi.type, theme.iconColor)}
                   </View>
                 }
               >
@@ -301,16 +311,14 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  removeBottonScreenPadding: {
+    paddingBottom: 0,
+  },
   searchContainer: {
     paddingTop: 35,
-    backgroundColor: "#FFFFFF",
   },
   searchBar: {
     borderRadius: 6,
-    backgroundColor: "#F5F5F5",
-  },
-  search: {
-    backgroundColor: "#F5F5F5",
   },
   sortContainer: {
     paddingTop: 20,
@@ -321,8 +329,8 @@ const styles = StyleSheet.create({
   sortByTag: {
     borderRadius: 24,
     height: 34,
-    backgroundColor: "#FFFFFF",
     marginRight: 6,
+    borderWidth: 0.5,
   },
   sortByText: {
     fontSize: 15,
@@ -343,7 +351,6 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     width: "100%",
-    backgroundColor: "#ffffff",
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     paddingBottom: 10,
@@ -356,7 +363,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   sortButtons: {
-    borderColor: "#FFFFFF",
     alignItems: "flex-start",
   },
   checkIconTime: {
