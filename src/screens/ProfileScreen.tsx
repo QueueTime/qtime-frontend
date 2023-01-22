@@ -1,7 +1,7 @@
-import { useContext, useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 import { StyleSheet, ScrollView, Image } from "react-native";
 
-import { View, List } from "@ant-design/react-native";
+import { View, List, Modal } from "@ant-design/react-native";
 
 import { StyledText } from "@components/StyledText";
 import * as ROUTES from "@constants/routes";
@@ -10,10 +10,13 @@ import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
 import { deleteUser } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { OnboardingScreen } from "@screens/OnboardingScreen";
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user, userProfile, signOut } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
+
+  const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Navigation details for the list of buttons at the bottom of the screen
   const navigationOptions = [
@@ -31,19 +34,41 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     },
     {
       name: "Help",
-      onPress: () => {},
+      onPress: () => setShowHelpModal(true),
     },
     {
       name: "Delete Account",
-      onPress: async () => {
-        try {
-          await signOut();
-          await deleteUser(userProfile!.email);
-        } catch (error) {
-          displayError(
-            `Failed to delete user account. Try again later. ${error}`
-          );
-        }
+      onPress: () => {
+        Modal.alert(
+          <StyledText style={styles.deleteModalTitle}>
+            Are you sure you want to delete your account?
+          </StyledText>,
+          <StyledText style={styles.deleteModalBody}>
+            All data associated with your account will be lost, including any
+            reward points.
+          </StyledText>,
+          [
+            {
+              text: "Cancel",
+              style: { color: theme.styles.text.color },
+            },
+            {
+              text: "Yes, delete it",
+              onPress: async () => {
+                try {
+                  await signOut();
+                  await deleteUser(userProfile!.email);
+                } catch (error) {
+                  displayError(
+                    `Failed to delete user account. Try again later. ${error}`
+                  );
+                }
+              },
+              style: { color: "red" },
+            },
+          ],
+          () => true
+        );
       },
       style: {
         color: "red",
@@ -118,6 +143,19 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           </List.Item>
         ))}
       </List>
+      <Modal
+        transparent={false}
+        visible={showHelpModal}
+        // closable={true}
+        animationType="fade"
+        onRequestClose={() => {
+          setShowHelpModal(false);
+          return false; // Allows hardware back button events
+        }}
+        style={styles.helpModal}
+      >
+        <OnboardingScreen onExit={() => setShowHelpModal(false)} />
+      </Modal>
     </ScrollView>
   );
 };
@@ -130,7 +168,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    paddingTop: 10,
+    paddingTop: 25,
     paddingHorizontal: 25,
     paddingBottom: 30,
   },
@@ -159,6 +197,17 @@ const styles = StyleSheet.create({
   },
   navigationText: {
     paddingVertical: 8,
+  },
+  deleteModalTitle: {
+    fontSize: 18,
+  },
+  deleteModalBody: {
+    textAlign: "center",
+  },
+  helpModal: {
+    height: "100%",
+    width: "100%",
+    paddingTop: 15,
   },
 });
 

@@ -21,7 +21,7 @@ type TabNavigatorParams = {
 
 // Prop types for each of the screen/tab in the navigator
 // ... ({ navigation, route }: RouteNameScreenProps)
-// OR navigator: RouteNameScreenProps['navigation']
+// OR navigation: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
 export type WaitTimeScreenProps = BottomTabScreenProps<
   TabNavigatorParams,
