@@ -25,44 +25,21 @@ import {
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
-import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
+import { WaitTimeScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { ThemeContext } from "@contexts/theme";
-
-const Step = Steps.Step;
-const Item = List.Item;
-const Brief = Item.Brief;
+import { renderLastUpdated } from "@utils/waitTime";
+import { SortByEnum } from "@utils/poi";
 
 function renderIcon(type: any, theme: string): JSX.Element {
-  let color = "black";
-  if (theme === "dark") {
-    color = "white";
-  }
-  if (type === "food") {
-    return <MaterialIcons name={"restaurant"} size={24} color={color} />;
-  } else if (type === "shopping") {
-    return <AntDesign name="shoppingcart" size={24} color={color} />;
-  } else if (type === "transport") {
-    return <Ionicons name="bus-outline" size={24} color={color} />;
-  } else {
-    return <MaterialIcons name={"restaurant"} size={24} color={color} />; // just temporarily for the sake of return type
-  }
-}
-
-function renderLastUpdated(lastUpdated: number): string {
-  let string = "Last updated ";
-  if (lastUpdated > 60) {
-    let hours = Math.floor(lastUpdated / 60);
-    if (hours > 1) {
-      return string + hours + " hours ago";
-    } else {
-      return string + hours + " hour ago";
-    }
-  } else if (lastUpdated > 1) {
-    return string + lastUpdated + " mins ago";
-  } else if (lastUpdated === 1) {
-    return string + lastUpdated + " min ago";
-  } else {
-    return string + "now";
+  switch (type) {
+    case "food":
+      return <MaterialIcons name={"restaurant"} size={24} color={theme} />;
+    case "shopping":
+      return <AntDesign name="shoppingcart" size={24} color={theme} />;
+    case "transport":
+      return <Ionicons name="bus-outline" size={24} color={theme} />;
+    default: // just temporarily for the sake of return type
+      return <MaterialIcons name={"restaurant"} size={24} color={theme} />;
   }
 }
 
@@ -70,8 +47,11 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const [searchValue, setSearchValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [sortBy, setSortBy] = useState("Distance");
+  const [sortBy, setSortBy] = useState(SortByEnum.DISTANCE);
   const [refreshing, setRefreshing] = useState(false);
+
+  let searchBar: SearchBar | null;
+
   const poiTypes = ["Food", "Transport", "Gym", "Library"];
   const steps1 = [
     { title: "5 mins", description: "Lowest" },
@@ -172,7 +152,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   style={styles.sortButtons}
                   onPress={() => {
                     setIsVisible(false);
-                    setSortBy("Time");
+                    setSortBy(SortByEnum.TIME);
                   }}
                 >
                   <StyledText>Time</StyledText>
@@ -186,7 +166,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   style={styles.sortButtons}
                   onPress={() => {
                     setIsVisible(false);
-                    setSortBy("Distance");
+                    setSortBy(SortByEnum.DISTANCE);
                   }}
                 >
                   <StyledText>Distance</StyledText>
@@ -204,7 +184,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
     </Modal>
   );
 
-  let searchBar: SearchBar | null;
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -241,10 +220,10 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             >
               <StyledText style={styles.sortByText}>Sort By</StyledText>
             </Button>
-            {poiTypes.map((type: string, index: number) => {
+            {poiTypes.map((type: string) => {
               return (
                 <Tag
-                  key={index}
+                  key={type}
                   style={styles.tags}
                   styles={StylesOverride.tagStyles}
                 >
@@ -261,14 +240,14 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             size="small"
             direction="horizontal"
           >
-            {steps1.map((_item: any, index: any) => (
-              <Step key={index} status={"wait"} />
+            {steps1.map((item: any) => (
+              <Steps.Step key={item.description} status={"wait"} />
             ))}
           </Steps>
         </View>
         <View style={styles.stepTextContainer}>
-          {steps1.map((item: any, index: any) => (
-            <View style={styles.stepTextView} key={index}>
+          {steps1.map((item: any) => (
+            <View style={styles.stepTextView} key={item.description}>
               <StyledText style={styles.stepTitleText}>{item.title}</StyledText>
               <StyledText style={styles.stepDescriptionText}>
                 {item.description}
@@ -284,7 +263,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         >
           <List>
             {poiData.map((poi: any, index: any) => (
-              <Item
+              <List.Item
                 key={index}
                 onPress={() => {
                   navigation.navigate(LOCATION_DETAILS, {
@@ -293,15 +272,15 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 }}
                 extra={
                   <View>
-                    <Brief style={styles.poiWaitTimeText}>
+                    <List.Item.Brief style={styles.poiWaitTimeText}>
                       {poi.waitTime + " mins"}
-                    </Brief>
+                    </List.Item.Brief>
                   </View>
                 }
                 arrow="horizontal"
                 thumb={
                   <View style={styles.poiIcon}>
-                    {renderIcon(poi.type, theme.name)}
+                    {renderIcon(poi.type, theme.waitIconColor)}
                   </View>
                 }
               >
@@ -312,7 +291,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 <StyledText style={styles.poiLastUpdatedText}>
                   {renderLastUpdated(poi.lastUpdated)}
                 </StyledText>
-              </Item>
+              </List.Item>
             ))}
           </List>
         </ScrollView>
@@ -323,7 +302,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
 
 const styles = StyleSheet.create({
   searchContainer: {
-    paddingTop: 20,
+    paddingTop: 35,
     backgroundColor: "#FFFFFF",
   },
   searchBar: {
@@ -341,7 +320,6 @@ const styles = StyleSheet.create({
   },
   sortByTag: {
     borderRadius: 24,
-    width: "20%",
     height: 34,
     backgroundColor: "#FFFFFF",
     marginRight: 6,
@@ -388,7 +366,7 @@ const styles = StyleSheet.create({
     paddingLeft: "76%",
   },
   stepsContainer: {
-    marginTop: 20,
+    marginTop: 35,
     alignItems: "center",
     height: 20,
   },
@@ -467,5 +445,5 @@ const StylesOverride = {
 };
 
 interface IWaitTimeScreenProps {
-  navigation: LocationDetailsScreenProps["navigation"];
+  navigation: WaitTimeScreenProps["navigation"];
 }

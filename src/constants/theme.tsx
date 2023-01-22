@@ -11,6 +11,7 @@ export const themes = {
   // Light theme
   light: {
     name: THEME_NAMES.light, // Name of theme
+    waitIconColor: "black",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
@@ -50,6 +51,7 @@ export const themes = {
   // Dark theme
   dark: {
     name: THEME_NAMES.dark,
+    waitIconColor: "white",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
@@ -84,12 +86,12 @@ export const themes = {
       ghost_button_color: "#a00ceb", // Ghost button outline
       checkbox_fill: "#bf40bf", // Radio/checkbox button color
       fill_base: "#222222", // Background color
-      border_color_base: "#fffff", // Line color
+      border_color_base: "#FFFFFF", // Line color
       search_bar_fill: "#FFFFFF", // Search Bar fill color
       radius_sm: 24, // Tag Radius
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size
-      color_text_caption: "#000000", // Tag Text Color
+      color_text_caption: "#FFFFFF", // Tag Text Color
     },
   },
 };
