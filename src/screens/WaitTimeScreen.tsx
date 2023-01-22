@@ -176,7 +176,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   }}
                 >
                   <StyledText>Time</StyledText>
-                  <View>
+                  <View style={styles.checkIcon}>
                     {sortBy === "Time" && (
                       <Feather name="check" size={24} color="black" />
                     )}
@@ -190,9 +190,11 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   }}
                 >
                   <StyledText>Distance</StyledText>
-                  {sortBy === "Distance" && (
-                    <Feather name="check" size={24} color="black" />
-                  )}
+                  <View style={styles.checkIcon}>
+                    {sortBy === "Distance" && (
+                      <Feather name="check" size={24} color="black" />
+                    )}
+                  </View>
                 </Button>
               </View>
             </View>
@@ -357,7 +359,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "flex-end",
-    alignItems: "center",
   },
   modalButtons: {
     color: "#1677FF",
@@ -379,6 +380,9 @@ const styles = StyleSheet.create({
   sortButtons: {
     borderColor: "#FFFFFF",
     alignItems: "flex-start",
+  },
+  checkIcon: {
+    paddingLeft: "70%",
   },
   stepsContainer: {
     marginTop: 20,
