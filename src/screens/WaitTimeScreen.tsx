@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
   View,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 
 import {
@@ -12,10 +13,15 @@ import {
   SearchBar,
   Tag,
   Modal,
-  WingBlank,
   Steps,
+  List,
 } from "@ant-design/react-native";
-import { Feather } from "@expo/vector-icons";
+import {
+  Feather,
+  MaterialIcons,
+  AntDesign,
+  Ionicons,
+} from "@expo/vector-icons";
 
 import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
@@ -23,18 +29,179 @@ import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { ThemeContext } from "@contexts/theme";
 
 const Step = Steps.Step;
+const Item = List.Item;
+const Brief = Item.Brief;
+
+function renderIcon(type: any, theme: string): JSX.Element {
+  let color = "black";
+  if (theme === "dark") {
+    color = "white";
+  }
+  if (type === "food") {
+    return <MaterialIcons name={"restaurant"} size={24} color={color} />;
+  } else if (type === "shopping") {
+    return <AntDesign name="shoppingcart" size={24} color={color} />;
+  } else if (type === "transport") {
+    return <Ionicons name="bus-outline" size={24} color={color} />;
+  } else {
+    return <MaterialIcons name={"restaurant"} size={24} color={color} />; // just temporarily for the sake of return type
+  }
+}
+
+function renderLastUpdated(lastUpdated: number): string {
+  let string = "Last updated ";
+  if (lastUpdated > 60) {
+    let hours = Math.floor(lastUpdated / 60);
+    if (hours > 1) {
+      return string + hours + " hours ago";
+    } else {
+      return string + hours + " hour ago";
+    }
+  } else if (lastUpdated > 1) {
+    return string + lastUpdated + " mins ago";
+  } else if (lastUpdated === 1) {
+    return string + lastUpdated + " min ago";
+  } else {
+    return string + "now";
+  }
+}
 
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
+  const { theme } = useContext(ThemeContext);
   const [searchValue, setSearchValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [sortBy, setSortBy] = useState("Distance");
+  const [refreshing, setRefreshing] = useState(false);
+  const poiTypes = ["Food", "Transport", "Gym", "Library"];
   const steps1 = [
     { title: "5 mins", description: "Lowest" },
     { title: "7 mins", description: "Average" },
     { title: "17 mins", description: "Highest" },
   ];
 
-  const { theme } = useContext(ThemeContext);
+  const poiData = [
+    {
+      waitTime: 10,
+      location: "Centro",
+      distance: 0.5,
+      lastUpdated: 5,
+      type: "food",
+    },
+    {
+      waitTime: 7,
+      location: "Location 2",
+      distance: 0.6,
+      lastUpdated: 8,
+      type: "shopping",
+    },
+    {
+      waitTime: 15,
+      location: "Location 3",
+      distance: 1.2,
+      lastUpdated: 0,
+      type: "food",
+    },
+    {
+      waitTime: 4,
+      location: "Location 4",
+      distance: 1.5,
+      lastUpdated: 68,
+      type: "transport",
+    },
+    {
+      waitTime: 6,
+      location: "Location 5",
+      distance: 0.2,
+      lastUpdated: 1,
+      type: "shopping",
+    },
+    {
+      waitTime: 17,
+      location: "Location 6",
+      distance: 0.1,
+      lastUpdated: 4,
+      type: "food",
+    },
+    {
+      waitTime: 4,
+      location: "Location 7",
+      distance: 2.0,
+      lastUpdated: 0,
+      type: "food",
+    },
+  ];
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
+  const modalComponent = (
+    <Modal
+      transparent={false}
+      visible={isVisible}
+      animationType="slide-up"
+      popup
+      style={styles.modal}
+    >
+      <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+        <View style={styles.modalBackground}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalHeader}>
+              <View style={styles.modalActionRow}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsVisible(false);
+                  }}
+                >
+                  <StyledText style={styles.modalButtons}>Cancel</StyledText>
+                </TouchableOpacity>
+                <StyledText>Sort By</StyledText>
+                <TouchableOpacity
+                  onPress={() => {
+                    setIsVisible(false);
+                  }}
+                >
+                  <StyledText style={styles.modalButtons}>Done</StyledText>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <Button
+                  style={styles.sortButtons}
+                  onPress={() => {
+                    setIsVisible(false);
+                    setSortBy("Time");
+                  }}
+                >
+                  <StyledText>Time</StyledText>
+                  <View>
+                    {sortBy === "Time" && (
+                      <Feather name="check" size={24} color="black" />
+                    )}
+                  </View>
+                </Button>
+                <Button
+                  style={styles.sortButtons}
+                  onPress={() => {
+                    setIsVisible(false);
+                    setSortBy("Distance");
+                  }}
+                >
+                  <StyledText>Distance</StyledText>
+                  {sortBy === "Distance" && (
+                    <Feather name="check" size={24} color="black" />
+                  )}
+                </Button>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+  );
+
   let searchBar: SearchBar | null;
   return (
     <TouchableWithoutFeedback
@@ -42,7 +209,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         searchBar?.inputRef?.blur();
       }}
     >
-      <View style={[theme.styles.screenContainer, styles.container]}>
+      <View style={theme.styles.screenContainer}>
         <View style={styles.searchContainer}>
           <SearchBar
             ref={(el) => ((searchBar as any) = el)}
@@ -72,153 +239,87 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             >
               <StyledText style={styles.sortByText}>Sort By</StyledText>
             </Button>
-            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
-              Food
-            </Tag>
-            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
-              Transport
-            </Tag>
-            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
-              Library
-            </Tag>
-            <Tag style={styles.tags} styles={StylesOverride.tagStyles}>
-              Gym
-            </Tag>
+            {poiTypes.map((type: string, index: number) => {
+              return (
+                <Tag
+                  key={index}
+                  style={styles.tags}
+                  styles={StylesOverride.tagStyles}
+                >
+                  {type}
+                </Tag>
+              );
+            })}
           </ScrollView>
         </View>
-        <Modal
-          transparent={false}
-          visible={isVisible}
-          animationType="slide-up"
-          popup
-          style={{
-            height: "100%",
-            width: "100%",
-            backgroundColor: "rgba(0,0,0,0)",
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                justifyContent: "flex-end",
-                alignItems: "center",
-              }}
-            >
-              <TouchableWithoutFeedback>
-                <View style={styles.modalHeader}>
-                  <View style={styles.modalActionRow}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setIsVisible(false);
-                      }}
-                    >
-                      <StyledText style={styles.modalButtons}>
-                        Cancel
-                      </StyledText>
-                    </TouchableOpacity>
-                    <StyledText>Sort By</StyledText>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setIsVisible(false);
-                      }}
-                    >
-                      <StyledText style={styles.modalButtons}>Done</StyledText>
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    <Button
-                      style={{
-                        borderColor: "#FFFFFF",
-                        alignItems: "flex-start",
-                      }}
-                      onPress={() => {
-                        setIsVisible(false);
-                        setSortBy("Time");
-                      }}
-                    >
-                      <StyledText>Time</StyledText>
-                      {sortBy === "Time" && (
-                        <Feather name="check" size={24} color="black" />
-                      )}
-                    </Button>
-                    <Button
-                      style={{
-                        borderColor: "#FFFFFF",
-                        alignItems: "flex-start",
-                      }}
-                      onPress={() => {
-                        setIsVisible(false);
-                        setSortBy("Distance");
-                      }}
-                    >
-                      <StyledText>Distance</StyledText>
-                      {sortBy === "Distance" && (
-                        <Feather name="check" size={24} color="black" />
-                      )}
-                    </Button>
-                  </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-        <View
-          style={{
-            marginTop: 20,
-            alignItems: "center",
-          }}
-        >
+        {modalComponent}
+        <View style={styles.stepsContainer}>
           <Steps
             styles={StylesOverride.stepsStyles}
             size="small"
             direction="horizontal"
           >
-            {steps1.map((item: any, index: any) => (
-              <Step
-                key={index}
-                title={
-                  <View
-                    style={{
-                      backgroundColor: index === 0 ? "green" : "red",
-                      // marginLeft: -20,
-                    }}
-                  >
-                    <StyledText style={{ paddingTop: 10 }}>
-                      {item.title}
-                    </StyledText>
-                  </View>
-                }
-                description={
-                  <View>
-                    <StyledText style={{ color: "#999999" }}>
-                      {item.description}
-                    </StyledText>
-                  </View>
-                }
-                status={"wait"}
-              />
+            {steps1.map((_item: any, index: any) => (
+              <Step key={index} status={"wait"} />
             ))}
           </Steps>
         </View>
-        <View
-          style={{
-            paddingTop: 50,
-            borderBottomColor: "#EEEEEE",
-            borderBottomWidth: 1,
-          }}
-        />
+        <View style={styles.stepTextContainer}>
+          {steps1.map((item: any, index: any) => (
+            <View style={styles.stepTextView} key={index}>
+              <StyledText style={styles.stepTitleText}>{item.title}</StyledText>
+              <StyledText style={styles.stepDescriptionText}>
+                {item.description}
+              </StyledText>
+            </View>
+          ))}
+        </View>
+        <View style={styles.stepScrollDivider} />
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <List>
+            {poiData.map((poi: any, index: any) => (
+              <Item
+                key={index}
+                onPress={() => {
+                  navigation.navigate(LOCATION_DETAILS, {
+                    location: poi.location,
+                  });
+                }}
+                extra={
+                  <View>
+                    <Brief style={styles.poiWaitTimeText}>
+                      {poi.waitTime + " mins"}
+                    </Brief>
+                  </View>
+                }
+                arrow="horizontal"
+                thumb={
+                  <View style={styles.poiIcon}>
+                    {renderIcon(poi.type, theme.name)}
+                  </View>
+                }
+              >
+                <StyledText style={styles.poiDistanceText}>
+                  {poi.distance + " km"}
+                </StyledText>
+                <StyledText>{poi.location}</StyledText>
+                <StyledText style={styles.poiLastUpdatedText}>
+                  {renderLastUpdated(poi.lastUpdated)}
+                </StyledText>
+              </Item>
+            ))}
+          </List>
+        </ScrollView>
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
-  huge: {
-    fontSize: 20,
-  },
-  container: {},
   searchContainer: {
     paddingTop: 20,
     backgroundColor: "#FFFFFF",
@@ -238,7 +339,7 @@ const styles = StyleSheet.create({
   },
   sortByTag: {
     borderRadius: 24,
-    width: 85,
+    width: "20%",
     height: 34,
     backgroundColor: "#FFFFFF",
     marginRight: 6,
@@ -246,6 +347,17 @@ const styles = StyleSheet.create({
   sortByText: {
     fontSize: 15,
     textAlign: "center",
+  },
+  modal: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "rgba(0,0,0,0)",
+  },
+  modalBackground: {
+    height: "100%",
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   modalButtons: {
     color: "#1677FF",
@@ -264,6 +376,54 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 20,
   },
+  sortButtons: {
+    borderColor: "#FFFFFF",
+    alignItems: "flex-start",
+  },
+  stepsContainer: {
+    marginTop: 20,
+    alignItems: "center",
+    height: 20,
+  },
+  stepTextContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  stepTextView: {
+    flex: 1,
+  },
+  stepTitleText: {
+    textAlign: "center",
+  },
+  stepDescriptionText: {
+    textAlign: "center",
+    color: "#999999",
+  },
+  stepScrollDivider: {
+    paddingTop: 30,
+    borderBottomColor: "#EEEEEE",
+    borderBottomWidth: 0.5,
+  },
+  poiWaitTimeText: {
+    textAlign: "right",
+    color: "#999999",
+  },
+  poiIcon: {
+    paddingRight: 15,
+    marginLeft: -10,
+  },
+  poiDistanceText: {
+    fontSize: 13,
+    color: "#999999",
+    paddingTop: 10,
+    paddingBottom: 5,
+  },
+  poiLastUpdatedText: {
+    fontSize: 13,
+    color: "#999999",
+    paddingTop: 5,
+    paddingBottom: 10,
+  },
 });
 
 const StylesOverride = {
@@ -276,7 +436,6 @@ const StylesOverride = {
     },
   },
   stepsStyles: {
-    content_s_h: {},
     tail_last: {
       width: 0,
     },
