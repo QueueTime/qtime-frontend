@@ -268,7 +268,12 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         <View style={styles.stepScrollDivider} />
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              progressBackgroundColor={theme.iconColor}
+              tintColor={theme.iconColor}
+            />
           }
         >
           <List>
