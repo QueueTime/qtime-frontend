@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     paddingBottom: 10,
     paddingHorizontal: 20,
-    paddingTop: 5,
+    paddingTop: 10,
   },
   modalActionRow: {
     flexDirection: "row",
