@@ -6,5 +6,6 @@ export const displayError = (msg: string) => {
   Toast.info({
     content: msg,
     duration: Toast.SHORT,
+    mask: false, // Don't block access to the app while displaying error
   });
 };

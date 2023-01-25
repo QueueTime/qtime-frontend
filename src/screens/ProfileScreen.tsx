@@ -1,7 +1,9 @@
 import { useContext, useMemo, useState } from "react";
-import { StyleSheet, ScrollView, Image } from "react-native";
+import { StyleSheet, ScrollView, Image, TouchableOpacity } from "react-native";
+import * as Clipboard from "expo-clipboard";
 
-import { View, List, Modal } from "@ant-design/react-native";
+import { View, List, Modal, Toast } from "@ant-design/react-native";
+import { Feather } from "@expo/vector-icons";
 
 import { StyledText } from "@components/StyledText";
 import * as ROUTES from "@constants/routes";
@@ -11,6 +13,15 @@ import { ThemeContext } from "@contexts/theme";
 import { deleteUser } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { OnboardingScreen } from "@screens/OnboardingScreen";
+
+const copyToClipboard = async (content: string) => {
+  await Clipboard.setStringAsync(content);
+  Toast.info({
+    content: "Copied!",
+    duration: 1,
+    mask: false,
+  });
+};
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user, userProfile, signOut } = useContext(AuthContext);
@@ -70,9 +81,6 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           () => true
         );
       },
-      style: {
-        color: "red",
-      },
     },
   ];
 
@@ -81,7 +89,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
     useMemo(
       () => (
         <View style={styles.infoContainer}>
-          <StyledText fontWeight="bold">{text}</StyledText>
+          <StyledText>{text}</StyledText>
           <StyledText style={theme.styles.subText}>{subtext}</StyledText>
         </View>
       ),
@@ -107,6 +115,27 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           <StyledText style={styles.points}>1271 points</StyledText>
         </View>
       </View>
+      <View style={styles.referralBox}>
+        <StyledText>Your Unique Referral Code</StyledText>
+        <TouchableOpacity
+          onPress={() => copyToClipboard("ABX89K")}
+          style={styles.halfWidth}
+        >
+          <View style={[styles.referralRow]}>
+            <StyledText
+              style={[theme.styles.primaryColor, styles.referralCode]}
+            >
+              ABX89K
+            </StyledText>
+            <Feather
+              name="copy"
+              size={18}
+              color={theme.styles.primaryColor.color}
+              style={styles.copyIcon}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
       <List>
         <List.Item>
           <InfoSection
@@ -127,17 +156,14 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
           BodyBottomLine: { borderBottomWidth: 0 },
         }}
       >
-        {navigationOptions.map(({ name, onPress, style }) => (
+        {navigationOptions.map(({ name, onPress }) => (
           <List.Item
             key={name}
             style={styles.navigationOption}
             arrow="horizontal"
             onPress={onPress}
           >
-            <StyledText
-              style={[styles.navigationText, style]}
-              fontWeight="bold"
-            >
+            <StyledText style={styles.navigationText} fontWeight="bold">
               {name}
             </StyledText>
           </List.Item>
@@ -165,12 +191,27 @@ const styles = StyleSheet.create({
     padding: 0, // Override the padding on screen container to work with horizontal lines
   },
   header: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     paddingTop: 25,
     paddingHorizontal: 25,
-    paddingBottom: 30,
+    paddingBottom: 18,
+  },
+  referralBox: {
+    paddingHorizontal: 25,
+    paddingBottom: 16,
+  },
+  referralRow: {
+    marginTop: 2,
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "flex-start",
+  },
+  referralCode: {
+    fontSize: 20,
+  },
+  copyIcon: {
+    marginLeft: 6,
   },
   profileImg: {
     resizeMode: "cover",
@@ -208,6 +249,9 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     paddingTop: 15,
+  },
+  halfWidth: {
+    maxWidth: "50%",
   },
 });
 

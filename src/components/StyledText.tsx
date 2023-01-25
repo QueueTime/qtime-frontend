@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, TextProps } from "react-native";
 
 import { ThemeContext } from "@contexts/theme";
 
@@ -26,7 +26,7 @@ export const StyledText = ({
   );
 };
 
-interface IStyledTextProps {
+interface IStyledTextProps extends TextProps {
   children: React.ReactNode;
   style: any;
   fontWeight: "normal" | "bold";

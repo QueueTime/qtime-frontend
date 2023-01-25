@@ -12,6 +12,7 @@ export const themes = {
   light: {
     name: THEME_NAMES.light, // Name of theme
     iconColor: "black",
+    refreshIconBackgroundColorAndroid: "white",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
@@ -61,6 +62,7 @@ export const themes = {
   dark: {
     name: THEME_NAMES.dark,
     iconColor: "white",
+    refreshIconBackgroundColorAndroid: "white",
     styles: StyleSheet.create({
       screenContainer: {
         flex: 1,
