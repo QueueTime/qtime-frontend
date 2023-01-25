@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   TouchableOpacity,
   RefreshControl,
+  Platform,
 } from "react-native";
 
 import {
@@ -271,7 +272,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              progressBackgroundColor={theme.iconColor}
+              progressBackgroundColor={theme.refreshIconBackgroundColorAndroid} // Android only: Background color of refresh icon
               tintColor={theme.iconColor}
             />
           }
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   searchContainer: {
-    paddingTop: 35,
+    paddingTop: Platform.OS === "ios" ? 35 : 0,
   },
   searchBar: {
     borderRadius: 6,
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     paddingBottom: 10,
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 5,
   },
   modalActionRow: {
     flexDirection: "row",
