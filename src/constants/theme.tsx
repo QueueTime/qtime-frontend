@@ -17,33 +17,53 @@ export const themes = {
       screenContainer: {
         flex: 1,
         padding: 20,
-        backgroundColor: "#ffffff",
+        backgroundColor: WHITE_COLOR_LIGHT,
       },
       text: {
-        color: "#000000",
+        color: BLACK_COLOR_LIGHT,
         fontSize: 15,
       },
-      placeholderText: {
-        color: "#999999",
+      primaryText: {
+        color: PRIMARY_COLOR_LIGHT,
       },
       subText: {
-        color: "#808080",
+        color: WEAK_COLOR_LIGHT,
         fontSize: 14,
+      },
+      placeholderText: {
+        color: LIGHT_COLOR_LIGHT,
+      },
+      buttonColor: {
+        color: PRIMARY_COLOR_LIGHT,
+        transition: 0.25,
+      },
+      buttonHover: {
+        opacity: 0.5,
+        transition: 0.25,
       },
       primaryColor: {
         color: PRIMARY_COLOR_LIGHT,
       },
+      secondaryColor: {
+        color: WEAK_COLOR_LIGHT,
+      },
       inactiveColor: {
-        color: "#ababab",
+        opacity: 0.2,
       },
       waitTimeSearchBar: {
-        backgroundColor: "#F5F5F5",
+        backgroundColor: BACKGROUND_COLOR_LIGHT,
       },
       waitTimeModalHeader: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: BLACK_COLOR_LIGHT,
       },
       waitTimeModalSortButtons: {
-        borderColor: "#FFFFFF",
+        borderColor: BLACK_COLOR_LIGHT,
+      },
+      border: {
+        color: BORDER_COLOR_LIGHT,
+      },
+      iconColorPOI: {
+        color: BLACK_COLOR_LIGHT,
       },
       confirmWaitTimeButton: {
         borderColor: PRIMARY_COLOR_LIGHT,
