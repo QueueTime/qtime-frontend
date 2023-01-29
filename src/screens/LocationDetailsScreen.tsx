@@ -84,6 +84,7 @@ export const LocationDetailsScreen = () => {
     <View style={theme.styles.screenContainer}>
       <ScrollView
         style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -124,7 +125,7 @@ export const LocationDetailsScreen = () => {
           <StyledText style={styles.headingText}>Popular Times</StyledText>
         </View>
         <View style={styles.chartContainer}>
-          <VictoryChart width={420} height={175}>
+          <VictoryChart height={175}>
             <VictoryAxis
               // tickValues specifies both the number of ticks and where
               // they are placed on the axis
@@ -168,6 +169,7 @@ export const LocationDetailsScreen = () => {
               data={chartData}
               x="quarter"
               y="earnings"
+              barWidth={15}
             />
           </VictoryChart>
         </View>
@@ -288,6 +290,7 @@ const styles = StyleSheet.create({
   },
   img: {
     borderRadius: 6,
+    width: "100%",
   },
   addressContainer: {
     marginTop: 35,
