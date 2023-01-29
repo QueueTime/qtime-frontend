@@ -80,8 +80,58 @@ export const LocationDetailsScreen = () => {
     }, 1000);
   }, []);
 
+  const popularTimeChart = (
+    <VictoryChart height={175}>
+      <VictoryAxis
+        // tickValues specifies both the number of ticks and where
+        // they are placed on the axis
+        // TODO: Will need to change this to be dynamic based on the hours of operation
+        tickValues={[
+          7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+        ]}
+        tickFormat={[
+          "7am",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "3pm",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "11pm",
+        ]}
+        style={{
+          tickLabels: { fill: theme.styles.placeholderText.color },
+          axis: { stroke: "none" },
+        }}
+      />
+      <VictoryBar
+        style={{
+          data: {
+            fill: "#1677FF",
+            opacity: ({ datum }) =>
+              datum.quarter === poiData.currentHour ? 1 : 0.5,
+          },
+        }}
+        cornerRadius={{ top: 3, bottom: 3 }}
+        data={chartData}
+        x="quarter"
+        y="earnings"
+        barWidth={15}
+      />
+    </VictoryChart>
+  );
+
   return (
-    <View style={theme.styles.screenContainer}>
+    <View style={[theme.styles.screenContainer, styles.noTopPadding]}>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -95,9 +145,6 @@ export const LocationDetailsScreen = () => {
         }
       >
         <View style={styles.imgContainer}>
-          {/* TODO
-              Add height and width once we know a sample image from the backend
-              And change source */}
           <Image
             style={styles.img}
             source={require("@assets/images/centro.png")}
@@ -106,7 +153,7 @@ export const LocationDetailsScreen = () => {
         <View style={styles.addressContainer}>
           <StyledText style={styles.headingText}>{poiData.name}</StyledText>
           <StyledText style={styles.detailsText}>
-            {poiData.address + " • " + poiData.distance + " km away"}
+            {`${poiData.address} • ${poiData.distance} km away`}
           </StyledText>
         </View>
         <View style={styles.divider} />
@@ -124,70 +171,23 @@ export const LocationDetailsScreen = () => {
         <View>
           <StyledText style={styles.headingText}>Popular Times</StyledText>
         </View>
-        <View style={styles.chartContainer}>
-          <VictoryChart height={175}>
-            <VictoryAxis
-              // tickValues specifies both the number of ticks and where
-              // they are placed on the axis
-              // TODO: Will need to change this to be dynamic based on the hours of operation
-              tickValues={[
-                7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-              ]}
-              tickFormat={[
-                "7am",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "3pm",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "11pm",
-              ]}
-              style={{
-                tickLabels: { fill: theme.styles.placeholderText.color },
-                axis: { stroke: "none" },
-              }}
-            />
-            <VictoryBar
-              style={{
-                data: {
-                  fill: "#1677FF",
-                  opacity: ({ datum }) =>
-                    datum.quarter === poiData.currentHour ? 1 : 0.5,
-                },
-              }}
-              cornerRadius={{ top: 3, bottom: 3 }}
-              data={chartData}
-              x="quarter"
-              y="earnings"
-              barWidth={15}
-            />
-          </VictoryChart>
-        </View>
+        <View style={styles.chartContainer}>{popularTimeChart}</View>
       </ScrollView>
       <View style={styles.waitTimeContainer}>
         <View>
           <StyledText style={styles.waitTimeText}>Wait Time</StyledText>
           <StyledText style={styles.detailsText}>
-            {"Current time is " +
-              poiData.waitTime +
-              (poiData.waitTime === 1 ? " min" : " mins") +
-              " • " +
-              renderLastUpdated(poiData.lastUpdated)}
+            {`Current time is ${poiData.waitTime} ${
+              poiData.waitTime === 1 ? `min` : `mins`
+            } • ${renderLastUpdated(poiData.lastUpdated)}`}
           </StyledText>
         </View>
         <View style={styles.confirmWaitTimeButtonContainer}>
           <Button
-            style={[theme.styles.confirmWaitTimeButton, styles.waitTimeButtons]}
+            style={[
+              theme.styles.confirmWaitTimeButton,
+              styles.waitTimeButtonHeight,
+            ]}
             onPress={confirmNewWaitTime}
           >
             <StyledText
@@ -196,9 +196,9 @@ export const LocationDetailsScreen = () => {
                 styles.confirnWaitTimeButtonText,
               ]}
             >
-              {"Confirm " +
-                poiData.waitTime +
-                (poiData.waitTime === 1 ? " min" : " mins")}
+              {`Confirm ${poiData.waitTime} ${
+                poiData.waitTime === 1 ? `min` : `mins`
+              }`}
             </StyledText>
           </Button>
         </View>
@@ -208,7 +208,7 @@ export const LocationDetailsScreen = () => {
               size="large"
               style={[
                 theme.styles.newWaitTimePlusMinusButton,
-                styles.waitTimeButtons,
+                styles.waitTimeButtonHeight,
                 styles.newWaitTimePlusMinusButton,
                 styles.newWaitTimeMinusButton,
               ]}
@@ -228,14 +228,14 @@ export const LocationDetailsScreen = () => {
               ]}
             >
               <StyledText style={[theme.styles.text, styles.newWaitTimeText]}>
-                {newWaitTime + (newWaitTime === 1 ? " min" : " mins")}
+                {`${newWaitTime} ${newWaitTime === 1 ? `min` : `mins`}`}
               </StyledText>
             </View>
             <Button
               size="large"
               style={[
                 theme.styles.newWaitTimePlusMinusButton,
-                styles.waitTimeButtons,
+                styles.waitTimeButtonHeight,
                 styles.newWaitTimePlusMinusButton,
                 styles.newWaitTimePlusButton,
               ]}
@@ -252,7 +252,7 @@ export const LocationDetailsScreen = () => {
           <View style={styles.submitNewWaitTimeContainer}>
             <Button
               type="primary"
-              style={styles.waitTimeButtons}
+              style={styles.waitTimeButtonHeight}
               onPress={submitNewWaitTime}
             >
               <StyledText style={styles.submitNewWaitTimeText}>
@@ -279,11 +279,12 @@ export const LocationDetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  huge: {
-    fontSize: 20,
+  noTopPadding: {
+    paddingTop: 0,
   },
   scrollContainer: {
     flexDirection: "column",
+    paddingTop: 20,
   },
   imgContainer: {
     alignItems: "center",
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
-  waitTimeButtons: {
+  waitTimeButtonHeight: {
     height: 30,
   },
   confirnWaitTimeButtonText: {
@@ -346,6 +347,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 5,
+    width: 65,
   },
   newWaitTimeText: {
     fontSize: 13,
