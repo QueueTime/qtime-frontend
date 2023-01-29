@@ -24,23 +24,23 @@ export const LocationDetailsScreen = () => {
   const [newWaitTime, setNewWaitTime] = useState(0);
 
   const chartData = [
-    { quarter: 7, earnings: 1 },
-    { quarter: 8, earnings: 2 },
-    { quarter: 9, earnings: 1 },
-    { quarter: 10, earnings: 4 },
-    { quarter: 11, earnings: 6 },
-    { quarter: 12, earnings: 15 },
-    { quarter: 13, earnings: 6 },
-    { quarter: 14, earnings: 4 },
-    { quarter: 15, earnings: 5 },
-    { quarter: 16, earnings: 5 },
-    { quarter: 17, earnings: 7 },
-    { quarter: 18, earnings: 3 },
-    { quarter: 19, earnings: 15 },
-    { quarter: 20, earnings: 3 },
-    { quarter: 21, earnings: 2 },
-    { quarter: 22, earnings: 5 },
-    { quarter: 23, earnings: 1 },
+    { hour: 7, waitTime: 1 },
+    { hour: 8, waitTime: 2 },
+    { hour: 9, waitTime: 1 },
+    { hour: 10, waitTime: 4 },
+    { hour: 11, waitTime: 6 },
+    { hour: 12, waitTime: 15 },
+    { hour: 13, waitTime: 6 },
+    { hour: 14, waitTime: 4 },
+    { hour: 15, waitTime: 5 },
+    { hour: 16, waitTime: 5 },
+    { hour: 17, waitTime: 7 },
+    { hour: 18, waitTime: 3 },
+    { hour: 19, waitTime: 15 },
+    { hour: 20, waitTime: 3 },
+    { hour: 21, waitTime: 2 },
+    { hour: 22, waitTime: 5 },
+    { hour: 23, waitTime: 1 },
   ];
 
   const poiData = {
@@ -118,13 +118,13 @@ export const LocationDetailsScreen = () => {
           data: {
             fill: "#1677FF",
             opacity: ({ datum }) =>
-              datum.quarter === poiData.currentHour ? 1 : 0.5,
+              datum.hour === new Date().getHours() ? 1 : 0.5,
           },
         }}
         cornerRadius={{ top: 3, bottom: 3 }}
         data={chartData}
-        x="quarter"
-        y="earnings"
+        x="hour"
+        y="waitTime"
         barWidth={15}
       />
     </VictoryChart>
