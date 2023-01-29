@@ -45,6 +45,16 @@ export const themes = {
       waitTimeModalSortButtons: {
         borderColor: "#FFFFFF",
       },
+      confirmWaitTimeButton: {
+        borderColor: PRIMARY_COLOR_LIGHT,
+      },
+      newWaitTimePlusMinusButton: {
+        backgroundColor: "#F5F5F5",
+        borderColor: "#F5F5F5",
+      },
+      newWaitTimeTextContainer: {
+        backgroundColor: "#F5F5F5",
+      },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {
       /*
@@ -95,6 +105,16 @@ export const themes = {
       },
       waitTimeModalSortButtons: {
         borderColor: "#2F2F2F",
+      },
+      confirmWaitTimeButton: {
+        borderColor: PRIMARY_COLOR_DARK,
+      },
+      newWaitTimePlusMinusButton: {
+        backgroundColor: "#222222",
+        borderColor: PRIMARY_COLOR_DARK,
+      },
+      newWaitTimeTextContainer: {
+        backgroundColor: "#222222",
       },
     }), // Stylesheet with styles associated with theme
     antDesignOverride: {

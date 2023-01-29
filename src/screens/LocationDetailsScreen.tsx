@@ -104,7 +104,7 @@ export const LocationDetailsScreen = () => {
         </View>
         <View style={styles.addressContainer}>
           <StyledText style={styles.headingText}>{poiData.name}</StyledText>
-          <StyledText style={styles.locationDetails}>
+          <StyledText style={styles.detailsText}>
             {poiData.address + " • " + poiData.distance + " km away"}
           </StyledText>
         </View>
@@ -113,7 +113,7 @@ export const LocationDetailsScreen = () => {
           <StyledText style={styles.headingText}>Hours</StyledText>
           {poiData.hours.map((day) => {
             return (
-              <StyledText key={Object.keys(day)[0]} style={styles.hoursDetails}>
+              <StyledText key={Object.keys(day)[0]} style={styles.detailsText}>
                 {Object.keys(day) + ", " + Object.values(day)}
               </StyledText>
             );
@@ -123,7 +123,7 @@ export const LocationDetailsScreen = () => {
         <View>
           <StyledText style={styles.headingText}>Popular Times</StyledText>
         </View>
-        <View style={{ alignItems: "center" }}>
+        <View style={styles.chartContainer}>
           <VictoryChart width={420} height={175}>
             <VictoryAxis
               // tickValues specifies both the number of ticks and where
@@ -172,12 +172,10 @@ export const LocationDetailsScreen = () => {
           </VictoryChart>
         </View>
       </ScrollView>
-      <View style={{ borderTopColor: "#EEEEEE", borderTopWidth: 1 }}>
+      <View style={styles.waitTimeContainer}>
         <View>
-          <StyledText style={{ fontSize: 17, paddingTop: 10 }}>
-            Wait Time
-          </StyledText>
-          <StyledText style={{ fontSize: 13, paddingTop: 5, color: "#999999" }}>
+          <StyledText style={styles.waitTimeText}>Wait Time</StyledText>
+          <StyledText style={styles.detailsText}>
             {"Current time is " +
               poiData.waitTime +
               (poiData.waitTime === 1 ? " min" : " mins") +
@@ -185,16 +183,16 @@ export const LocationDetailsScreen = () => {
               renderLastUpdated(poiData.lastUpdated)}
           </StyledText>
         </View>
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
+        <View style={styles.confirmWaitTimeButtonContainer}>
           <Button
-            style={{
-              borderColor: theme.styles.primaryColor.color,
-              height: 28,
-            }}
+            style={[theme.styles.confirmWaitTimeButton, styles.waitTimeButtons]}
             onPress={confirmNewWaitTime}
           >
             <StyledText
-              style={{ fontSize: 12, color: theme.styles.primaryColor.color }}
+              style={[
+                theme.styles.primaryColor,
+                styles.confirnWaitTimeButtonText,
+              ]}
             >
               {"Confirm " +
                 poiData.waitTime +
@@ -202,27 +200,16 @@ export const LocationDetailsScreen = () => {
             </StyledText>
           </Button>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <View
-            style={{
-              flex: 2,
-              flexDirection: "row",
-            }}
-          >
+        <View style={styles.newWaitTimeContainer}>
+          <View style={styles.newWaitTimeButtonsContainer}>
             <Button
               size="large"
-              style={{
-                backgroundColor: "#F5F5F5",
-                borderWidth: 0,
-                borderRadius: 2,
-                marginRight: 4,
-                height: 30,
-              }}
+              style={[
+                theme.styles.newWaitTimePlusMinusButton,
+                styles.waitTimeButtons,
+                styles.newWaitTimePlusMinusButton,
+                styles.newWaitTimeMinusButton,
+              ]}
               disabled={newWaitTime === 0}
               onPress={() => setNewWaitTime((prevCount) => prevCount - 1)}
             >
@@ -233,32 +220,23 @@ export const LocationDetailsScreen = () => {
               />
             </Button>
             <View
-              style={{
-                backgroundColor: "#F5F5F5",
-                justifyContent: "center",
-                alignItems: "center",
-                paddingHorizontal: 5,
-              }}
+              style={[
+                theme.styles.newWaitTimeTextContainer,
+                styles.newWaitTimeTextContainer,
+              ]}
             >
-              <StyledText
-                style={{
-                  fontSize: 13,
-                  alignText: "center",
-                  color: theme.styles.text.color,
-                }}
-              >
+              <StyledText style={[theme.styles.text, styles.newWaitTimeText]}>
                 {newWaitTime + (newWaitTime === 1 ? " min" : " mins")}
               </StyledText>
             </View>
             <Button
               size="large"
-              style={{
-                backgroundColor: "#F5F5F5",
-                borderWidth: 0,
-                borderRadius: 2,
-                marginLeft: 4,
-                height: 30,
-              }}
+              style={[
+                theme.styles.newWaitTimePlusMinusButton,
+                styles.waitTimeButtons,
+                styles.newWaitTimePlusMinusButton,
+                styles.newWaitTimePlusButton,
+              ]}
               disabled={newWaitTime >= 60}
               onPress={() => setNewWaitTime((prevCount) => prevCount + 1)}
             >
@@ -269,17 +247,13 @@ export const LocationDetailsScreen = () => {
               />
             </Button>
           </View>
-          <View
-            style={{
-              flex: 2,
-            }}
-          >
+          <View style={styles.submitNewWaitTimeContainer}>
             <Button
               type="primary"
-              style={{ height: 30 }}
+              style={styles.waitTimeButtons}
               onPress={submitNewWaitTime}
             >
-              <StyledText style={{ fontSize: 12, color: "#FFFFFF" }}>
+              <StyledText style={styles.submitNewWaitTimeText}>
                 Submit New Time
               </StyledText>
             </Button>
@@ -318,18 +292,68 @@ const styles = StyleSheet.create({
   addressContainer: {
     marginTop: 35,
   },
-  locationDetails: {
-    fontSize: 13,
-    marginTop: 5,
-    color: "#999999",
-  },
-  hoursDetails: {
+  detailsText: {
     fontSize: 13,
     marginTop: 5,
     color: "#999999",
   },
   headingText: {
     fontSize: 17,
+  },
+  chartContainer: {
+    alignItems: "center",
+  },
+  waitTimeContainer: {
+    borderTopColor: "#EEEEEE",
+    borderTopWidth: 1,
+  },
+  waitTimeText: {
+    fontSize: 17,
+    paddingTop: 10,
+  },
+  confirmWaitTimeButtonContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  waitTimeButtons: {
+    height: 30,
+  },
+  confirnWaitTimeButtonText: {
+    fontSize: 12,
+  },
+  newWaitTimeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  newWaitTimeButtonsContainer: {
+    flex: 2,
+    flexDirection: "row",
+  },
+  newWaitTimePlusMinusButton: {
+    borderWidth: 1,
+    borderRadius: 2,
+  },
+  newWaitTimeMinusButton: {
+    marginRight: 4,
+  },
+  newWaitTimePlusButton: {
+    marginLeft: 4,
+  },
+  newWaitTimeTextContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 5,
+  },
+  newWaitTimeText: {
+    fontSize: 13,
+    alignText: "center",
+  },
+  submitNewWaitTimeContainer: {
+    flex: 2,
+  },
+  submitNewWaitTimeText: {
+    fontSize: 12,
+    color: "#FFFFFF",
   },
   divider: {
     marginTop: 25,
