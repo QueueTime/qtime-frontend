@@ -90,7 +90,7 @@ export const LocationDetailsScreen = () => {
             Current time is 10 mins • Last updated 4 mins ago
           </StyledText>
         </View>
-        <View style={{ paddingTop: 20 }}>
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
           <Button
             style={{
               borderColor: theme.styles.primaryColor.color,
@@ -107,70 +107,72 @@ export const LocationDetailsScreen = () => {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
-            paddingTop: 15,
+            alignItems: "center",
           }}
         >
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <View style={{ justifyContent: "center" }}>
-              <TouchableOpacity
-                style={{
-                  width: 28,
-                  height: 28,
-                  backgroundColor: "#F5F5F5",
-                  borderWidth: 0,
-                  marginRight: 3,
-                }}
-              >
-                <View style={{ alignItems: "center" }}>
-                  <AntDesign
-                    name="minus"
-                    size={20}
-                    color={theme.styles.primaryColor.color}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                alignItems: "center",
-                backgroundColor: "#F5F5F5",
-              }}
-            >
-              <StyledText style={{ fontSize: 13 }}>0 mins</StyledText>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
-                style={{
-                  width: 28,
-                  height: 28,
-                  backgroundColor: "#F5F5F5",
-                  borderWidth: 0,
-                  marginLeft: 3,
-                }}
-              >
-                <View style={{ alignItems: "center" }}>
-                  <AntDesign
-                    name="plus"
-                    size={20}
-                    color={theme.styles.primaryColor.color}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <Button
+          <View
             style={{
-              borderColor: theme.styles.primaryColor.color,
-              height: 28,
-              width: "65%",
-              backgroundColor: theme.styles.primaryColor.color,
+              flex: 2,
+              flexDirection: "row",
+              marginRight: 20,
             }}
           >
-            <StyledText style={{ fontSize: 12, color: "#FFFFFF" }}>
-              Submit New Time
-            </StyledText>
-          </Button>
+            <Button
+              size="small"
+              style={{
+                backgroundColor: "#F5F5F5",
+                borderWidth: 0,
+                borderRadius: 2,
+                marginRight: 4,
+                height: 30,
+              }}
+            >
+              <AntDesign
+                name="minus"
+                size={18}
+                color={theme.styles.primaryColor.color}
+              />
+            </Button>
+            <View
+              style={{
+                backgroundColor: "#F5F5F5",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingHorizontal: 5,
+              }}
+            >
+              <StyledText style={{ fontSize: 13, alignText: "center" }}>
+                0 mins
+              </StyledText>
+            </View>
+            <Button
+              size="small"
+              style={{
+                backgroundColor: "#F5F5F5",
+                borderWidth: 0,
+                borderRadius: 2,
+                marginLeft: 4,
+                height: 30,
+              }}
+            >
+              <AntDesign
+                name="plus"
+                size={18}
+                color={theme.styles.primaryColor.color}
+              />
+            </Button>
+          </View>
+          <View
+            style={{
+              flex: 3,
+            }}
+          >
+            <Button type="primary" style={{ height: 30 }}>
+              <StyledText style={{ fontSize: 12, color: "#FFFFFF" }}>
+                Submit New Time
+              </StyledText>
+            </Button>
+          </View>
         </View>
       </View>
     </View>
