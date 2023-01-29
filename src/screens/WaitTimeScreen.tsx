@@ -289,7 +289,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 extra={
                   <View>
                     <List.Item.Brief style={styles.poiWaitTimeText}>
-                      {poi.waitTime + " mins"}
+                      {poi.waitTime + (poi.waitTime === 1 ? " min" : " mins")}
                     </List.Item.Brief>
                   </View>
                 }
