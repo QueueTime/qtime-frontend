@@ -11,6 +11,7 @@ import { TabNavigator } from "@navigators/TabNavigator";
 import { SignInScreen } from "@screens/SignInScreen";
 import { ThemeContext } from "@contexts/theme";
 import { SignUpStackNavigator } from "./SignUpStackNavigator";
+import { StatusBar } from "react-native";
 
 export const BaseNavigator = () => {
   const { user, userProfile } = useContext(AuthContext);
@@ -30,6 +31,14 @@ export const BaseNavigator = () => {
     <NavigationContainer
       theme={theme.name === "light" ? DefaultTheme : DarkTheme}
     >
+      <StatusBar
+        barStyle={theme.name === "light" ? "dark-content" : "light-content"}
+        backgroundColor={
+          theme.name === "light"
+            ? DefaultTheme.colors.card
+            : DarkTheme.colors.card
+        } // Match the status bar background to the navigation topbar background (Android)
+      />
       {userProfile?.hasCompletedOnboarding ? (
         <TabNavigator />
       ) : (
