@@ -33,6 +33,11 @@ export const BaseNavigator = () => {
     >
       <StatusBar
         barStyle={theme.name === "light" ? "dark-content" : "light-content"}
+        backgroundColor={
+          theme.name === "light"
+            ? DefaultTheme.colors.card
+            : DarkTheme.colors.card
+        } // Match the status bar background to the navigation topbar background (Android)
       />
       {userProfile?.hasCompletedOnboarding ? (
         <TabNavigator />
