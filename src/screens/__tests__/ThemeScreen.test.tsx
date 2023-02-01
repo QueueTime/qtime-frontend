@@ -15,7 +15,7 @@ const getInfoText = () =>
 describe("<ThemeScreen />", () => {
   it("renders with the passed theme", () => {
     renderWithTheme(<ThemeScreen />, THEME_NAMES.dark);
-    expect(getInfoText()).toHaveStyle({ color: "#ffffff" });
+    expect(getInfoText()).toHaveStyle({ color: "#FFFFFF" });
   });
 
   it("updates the theme on radio button selection", () => {
@@ -23,6 +23,6 @@ describe("<ThemeScreen />", () => {
     expect(getInfoText()).toHaveStyle({ color: "#000000" });
     // Select the dark radio button
     fireEvent.press(screen.getByText("Dark"));
-    expect(getInfoText()).toHaveStyle({ color: "#ffffff" });
+    expect(getInfoText()).toHaveStyle({ color: "#FFFFFF" });
   });
 });

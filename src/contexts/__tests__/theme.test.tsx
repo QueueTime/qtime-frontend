@@ -51,7 +51,7 @@ describe("<ThemeProvider />", () => {
     expect(getThemeName()).toHaveTextContent(`Current theme:${DARK}`);
     expect(getThemePref()).toHaveTextContent(`Current theme choice:${DARK}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#1677FF",
+      backgroundColor: "#a00ceb",
     });
   });
 
@@ -59,7 +59,7 @@ describe("<ThemeProvider />", () => {
     renderWithTheme(<SampleThemeConsumer />, LIGHT);
     expect(getThemeName()).toHaveTextContent(`Current theme:${LIGHT}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#1677FF",
+      backgroundColor: "#108ee9",
     });
 
     // Push button to toggle from light to dark
