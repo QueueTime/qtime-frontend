@@ -67,7 +67,7 @@ describe("<ThemeProvider />", () => {
 
     expect(getThemeName()).toHaveTextContent(`Current theme:${DARK}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#1677FF",
+      backgroundColor: "#a00ceb",
     });
   });
 });
