@@ -51,7 +51,7 @@ describe("<ThemeProvider />", () => {
     expect(getThemeName()).toHaveTextContent(`Current theme:${DARK}`);
     expect(getThemePref()).toHaveTextContent(`Current theme choice:${DARK}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#a00ceb",
+      backgroundColor: "#1677FF",
     });
   });
 
@@ -59,7 +59,7 @@ describe("<ThemeProvider />", () => {
     renderWithTheme(<SampleThemeConsumer />, LIGHT);
     expect(getThemeName()).toHaveTextContent(`Current theme:${LIGHT}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#108ee9",
+      backgroundColor: "#1677FF",
     });
 
     // Push button to toggle from light to dark
@@ -67,7 +67,7 @@ describe("<ThemeProvider />", () => {
 
     expect(getThemeName()).toHaveTextContent(`Current theme:${DARK}`);
     expect(getButton()).toHaveStyle({
-      backgroundColor: "#a00ceb",
+      backgroundColor: "#1677FF",
     });
   });
 });
