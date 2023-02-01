@@ -1,5 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import type { StackScreenProps } from "@react-navigation/stack";
+import { Platform } from "react-native";
 
 import { WaitTimeScreen } from "@screens/WaitTimeScreen";
 import { LocationDetailsScreen } from "@screens/LocationDetailsScreen";
@@ -36,6 +37,7 @@ export const WaitTimesNavigator = () => (
     initialRouteName={ROUTES.WAIT_TIMES_HOME}
     screenOptions={{
       headerBackTitleVisible: false,
+      headerTitleAlign: "center",
     }}
   >
     <Stack.Screen
@@ -46,6 +48,15 @@ export const WaitTimesNavigator = () => (
     <Stack.Screen
       options={({ route }) => ({
         title: route.params.location,
+        ...(Platform.OS === "ios" && {
+          // Used to add padding to back button on ios
+          headerLeftContainerStyle: {
+            paddingLeft: 20,
+          },
+          headerRightContainerStyle: {
+            paddingRight: 20, // Required to keep title centered
+          },
+        }),
       })}
       name={ROUTES.LOCATION_DETAILS}
       component={LocationDetailsScreen}

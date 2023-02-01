@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Platform } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import type { StackScreenProps } from "@react-navigation/stack";
@@ -102,28 +102,44 @@ export const ProfileStackNavigator = () => {
           title: "Profile",
           headerRight: () => logoutButton,
           headerRightContainerStyle: {
-            marginRight: 20,
+            paddingRight: 20,
           },
           headerLeftContainerStyle: {
-            marginLeft: 20, // Required to keep title centered
+            paddingLeft: 20, // Required to keep title centered
           },
         }}
       />
-      <Stack.Screen
-        name={ROUTES.SUGGEST_POI}
-        component={POISuggestionScreen}
-        options={{ title: "Suggest a New Location" }}
-      />
-      <Stack.Screen
-        options={{ title: "Notification Settings" }}
-        name={ROUTES.NOTIFICATIONS}
-        component={NotificationsScreen}
-      />
-      <Stack.Screen
-        options={{ title: "App Appearance" }}
-        name={ROUTES.THEME}
-        component={ThemeScreen}
-      />
+      <Stack.Group
+        screenOptions={
+          Platform.OS === "ios"
+            ? {
+                // Used to add padding to back button on ios
+                headerLeftContainerStyle: {
+                  paddingLeft: 20,
+                },
+                headerRightContainerStyle: {
+                  paddingRight: 20, // Required to keep title centered
+                },
+              }
+            : {}
+        }
+      >
+        <Stack.Screen
+          name={ROUTES.SUGGEST_POI}
+          component={POISuggestionScreen}
+          options={{ title: "Suggest a New Location" }}
+        />
+        <Stack.Screen
+          options={{ title: "Notification Settings" }}
+          name={ROUTES.NOTIFICATIONS}
+          component={NotificationsScreen}
+        />
+        <Stack.Screen
+          options={{ title: "App Appearance" }}
+          name={ROUTES.THEME}
+          component={ThemeScreen}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };
