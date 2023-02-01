@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import type { StackScreenProps } from "@react-navigation/stack";
@@ -77,10 +77,7 @@ export const ProfileStackNavigator = () => {
       }
     };
     return (
-      <TouchableOpacity
-        onPress={() => handleSignOut()}
-        style={styles.logOutButton}
-      >
+      <TouchableOpacity onPress={() => handleSignOut()}>
         <AntDesign
           name="logout"
           size={24}
@@ -104,6 +101,12 @@ export const ProfileStackNavigator = () => {
         options={{
           title: "Profile",
           headerRight: () => logoutButton,
+          headerRightContainerStyle: {
+            marginRight: 20,
+          },
+          headerLeftContainerStyle: {
+            marginLeft: 20, // Required to keep title centered
+          },
         }}
       />
       <Stack.Screen
@@ -124,9 +127,3 @@ export const ProfileStackNavigator = () => {
     </Stack.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  logOutButton: {
-    marginRight: 20,
-  },
-});
