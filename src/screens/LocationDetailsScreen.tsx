@@ -358,7 +358,6 @@ const styles = StyleSheet.create({
   },
   submitNewWaitTimeText: {
     fontSize: 12,
-    color: "#FFFFFF",
   },
   divider: {
     marginTop: 25,
