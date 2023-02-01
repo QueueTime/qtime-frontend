@@ -1,10 +1,11 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   RefreshControl,
   Image,
+  Alert,
 } from "react-native";
 
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
@@ -15,8 +16,11 @@ import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { SuccessModal } from "@components/SuccessModal";
 import { renderLastUpdated } from "@utils/waitTime";
+import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 
-export const LocationDetailsScreen = () => {
+export const LocationDetailsScreen = ({
+  navigation,
+}: ILocationDetailsScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const [refreshing, setRefreshing] = useState(false);
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
@@ -79,6 +83,32 @@ export const LocationDetailsScreen = () => {
       setRefreshing(false);
     }, 1000);
   }, []);
+
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        const action = e.data.action;
+        if (newWaitTime === 0) {
+          return;
+        }
+
+        e.preventDefault();
+
+        Alert.alert(
+          "You're so close!",
+          "You can earn points to win free rewards by submitting your wait time.",
+          [
+            { text: "Cancel", style: "cancel", onPress: () => {} },
+            {
+              text: "Abandon Time Submission",
+              style: "destructive",
+              onPress: () => navigation.dispatch(action),
+            },
+          ]
+        );
+      }),
+    [newWaitTime, navigation]
+  );
 
   const popularTimeChart = (
     <VictoryChart height={175}>
@@ -367,3 +397,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 });
+
+interface ILocationDetailsScreenProps {
+  navigation: LocationDetailsScreenProps["navigation"];
+}

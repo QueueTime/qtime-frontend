@@ -1,5 +1,5 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import type { StackScreenProps } from "@react-navigation/stack";
 
 import { WaitTimeScreen } from "@screens/WaitTimeScreen";
 import { LocationDetailsScreen } from "@screens/LocationDetailsScreen";
@@ -15,24 +15,29 @@ type WaitTimeStackNavigatorParams = {
 // ... ({ navigation, route }: RouteNameScreenProps)
 // OR navigation: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
-export type WaitTimeScreenProps = NativeStackScreenProps<
+export type WaitTimeScreenProps = StackScreenProps<
   WaitTimeStackNavigatorParams,
   typeof ROUTES.WAIT_TIMES_HOME
 >;
 
-export type LocationDetailsScreenProps = NativeStackScreenProps<
+export type LocationDetailsScreenProps = StackScreenProps<
   WaitTimeStackNavigatorParams,
   typeof ROUTES.LOCATION_DETAILS
 >;
 
 // Stack component to use for navigation
-const Stack = createNativeStackNavigator<WaitTimeStackNavigatorParams>();
+const Stack = createStackNavigator<WaitTimeStackNavigatorParams>();
 
 /**
  * Handles navigation for the wait times section of the app
  */
 export const WaitTimesNavigator = () => (
-  <Stack.Navigator initialRouteName={ROUTES.WAIT_TIMES_HOME}>
+  <Stack.Navigator
+    initialRouteName={ROUTES.WAIT_TIMES_HOME}
+    screenOptions={{
+      headerBackTitleVisible: false,
+    }}
+  >
     <Stack.Screen
       options={{ headerShown: false }}
       name={ROUTES.WAIT_TIMES_HOME}

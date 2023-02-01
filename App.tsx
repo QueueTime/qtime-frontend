@@ -7,6 +7,7 @@ import { ThemeProvider } from "@contexts/theme";
 import { AuthProvider } from "@contexts/auth";
 
 import "expo-dev-client"; // Improve debugging when duing dev-client
+import "react-native-gesture-handler";
 
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();

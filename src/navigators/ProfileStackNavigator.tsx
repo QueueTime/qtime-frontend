@@ -1,8 +1,8 @@
 import { useContext, useMemo } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, StyleSheet } from "react-native";
 
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import type { StackScreenProps } from "@react-navigation/stack";
 import { AntDesign } from "@expo/vector-icons";
 import { statusCodes } from "@react-native-google-signin/google-signin";
 import { Toast } from "@ant-design/react-native";
@@ -28,28 +28,28 @@ type ProfileStackNavigatorParams = {
 // ... ({ navigation, route }: RouteNameScreenProps)
 // OR navigation: RouteNameScreenProps['navigation']
 //    route: RouteNameScreenProps['route']
-export type ProfileScreenProps = NativeStackScreenProps<
+export type ProfileScreenProps = StackScreenProps<
   ProfileStackNavigatorParams,
   typeof ROUTES.PROFILE_HOME
 >;
 
-export type POISuggestionScreenProps = NativeStackScreenProps<
+export type POISuggestionScreenProps = StackScreenProps<
   ProfileStackNavigatorParams,
   typeof ROUTES.SUGGEST_POI
 >;
 
-export type NotificationScreenProps = NativeStackScreenProps<
+export type NotificationScreenProps = StackScreenProps<
   ProfileStackNavigatorParams,
   typeof ROUTES.NOTIFICATIONS
 >;
 
-export type ThemeScreenProps = NativeStackScreenProps<
+export type ThemeScreenProps = StackScreenProps<
   ProfileStackNavigatorParams,
   typeof ROUTES.THEME
 >;
 
 // Stack component to use for navigation
-const Stack = createNativeStackNavigator<ProfileStackNavigatorParams>();
+const Stack = createStackNavigator<ProfileStackNavigatorParams>();
 
 /**
  * Handles navigation for the profile section of the app
@@ -77,7 +77,10 @@ export const ProfileStackNavigator = () => {
       }
     };
     return (
-      <TouchableOpacity onPress={() => handleSignOut()}>
+      <TouchableOpacity
+        onPress={() => handleSignOut()}
+        style={styles.logOutButton}
+      >
         <AntDesign
           name="logout"
           size={24}
@@ -90,7 +93,10 @@ export const ProfileStackNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName={ROUTES.PROFILE_HOME}
-      screenOptions={{ headerTitleAlign: "center" }}
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerBackTitleVisible: false,
+      }}
     >
       <Stack.Screen
         name={ROUTES.PROFILE_HOME}
@@ -118,3 +124,9 @@ export const ProfileStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  logOutButton: {
+    marginRight: 20,
+  },
+});
