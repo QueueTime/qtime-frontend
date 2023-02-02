@@ -156,7 +156,7 @@ export const themes = {
         Add any values from the ant default theme you want to override here
         https://github.com/ant-design/ant-design-mobile-rn/blob/master/components/style/themes/default.tsx
       */
-      primary_button_fill: "#a00ceb",
+      primary_button_fill: STYLES.PRIMARY_COLOR_DARK,
       ghost_button_color: STYLES.PRIMARY_COLOR_DARK, // Ghost button outline
       checkbox_fill: STYLES.PRIMARY_COLOR_DARK, // Radio/checkbox button color
       fill_base: STYLES.CONT_COLOR_DARK, // Background color

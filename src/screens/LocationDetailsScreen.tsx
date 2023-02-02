@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
-import { Button } from "@ant-design/react-native";
+import { Button, WhiteSpace } from "@ant-design/react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { ThemeContext } from "@contexts/theme";
@@ -357,6 +357,7 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   submitNewWaitTimeText: {
+    color: "#FFFFFF",
     fontSize: 12,
   },
   divider: {
