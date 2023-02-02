@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
-import { Button, WhiteSpace } from "@ant-design/react-native";
+import { Button } from "@ant-design/react-native";
 import { AntDesign } from "@expo/vector-icons";
 
 import { ThemeContext } from "@contexts/theme";
@@ -184,6 +184,7 @@ export const LocationDetailsScreen = () => {
         </View>
         <View style={styles.confirmWaitTimeButtonContainer}>
           <Button
+            type="ghost"
             style={[
               theme.styles.confirmWaitTimeButton,
               styles.waitTimeButtonHeight,

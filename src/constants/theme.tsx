@@ -118,8 +118,8 @@ export const themes = {
         transition: 0.25,
       },
       buttonHover: {
-        opacity: 0.5,
-        transition: 0.25,
+        //opacity: 0.5,
+        // transition: 0.25,
       },
       primaryColor: {
         color: STYLES.PRIMARY_COLOR_DARK,
