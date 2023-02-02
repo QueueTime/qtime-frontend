@@ -172,8 +172,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
       <Modal
         transparent={false}
         visible={showHelpModal}
-        // closable={true}
-        animationType="fade"
+        animationType="slide-up"
         onRequestClose={() => {
           setShowHelpModal(false);
           return false; // Allows hardware back button events

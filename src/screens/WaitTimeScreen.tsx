@@ -70,7 +70,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
     },
     {
       waitTime: 7,
-      location: "Location 2",
+      location: "MUSC",
       distance: 0.6,
       lastUpdated: 8,
       type: "shopping",

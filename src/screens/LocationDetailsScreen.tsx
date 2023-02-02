@@ -1,10 +1,11 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
   ScrollView,
   RefreshControl,
   Image,
+  Alert,
 } from "react-native";
 
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
@@ -15,13 +16,17 @@ import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { SuccessModal } from "@components/SuccessModal";
 import { renderLastUpdated } from "@utils/waitTime";
+import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 
-export const LocationDetailsScreen = () => {
+export const LocationDetailsScreen = ({
+  navigation,
+}: ILocationDetailsScreenProps) => {
   const { theme } = useContext(ThemeContext);
   const [refreshing, setRefreshing] = useState(false);
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
   const [showConfirmSuccessModal, setConfirmSuccessModal] = useState(false);
   const [newWaitTime, setNewWaitTime] = useState(0);
+  const [wasInteracted, setWasInteracted] = useState(false);
 
   const chartData = [
     { hour: 7, waitTime: 1 },
@@ -79,6 +84,32 @@ export const LocationDetailsScreen = () => {
       setRefreshing(false);
     }, 1000);
   }, []);
+
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e) => {
+        const action = e.data.action;
+        if (!wasInteracted) {
+          return;
+        }
+
+        e.preventDefault();
+
+        Alert.alert(
+          "You're so close!",
+          "You can earn points to win free rewards by submitting your wait time.",
+          [
+            { text: "Cancel", style: "cancel", onPress: () => {} },
+            {
+              text: "Abandon Time Submission",
+              style: "destructive",
+              onPress: () => navigation.dispatch(action),
+            },
+          ]
+        );
+      }),
+    [wasInteracted, navigation]
+  );
 
   const popularTimeChart = (
     <VictoryChart height={175}>
@@ -213,7 +244,10 @@ export const LocationDetailsScreen = () => {
                 styles.newWaitTimeMinusButton,
               ]}
               disabled={newWaitTime === 0}
-              onPress={() => setNewWaitTime((prevCount) => prevCount - 1)}
+              onPress={() => {
+                setNewWaitTime((prevCount) => prevCount - 1);
+                setWasInteracted(true);
+              }}
             >
               <AntDesign
                 name="minus"
@@ -240,7 +274,10 @@ export const LocationDetailsScreen = () => {
                 styles.newWaitTimePlusButton,
               ]}
               disabled={newWaitTime >= 60}
-              onPress={() => setNewWaitTime((prevCount) => prevCount + 1)}
+              onPress={() => {
+                setNewWaitTime((prevCount) => prevCount + 1);
+                setWasInteracted(true);
+              }}
             >
               <AntDesign
                 name="plus"
@@ -367,3 +404,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
 });
+
+interface ILocationDetailsScreenProps {
+  navigation: LocationDetailsScreenProps["navigation"];
+}

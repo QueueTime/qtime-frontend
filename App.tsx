@@ -1,3 +1,4 @@
+import "react-native-gesture-handler";
 import { useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -6,7 +7,7 @@ import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
 import { AuthProvider } from "@contexts/auth";
 
-import "expo-dev-client"; // Improve debugging when duing dev-client
+import "expo-dev-client"; // Improve debugging when using dev-client
 
 // Keep the splash screen visible fetching resources
 SplashScreen.preventAutoHideAsync();
