@@ -26,6 +26,7 @@ export const LocationDetailsScreen = ({
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
   const [showConfirmSuccessModal, setConfirmSuccessModal] = useState(false);
   const [newWaitTime, setNewWaitTime] = useState(0);
+  const [wasInteracted, setWasInteracted] = useState(false);
 
   const chartData = [
     { hour: 7, waitTime: 1 },
@@ -88,7 +89,7 @@ export const LocationDetailsScreen = ({
     () =>
       navigation.addListener("beforeRemove", (e) => {
         const action = e.data.action;
-        if (newWaitTime === 0) {
+        if (!wasInteracted) {
           return;
         }
 
@@ -107,7 +108,7 @@ export const LocationDetailsScreen = ({
           ]
         );
       }),
-    [newWaitTime, navigation]
+    [wasInteracted, navigation]
   );
 
   const popularTimeChart = (
@@ -243,7 +244,10 @@ export const LocationDetailsScreen = ({
                 styles.newWaitTimeMinusButton,
               ]}
               disabled={newWaitTime === 0}
-              onPress={() => setNewWaitTime((prevCount) => prevCount - 1)}
+              onPress={() => {
+                setNewWaitTime((prevCount) => prevCount - 1);
+                setWasInteracted(true);
+              }}
             >
               <AntDesign
                 name="minus"
@@ -270,7 +274,10 @@ export const LocationDetailsScreen = ({
                 styles.newWaitTimePlusButton,
               ]}
               disabled={newWaitTime >= 60}
-              onPress={() => setNewWaitTime((prevCount) => prevCount + 1)}
+              onPress={() => {
+                setNewWaitTime((prevCount) => prevCount + 1);
+                setWasInteracted(true);
+              }}
             >
               <AntDesign
                 name="plus"
