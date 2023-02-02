@@ -115,7 +115,7 @@ export const ProfileStackNavigator = () => {
             ? {
                 // Used to add padding to back button on ios
                 headerLeftContainerStyle: {
-                  paddingLeft: 20,
+                  paddingLeft: 10,
                 },
                 headerRightContainerStyle: {
                   paddingRight: 20, // Required to keep title centered
