@@ -215,6 +215,7 @@ export const LocationDetailsScreen = ({
         </View>
         <View style={styles.confirmWaitTimeButtonContainer}>
           <Button
+            type="ghost"
             style={[
               theme.styles.confirmWaitTimeButton,
               styles.waitTimeButtonHeight,
@@ -394,8 +395,8 @@ const styles = StyleSheet.create({
     flex: 2,
   },
   submitNewWaitTimeText: {
-    fontSize: 12,
     color: "#FFFFFF",
+    fontSize: 12,
   },
   divider: {
     marginTop: 25,
