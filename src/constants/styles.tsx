@@ -1,16 +1,15 @@
-export const PRIMARY_COLOR_LIGHT = "#1677ff";
-export const WEAK_COLOR_LIGHT = "#999999";
-export const LIGHT_COLOR_LIGHT = "#CCCCCC";
+// Constants
+export const LIGHT_COLOR = "#CCCCCC";
+export const WEAK_COLOR = "#999999";
+export const PRIMARY_COLOR = "#1677ff";
+export const WHITE_COLOR = "#FFFFFF";
+export const BLACK_COLOR = "#000000";
+
+// Light styles
 export const BACKGROUND_COLOR_LIGHT = "#F5F5F5";
 export const BORDER_COLOR_LIGHT = "#EEEEEE";
-export const WHITE_COLOR_LIGHT = "#FFFFFF";
-export const BLACK_COLOR_LIGHT = "#000000";
 
-export const PRIMARY_COLOR_DARK = "#1677ff";
-export const WEAK_COLOR_DARK = "#999999";
-export const LIGHT_COLOR_DARK = "#CCCCCC";
+// Dark styles
 export const BACKGROUND_COLOR_DARK = "#333333";
 export const BORDER_COLOR_DARK = "#333333";
-export const WHITE_COLOR_DARK = "#FFFFFF";
-export const BLACK_COLOR_DARK = "#000000";
 export const CONT_COLOR_DARK = "#121212";

@@ -17,35 +17,30 @@ export const themes = {
       screenContainer: {
         flex: 1,
         padding: 20,
-        backgroundColor: STYLES.WHITE_COLOR_LIGHT,
+        backgroundColor: STYLES.WHITE_COLOR,
       },
       text: {
-        color: STYLES.BLACK_COLOR_LIGHT,
+        color: STYLES.BLACK_COLOR,
         fontSize: 15,
       },
       primaryText: {
-        color: STYLES.PRIMARY_COLOR_LIGHT,
+        color: STYLES.PRIMARY_COLOR,
       },
       subText: {
-        color: STYLES.WEAK_COLOR_LIGHT,
+        color: STYLES.WEAK_COLOR,
         fontSize: 14,
       },
       placeholderText: {
-        color: STYLES.LIGHT_COLOR_LIGHT,
+        color: STYLES.LIGHT_COLOR,
       },
       buttonColor: {
-        color: STYLES.PRIMARY_COLOR_LIGHT,
-        transition: 0.25,
-      },
-      buttonHover: {
-        opacity: 0.5,
-        transition: 0.25,
+        color: STYLES.PRIMARY_COLOR,
       },
       primaryColor: {
-        color: STYLES.PRIMARY_COLOR_LIGHT,
+        color: STYLES.PRIMARY_COLOR,
       },
       secondaryColor: {
-        color: STYLES.WEAK_COLOR_LIGHT,
+        color: STYLES.WEAK_COLOR,
       },
       inactiveColor: {
         opacity: 0.2,
@@ -54,19 +49,20 @@ export const themes = {
         backgroundColor: STYLES.BACKGROUND_COLOR_LIGHT,
       },
       waitTimeModalHeader: {
-        backgroundColor: STYLES.BLACK_COLOR_LIGHT,
+        backgroundColor: STYLES.BACKGROUND_COLOR_LIGHT,
       },
       waitTimeModalSortButtons: {
-        borderColor: STYLES.BLACK_COLOR_LIGHT,
+        borderColor: STYLES.BACKGROUND_COLOR_LIGHT,
+        backgroundColor: STYLES.BACKGROUND_COLOR_LIGHT,
       },
       border: {
         color: STYLES.BORDER_COLOR_LIGHT,
       },
       iconColorPOI: {
-        color: STYLES.BLACK_COLOR_LIGHT,
+        color: STYLES.BLACK_COLOR,
       },
       confirmWaitTimeButton: {
-        borderColor: STYLES.PRIMARY_COLOR_LIGHT,
+        borderColor: STYLES.PRIMARY_COLOR,
       },
       newWaitTimePlusMinusButton: {
         backgroundColor: "#F5F5F5",
@@ -100,35 +96,30 @@ export const themes = {
         backgroundColor: STYLES.CONT_COLOR_DARK,
       },
       text: {
-        color: STYLES.WHITE_COLOR_DARK,
+        color: STYLES.WHITE_COLOR,
         fontSize: 15,
       },
       primaryText: {
-        color: STYLES.PRIMARY_COLOR_DARK,
+        color: STYLES.PRIMARY_COLOR,
       },
       subText: {
-        color: STYLES.WEAK_COLOR_LIGHT,
+        color: STYLES.WEAK_COLOR,
         fontSize: 14,
       },
       placeholderText: {
-        color: STYLES.LIGHT_COLOR_DARK,
+        color: STYLES.LIGHT_COLOR,
       },
       buttonColor: {
-        color: STYLES.PRIMARY_COLOR_DARK,
-        transition: 0.25,
-      },
-      buttonHover: {
-        //opacity: 0.5,
-        // transition: 0.25,
+        color: STYLES.PRIMARY_COLOR,
       },
       primaryColor: {
-        color: STYLES.PRIMARY_COLOR_DARK,
+        color: STYLES.PRIMARY_COLOR,
       },
       secondaryColor: {
-        color: STYLES.WEAK_COLOR_DARK,
+        color: STYLES.WEAK_COLOR,
       },
       inactiveColor: {
-        color: STYLES.WEAK_COLOR_DARK,
+        color: STYLES.WEAK_COLOR,
       },
       waitTimeSearchBar: {
         backgroundColor: STYLES.CONT_COLOR_DARK,
@@ -136,16 +127,16 @@ export const themes = {
       waitTimeModalHeader: {
         backgroundColor: STYLES.BACKGROUND_COLOR_DARK,
       },
-
       waitTimeModalSortButtons: {
         borderColor: STYLES.BACKGROUND_COLOR_DARK,
+        backgroundColor: STYLES.BACKGROUND_COLOR_DARK,
       },
       confirmWaitTimeButton: {
-        borderColor: STYLES.PRIMARY_COLOR_DARK,
+        borderColor: STYLES.PRIMARY_COLOR,
       },
       newWaitTimePlusMinusButton: {
         backgroundColor: STYLES.CONT_COLOR_DARK,
-        borderColor: STYLES.PRIMARY_COLOR_DARK,
+        borderColor: STYLES.PRIMARY_COLOR,
       },
       newWaitTimeTextContainer: {
         backgroundColor: STYLES.CONT_COLOR_DARK,
@@ -156,16 +147,19 @@ export const themes = {
         Add any values from the ant default theme you want to override here
         https://github.com/ant-design/ant-design-mobile-rn/blob/master/components/style/themes/default.tsx
       */
-      primary_button_fill: STYLES.PRIMARY_COLOR_DARK,
-      ghost_button_color: STYLES.PRIMARY_COLOR_DARK, // Ghost button outline
-      checkbox_fill: STYLES.PRIMARY_COLOR_DARK, // Radio/checkbox button color
+      primary_button_fill_tap: "#0e80d2",
+      warning_button_fill_tap: "#d24747",
+
+      primary_button_fill: STYLES.PRIMARY_COLOR,
+      ghost_button_color: STYLES.PRIMARY_COLOR, // Ghost button outline
+      checkbox_fill: STYLES.PRIMARY_COLOR, // Radio/checkbox button color
       fill_base: STYLES.CONT_COLOR_DARK, // Background color
-      border_color_base: STYLES.WHITE_COLOR_DARK, // Line color
+      border_color_base: STYLES.WHITE_COLOR, // Line color
       search_bar_fill: STYLES.CONT_COLOR_DARK, // Outside search bar color
       radius_sm: 24, // Tag Radius
       tag_height: 35, // Tag Height
       button_font_size_sm: 15, // Tag Text Font Size
-      color_text_caption: STYLES.WHITE_COLOR_DARK, // Tag Text Color
+      color_text_caption: STYLES.WHITE_COLOR, // Tag Text Color
     },
   },
 };
