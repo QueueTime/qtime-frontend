@@ -44,6 +44,7 @@ export const themes = {
       },
       inactiveColor: {
         opacity: 0.2,
+        color: "#ababab",
       },
       waitTimeSearchBar: {
         backgroundColor: STYLES.BACKGROUND_COLOR_LIGHT,

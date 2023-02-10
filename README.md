@@ -23,7 +23,7 @@ React Native frontend of the QTime mobile application.
 - Install [expo-cli](https://docs.expo.dev/get-started/installation/). Run `npm i -g expo-cli`.
 - Install [eas-cli](https://docs.expo.dev/development/create-development-builds/). Run `npm install -g eas-cli`. This is required to build native code with expo.
 - Download packges with `npm i`.
-- Once packages downloaded, open the `.env` file and fill in all environment values.
+- Once packages are downloaded, create a `.env` file in the root and fill in all environment values.
   - `BASE_URL` is the backend API base url.
 
 ### Generate a Development Build
