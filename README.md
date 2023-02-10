@@ -16,6 +16,7 @@ React Native frontend of the QTime mobile application.
 ## Getting Started
 
 - Clone the project: `git clone https://github.com/QueueTime/qtime-frontend.git`
+- Create a .env file in the root with `BASE_URL` and configure it to use the endpoint URL
 
 ### Install Dependencies
 

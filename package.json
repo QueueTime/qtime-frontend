@@ -16,8 +16,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
-    "lint:fix": "eslint --fix .",
-    "postinstall": "[ ! -f .env ] && echo 'BASE_URL=' > .env"
+    "lint:fix": "eslint --fix ."
   },
   "jest": {
     "preset": "jest-expo",
