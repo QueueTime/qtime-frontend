@@ -1,6 +1,5 @@
 // **Sample code for creating a client to interact with generated code**
 
-import "react-native-url-polyfill/auto";
 import axios from "axios";
 import { BASE_URL } from "@env";
 
