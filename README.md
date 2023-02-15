@@ -25,6 +25,7 @@ React Native frontend of the QTime mobile application.
 - Download packges with `npm i`.
 - Once packages are downloaded, create a `.env` file in the root and fill in all environment values.
   - `BASE_URL` is the backend API base url.
+  - `ENVIRONMENT` is the environment to run in. Options are `dev` and `prod`.
 
 ### Generate a Development Build
 
@@ -87,6 +88,27 @@ npm run generate:api "<PATH TO spec.json>"
 ```
 
 Replacing the path/url to the openapi 3.0 json spec to use when generating the client code. Generated code is found in [src/api/generated](src/api/generated).
+
+### Firebase Emulators
+
+To emulate the firebase backend used for authentication and database calls we use firebase emulators to emulate a firebase instance.
+
+- Follow the [install steps](https://firebase.google.com/docs/emulator-suite/install_and_configure#install_the_local_emulator_suite) to setup firebase emulators.
+  - Note: You don't need to run the `firebase init` command.
+  - Run `firebase --version` to ensure you installed the firebase cli.
+- Setup the firestore emulator with the following command
+
+```
+firebase setup:emulators:firestore
+```
+
+- Start the emulators with the command
+
+```
+firebase emulators:start --only firestore,auth --project qtime-bd47e
+```
+
+- You should now be able to visit the [firestore emulator UI](http://127.0.0.1:4000/firestore) and [firebase auth emulator UI](http://127.0.0.1:4000/auth) pages. See the [QTime backend](https://github.com/QueueTime/qtime-backend#testing-with-firebase-emulators) for sample data and instructions on importing/exporting.
 
 ## Testing
 
