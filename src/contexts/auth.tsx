@@ -125,6 +125,13 @@ export const AuthProvider = ({
         setUserProfile({
           email: doc.id,
           hasCompletedOnboarding: data.hasCompletedOnboarding,
+          hasUsedReferralCode: data.hasUsedReferralCode,
+          notificationSetting: data.notification_setting,
+          numLinesParticipated: data.num_lines_participated,
+          poiFrequency: data.poi_frequency,
+          referralCode: data.referral_code,
+          rewardPointBalance: data.reward_point_balance,
+          timeInLine: data.time_in_line,
         });
       } else {
         // Create a new user if one doesn't already exist to subscribe to
@@ -159,4 +166,11 @@ interface IAuthProviderProps {
 interface IUserProfile {
   email: string;
   hasCompletedOnboarding: boolean;
+  hasUsedReferralCode: boolean;
+  notificationSetting: boolean;
+  numLinesParticipated: number;
+  poiFrequency: Map<string, number>;
+  referralCode: string;
+  rewardPointBalance: number;
+  timeInLine: number;
 }

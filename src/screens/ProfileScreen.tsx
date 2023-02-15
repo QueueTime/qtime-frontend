@@ -23,6 +23,22 @@ const copyToClipboard = async (content: string) => {
   });
 };
 
+/**
+ * Return a string in the format of "X hrs Y min" or "Y min" depending on the
+ * the number of minutes passed.
+ * @param numMinutes Number of in minutes
+ * @returns string in the format of "X hrs Y min" or "Y min"
+ */
+const toHoursAndMinutes = (numMinutes: number) => {
+  const hours = Math.floor(numMinutes / 60);
+  const minutes = numMinutes % 60;
+
+  if (hours > 0) {
+    return `${hours} hrs ${minutes} min`;
+  }
+  return `${minutes} min`;
+};
+
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
   const { user, userProfile, signOut } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
@@ -118,20 +134,22 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
             {user!.displayName}
           </StyledText>
           <StyledText style={styles.email}>{user!.email}</StyledText>
-          <StyledText style={styles.points}>1271 points</StyledText>
+          <StyledText style={styles.points}>
+            {userProfile?.rewardPointBalance || 0} points
+          </StyledText>
         </View>
       </View>
       <View style={styles.referralBox}>
         <StyledText>Your Unique Referral Code</StyledText>
         <TouchableOpacity
-          onPress={() => copyToClipboard("ABX89K")}
+          onPress={() => copyToClipboard(userProfile!.referralCode)}
           style={styles.halfWidth}
         >
           <View style={[styles.referralRow]}>
             <StyledText
               style={[theme.styles.primaryColor, styles.referralCode]}
             >
-              ABX89K
+              {userProfile!.referralCode}
             </StyledText>
             <Feather
               name="copy"
@@ -152,7 +170,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
         <List.Item>
           <InfoSection
             text="Time spent waiting in line"
-            subtext="7 hrs 2 min"
+            subtext={toHoursAndMinutes(userProfile!.timeInLine)}
           />
         </List.Item>
       </List>
