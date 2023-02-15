@@ -2,10 +2,14 @@ import "react-native-gesture-handler";
 import { useCallback, useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
 import { AuthProvider } from "@contexts/auth";
+// @ts-ignore
+import { ENVIRONMENT } from "@env";
 
 import "expo-dev-client"; // Improve debugging when using dev-client
 
@@ -23,6 +27,13 @@ const App = () => {
 
   // Set an initializing state whilst Firebase connects
   const [isFirebaseInit, setIsFirebaseInit] = useState(true);
+
+  useEffect(() => {
+    if (ENVIRONMENT === "dev") {
+      firestore().useEmulator("localhost", 8080);
+      auth().useEmulator("http://localhost:9099");
+    }
+  }, []);
 
   // Memoized function to remove splash screen
   /**
