@@ -136,10 +136,9 @@ export const AuthProvider = ({
       } else {
         // Create a new user if one doesn't already exist to subscribe to
         try {
-          const token = await user.getIdToken();
           await userApi.newUserSignup({
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${await user.getIdToken()}`,
             },
           });
         } catch (error) {
