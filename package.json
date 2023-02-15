@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "emulators": "firebase emulators:start --only firestore,auth --project qtime-bd47e",
     "build:android": "eas build --profile development --platform android",
     "build:ios": "eas build --profile development-ios --platform ios",
     "generate:api": "x(){ openapi-generator-cli generate -i $1 -g typescript-axios -o src/api/generated --additional-properties=supportsES6=true,withInterfaces=true; };x",

@@ -105,7 +105,7 @@ firebase setup:emulators:firestore
 - Start the emulators with the command
 
 ```
-firebase emulators:start --only firestore,auth --project qtime-bd47e
+npm run emulators
 ```
 
 - You should now be able to visit the [firestore emulator UI](http://127.0.0.1:4000/firestore) and [firebase auth emulator UI](http://127.0.0.1:4000/auth) pages. See the [QTime backend](https://github.com/QueueTime/qtime-backend#testing-with-firebase-emulators) for sample data and instructions on importing/exporting.
