@@ -147,7 +147,7 @@ export const AuthProvider = ({
       }
     });
     return () => subscriber(); // unsubscribe on unmount
-  }, [user?.email]);
+  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, userProfile, signIn, signOut }}>
