@@ -8,7 +8,6 @@ import auth from "@react-native-firebase/auth";
 import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
 import { AuthProvider } from "@contexts/auth";
-// @ts-ignore
 import { ENVIRONMENT } from "@env";
 
 import "expo-dev-client"; // Improve debugging when using dev-client
