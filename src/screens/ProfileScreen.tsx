@@ -10,9 +10,9 @@ import * as ROUTES from "@constants/routes";
 import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
-import { deleteUser } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { OnboardingScreen } from "@screens/OnboardingScreen";
+import { userApi } from "@api/client/apis";
 
 const copyToClipboard = async (content: string) => {
   await Clipboard.setStringAsync(content);
@@ -67,8 +67,14 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
               text: "Yes, delete it",
               onPress: async () => {
                 try {
+                  // Fetch token *before* signing out
+                  const token = await user!.getIdToken();
                   await signOut();
-                  await deleteUser(userProfile!.email);
+                  await userApi.deleteUserProfile({
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
                 } catch (error) {
                   displayError(
                     `Failed to delete user account. Try again later. ${error}`

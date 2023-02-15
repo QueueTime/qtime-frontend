@@ -7,16 +7,6 @@ import firestore, {
  */
 
 const USER_COLLECTION = "users";
-const DEFAULT_USER = {
-  hasCompletedOnboarding: false,
-};
-
-/**
- * Create a new user document with their email as their id and default values
- * @param userEmail Email for the new user
- */
-export const createUser = async (userEmail: string) =>
-  firestore().collection(USER_COLLECTION).doc(userEmail).set(DEFAULT_USER);
 
 /**
  * Update a user document to indicate they have completed onboarding
@@ -41,10 +31,3 @@ export const subscribeToUserUpdates = (
     .collection(USER_COLLECTION)
     .doc(userEmail)
     .onSnapshot((doc) => onSnapshot(doc));
-
-/**
- * Delete a user document from the user collection
- * @param userEmail User email of user to delete
- */
-export const deleteUser = (userEmail: string) =>
-  firestore().collection(USER_COLLECTION).doc(userEmail).delete();

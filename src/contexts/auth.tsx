@@ -3,8 +3,9 @@ import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-import { createUser, subscribeToUserUpdates } from "@utils/firestore";
+import { subscribeToUserUpdates } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { userApi } from "@api/client/apis";
 
 const AUTH_WEB_CLIENT_ID =
   "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com";
@@ -128,7 +129,12 @@ export const AuthProvider = ({
       } else {
         // Create a new user if one doesn't already exist to subscribe to
         try {
-          await createUser(user.email!);
+          const token = await user.getIdToken();
+          await userApi.newUserSignup({
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
         } catch (error) {
           displayError(`Cannot create new account. Try again later. ${error}`);
         }
