@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "emulators": "firebase emulators:start --only firestore,auth --project qtime-bd47e",
     "build:android": "eas build --profile development --platform android",
     "build:ios": "eas build --profile development-ios --platform ios",
     "generate:api": "x(){ openapi-generator-cli generate -i $1 -g typescript-axios -o src/api/generated --additional-properties=supportsES6=true,withInterfaces=true; };x",
@@ -29,7 +30,7 @@
     ],
     "testRegex": "\\.test\\.tsx?$",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@bang88/.*|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@bang88/.*|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|axios)"
     ]
   },
   "dependencies": {

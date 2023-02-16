@@ -1,8 +1,6 @@
 // **Sample code for creating a client to interact with generated code**
 
-import "react-native-url-polyfill/auto";
 import axios from "axios";
-// @ts-ignore
 import { BASE_URL } from "@env";
 
 import { UserApi, Configuration, DefaultApi, POIApi } from "../generated";
