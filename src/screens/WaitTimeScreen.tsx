@@ -28,7 +28,7 @@ import { StyledText } from "@components/StyledText";
 import { LOCATION_DETAILS } from "@constants/routes";
 import { WaitTimeScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { ThemeContext } from "@contexts/theme";
-import { renderLastUpdated } from "@utils/waitTime";
+import { renderLastUpdated } from "@utils/time";
 import { SortByEnum } from "@utils/poi";
 
 function renderIcon(type: any, theme: string): JSX.Element {

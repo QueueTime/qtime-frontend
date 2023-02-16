@@ -13,6 +13,7 @@ import { ThemeContext } from "@contexts/theme";
 import { displayError } from "@utils/error";
 import { OnboardingScreen } from "@screens/OnboardingScreen";
 import { userApi } from "@api/client/apis";
+import { toHoursAndMinutes } from "@utils/time";
 
 const copyToClipboard = async (content: string) => {
   await Clipboard.setStringAsync(content);
@@ -21,22 +22,6 @@ const copyToClipboard = async (content: string) => {
     duration: 1,
     mask: false,
   });
-};
-
-/**
- * Return a string in the format of "X hrs Y min" or "Y min" depending on the
- * the number of minutes passed.
- * @param numMinutes Number of in minutes
- * @returns string in the format of "X hrs Y min" or "Y min"
- */
-const toHoursAndMinutes = (numMinutes: number) => {
-  const hours = Math.floor(numMinutes / 60);
-  const minutes = numMinutes % 60;
-
-  if (hours > 0) {
-    return `${hours} hrs ${minutes} min`;
-  }
-  return `${minutes} min`;
 };
 
 export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
