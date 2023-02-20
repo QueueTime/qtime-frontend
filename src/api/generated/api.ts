@@ -92,6 +92,19 @@ export interface GetAllPOI200ResponseInner {
 /**
  * 
  * @export
+ * @interface GetPOI404Response
+ */
+export interface GetPOI404Response {
+    /**
+     * Error description
+     * @type {string}
+     * @memberof GetPOI404Response
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
  * @interface ListRewardEvents200ResponseInner
  */
 export interface ListRewardEvents200ResponseInner {
@@ -106,7 +119,7 @@ export interface ListRewardEvents200ResponseInner {
      * @type {string}
      * @memberof ListRewardEvents200ResponseInner
      */
-    'source': string;
+    'source': ListRewardEvents200ResponseInnerSourceEnum;
     /**
      * Timestamp of the reward event
      * @type {string}
@@ -114,6 +127,16 @@ export interface ListRewardEvents200ResponseInner {
      */
     'timestamp': string;
 }
+
+export const ListRewardEvents200ResponseInnerSourceEnum = {
+    ReferralBonus: 'referral_bonus',
+    ReferredBonus: 'referred_bonus',
+    WaittimeConfirm: 'waittime_confirm',
+    WaittimeSubmit: 'waittime_submit'
+} as const;
+
+export type ListRewardEvents200ResponseInnerSourceEnum = typeof ListRewardEvents200ResponseInnerSourceEnum[keyof typeof ListRewardEvents200ResponseInnerSourceEnum];
+
 /**
  * 
  * @export
@@ -186,12 +209,6 @@ export interface POISuggestion {
      * @type {string}
      * @memberof POISuggestion
      */
-    'submitted_by'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof POISuggestion
-     */
     'suggestion_name': string;
 }
 /**
@@ -211,7 +228,7 @@ export interface RewardEvent {
      * @type {string}
      * @memberof RewardEvent
      */
-    'source': string;
+    'source': RewardEventSourceEnum;
     /**
      * Timestamp of the reward event
      * @type {string}
@@ -219,19 +236,16 @@ export interface RewardEvent {
      */
     'timestamp': string;
 }
-/**
- * 
- * @export
- * @interface SubmitReferralCode400Response
- */
-export interface SubmitReferralCode400Response {
-    /**
-     * Error description
-     * @type {string}
-     * @memberof SubmitReferralCode400Response
-     */
-    'message': string;
-}
+
+export const RewardEventSourceEnum = {
+    ReferralBonus: 'referral_bonus',
+    ReferredBonus: 'referred_bonus',
+    WaittimeConfirm: 'waittime_confirm',
+    WaittimeSubmit: 'waittime_submit'
+} as const;
+
+export type RewardEventSourceEnum = typeof RewardEventSourceEnum[keyof typeof RewardEventSourceEnum];
+
 /**
  * 
  * @export
@@ -244,12 +258,6 @@ export interface SuggestNewPOIRequest {
      * @memberof SuggestNewPOIRequest
      */
     'notes'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SuggestNewPOIRequest
-     */
-    'submitted_by'?: string;
     /**
      * 
      * @type {string}
@@ -585,7 +593,7 @@ export const POIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetAllPOI200ResponseInner>>> {
+        async suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.suggestNewPOI(suggestNewPOIRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -625,7 +633,7 @@ export const POIApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: any): AxiosPromise<Array<GetAllPOI200ResponseInner>> {
+        suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: any): AxiosPromise<void> {
             return localVarFp.suggestNewPOI(suggestNewPOIRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -664,7 +672,7 @@ export interface POIApiInterface {
      * @throws {RequiredError}
      * @memberof POIApiInterface
      */
-    suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
+    suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
 
 }
 
@@ -813,7 +821,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
