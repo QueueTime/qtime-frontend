@@ -18,3 +18,7 @@ web-build/
 
 # env
 .env
+
+# Firebase debug
+firestore-debug.log
+ui-debug.log
