@@ -101,7 +101,8 @@ export const TabNavigator = () => (
       name={ROUTES.REWARDS}
       component={RewardsScreen}
       options={{
-        title: "Rewards",
+        title: "Rewards History",
+        tabBarLabel: "Rewards",
         tabBarIcon: ({ color, size }) => renderFeatherIcon("gift", color, size),
       }}
     />
