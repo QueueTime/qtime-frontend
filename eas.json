@@ -3,11 +3,17 @@
     "version": ">= 3.1.1"
   },
   "build": {
+    "fast": {
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
+    },
     "development": {
       "developmentClient": true,
       "distribution": "internal"
     },
     "development-ios": {
+      "extends": "fast",
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
@@ -15,6 +21,7 @@
       }
     },
     "preview": {
+      "extends": "fast",
       "distribution": "internal"
     },
     "production": {}

@@ -35,13 +35,14 @@
       "bundleIdentifier": "com.capstone.QTime",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
+        "UIBackgroundModes": ["location", "fetch"]
       }
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/android-icon.png",
-      "package": "com.capstone.QTime"
+      "package": "com.capstone.QTime",
+      "permissions": ["ACCESS_BACKGROUND_LOCATION", "ACCESS_FINE_LOCATION"]
     },
     "extra": {
       "eas": {

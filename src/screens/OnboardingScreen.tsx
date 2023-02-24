@@ -48,6 +48,13 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
       "All data is stored locally on your device and your identity is not shared with anyone.\n",
     image: require("@assets/images/OnboardingC.png"),
   },
+  {
+    key: "D",
+    title: "Allow location for accurate\nwait times.",
+    content:
+      "Allow QTime to access your location to get the most accurate wait times possible.",
+    image: require("@assets/images/OnboardingD.png"),
+  },
 ];
 
 /**
@@ -252,7 +259,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginTop: -60,
   },
-  completeButton: { width: 50, height: 50, borderRadius: 999, marginRight: 25 },
+  completeButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 999,
+    marginRight: 25,
+  },
   exitContainer: {
     position: "absolute",
     top: 0,
