@@ -221,6 +221,7 @@ export const LocationDetailsScreen = ({
               styles.waitTimeButtonHeight,
             ]}
             onPress={confirmNewWaitTime}
+            testID="confirmWaitTimeButton"
           >
             <StyledText
               style={[
@@ -292,6 +293,7 @@ export const LocationDetailsScreen = ({
               type="primary"
               style={styles.waitTimeButtonHeight}
               onPress={submitNewWaitTime}
+              testID="submitWaitTimeButton"
             >
               <StyledText style={styles.submitNewWaitTimeText}>
                 Submit New Time
