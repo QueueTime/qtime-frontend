@@ -280,7 +280,6 @@ export const LocationDetailsScreen = ({
                 setNewWaitTime((prevCount) => prevCount + 1);
                 setWasInteracted(true);
               }}
-              testID="waitTimePlusButton"
             >
               <AntDesign
                 name="plus"
