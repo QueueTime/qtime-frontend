@@ -221,6 +221,7 @@ export const LocationDetailsScreen = ({
               styles.waitTimeButtonHeight,
             ]}
             onPress={confirmNewWaitTime}
+            testID="confirmWaitTimeButton"
           >
             <StyledText
               style={[
@@ -279,6 +280,7 @@ export const LocationDetailsScreen = ({
                 setNewWaitTime((prevCount) => prevCount + 1);
                 setWasInteracted(true);
               }}
+              testID="waitTimePlusButton"
             >
               <AntDesign
                 name="plus"
@@ -292,6 +294,7 @@ export const LocationDetailsScreen = ({
               type="primary"
               style={styles.waitTimeButtonHeight}
               onPress={submitNewWaitTime}
+              testID="submitWaitTimeButton"
             >
               <StyledText style={styles.submitNewWaitTimeText}>
                 Submit New Time
