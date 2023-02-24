@@ -24,7 +24,6 @@ describe("<LocationDetailsScreen />", () => {
       let e = { data: { action: "something" }, preventDefault: jest.fn() };
       callback(e);
     }),
-    goBack: jest.fn(),
   };
 
   afterEach(() => {
