@@ -141,8 +141,12 @@ export const AuthProvider = ({
               Authorization: `Bearer ${await user.getIdToken()}`,
             },
           });
-        } catch (error) {
-          displayError(`Cannot create new account. Try again later. ${error}`);
+        } catch (error: any) {
+          displayError(
+            `Cannot create new account. Try again later. ${
+              error?.response?.data || error
+            }`
+          );
         }
       }
     });
