@@ -13,6 +13,17 @@ import "@testing-library/jest-native/extend-expect";
 const textInputId = "referral-input-textbox";
 const getTextInputBox = () => screen.getByTestId(textInputId);
 
+// Mock useNavigation hook
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      addListener: jest.fn(),
+    }),
+  };
+});
+
 describe("<ReferralScreen />", () => {
   const mockNavigate = jest.fn();
   const navigation: any = { navigate: mockNavigate };
