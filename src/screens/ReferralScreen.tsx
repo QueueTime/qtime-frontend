@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 
 import { View, WhiteSpace, InputItem } from "@ant-design/react-native";

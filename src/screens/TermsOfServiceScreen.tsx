@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 
 import { View, Button } from "@ant-design/react-native";

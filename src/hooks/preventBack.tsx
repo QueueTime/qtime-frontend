@@ -7,5 +7,5 @@ export const usePreventBack = (callback: () => void = () => {}) => {
   useEffect(() => {
     navigation.addListener("beforeRemove", (e: any) => e.preventDefault());
     callback();
-  }, [navigation]);
+  }, [navigation, callback]);
 };
