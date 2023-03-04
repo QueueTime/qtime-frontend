@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 
 import { View, WhiteSpace, InputItem } from "@ant-design/react-native";
@@ -32,6 +32,13 @@ export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
       width: userInput ? "100%" : "95%",
     },
   });
+
+  // Prevent going back
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e: any) => e.preventDefault()),
+    [navigation]
+  );
 
   const onSubmit = () => {
     if (isTransitioning) {

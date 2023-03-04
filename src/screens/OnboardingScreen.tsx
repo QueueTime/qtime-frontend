@@ -18,6 +18,7 @@ import { StyledText } from "@components/StyledText";
 import { AuthContext } from "@contexts/auth";
 import { completeUserOnboarding } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { OnboardingScreenProps } from "@navigators/SignUpStackNavigator";
 
 interface ICarouselItemProps {
   key: string;
@@ -55,8 +56,19 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
  * since it's a pain to pass it through the navigator. Only required for the stack navigator.
  * See https://reactnavigation.org/docs/hello-react-navigation/#passing-additional-props.
  */
-export const OnboardingScreenForNavigator = () => {
+export const OnboardingScreenForNavigator = ({
+  navigation,
+}: {
+  navigation: OnboardingScreenProps["navigation"];
+}) => {
   const { userProfile } = useContext(AuthContext);
+
+  // Prevent going back
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e: any) => e.preventDefault()),
+    [navigation]
+  );
 
   const completeOnboarding = async () => {
     try {
