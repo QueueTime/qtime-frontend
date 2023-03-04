@@ -199,9 +199,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
         searchBar?.inputRef?.blur();
       }}
     >
-      <View
-        style={[theme.styles.screenContainer, styles.removeBottonScreenPadding]}
-      >
+      <View style={[theme.styles.screenContainer, styles.container]}>
         <View style={styles.searchContainer}>
           <SearchBar
             ref={(el) => ((searchBar as any) = el)}
@@ -299,6 +297,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                     {renderIcon(poi.type, theme.iconColor)}
                   </View>
                 }
+                style={styles.poiItem}
               >
                 <StyledText style={styles.poiDistanceText}>
                   {poi.distance + " km"}
@@ -317,17 +316,20 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
 };
 
 const styles = StyleSheet.create({
-  removeBottonScreenPadding: {
+  container: {
     paddingBottom: 0,
+    paddingHorizontal: 0,
   },
   searchContainer: {
-    paddingTop: Platform.OS === "ios" ? 35 : 0,
+    marginTop: Platform.OS === "ios" ? 35 : 0,
+    paddingHorizontal: 20,
   },
   searchBar: {
     borderRadius: 6,
   },
   sortContainer: {
-    paddingTop: 20,
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   tags: {
     paddingRight: 6,
@@ -400,6 +402,9 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     borderBottomColor: "#EEEEEE",
     borderBottomWidth: 0.5,
+  },
+  poiItem: {
+    paddingHorizontal: 25,
   },
   poiWaitTimeText: {
     textAlign: "right",
