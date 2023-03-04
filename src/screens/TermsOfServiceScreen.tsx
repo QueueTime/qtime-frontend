@@ -7,6 +7,7 @@ import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { REFERRAL } from "@constants/routes";
 import { TermsOfServiceScreenProps } from "@navigators/SignUpStackNavigator";
+import { usePreventBack } from "@hooks/preventBack";
 
 const TERMS_OF_SERVICE = `
 The information you provide will be collected by QueueTime, Inc. for the purpose of collecting, consolidating and sharing live POI wait time throughout the academic school year at McMaster University to provide a service for students to view wait times across campus. This information is collected under sections 20(b), 22(2)(a) & 27(2)(c) & 34(1)(a) of the Freedom of Information and Protection of Privacy Act (FOIP). 
@@ -20,11 +21,7 @@ export const TermsOfServiceScreen = ({
   const { theme } = useContext(ThemeContext);
 
   // Prevent going back
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e: any) => e.preventDefault()),
-    [navigation]
-  );
+  usePreventBack();
 
   const onAccept = async () => {
     navigation.navigate(REFERRAL);

@@ -8,6 +8,7 @@ import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
 import { ReferralScreenProps } from "@navigators/SignUpStackNavigator";
 import { ONBOARDING } from "@constants/routes";
+import { usePreventBack } from "@hooks/preventBack";
 
 const MAX_CHARS = 6;
 const PLACEHOLDER = "XCJDHC";
@@ -34,11 +35,7 @@ export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
   });
 
   // Prevent going back
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e: any) => e.preventDefault()),
-    [navigation]
-  );
+  usePreventBack();
 
   const onSubmit = () => {
     if (isTransitioning) {

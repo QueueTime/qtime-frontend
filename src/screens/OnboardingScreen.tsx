@@ -19,6 +19,7 @@ import { AuthContext } from "@contexts/auth";
 import { completeUserOnboarding } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { OnboardingScreenProps } from "@navigators/SignUpStackNavigator";
+import { usePreventBack } from "@hooks/preventBack";
 
 interface ICarouselItemProps {
   key: string;
@@ -64,11 +65,7 @@ export const OnboardingScreenForNavigator = ({
   const { userProfile } = useContext(AuthContext);
 
   // Prevent going back
-  useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e: any) => e.preventDefault()),
-    [navigation]
-  );
+  usePreventBack();
 
   const completeOnboarding = async () => {
     try {
