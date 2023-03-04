@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   poiItem: {
-    paddingHorizontal: 25,
+    paddingLeft: 25,
   },
   poiWaitTimeText: {
     textAlign: "right",
