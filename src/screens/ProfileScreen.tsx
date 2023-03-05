@@ -10,9 +10,10 @@ import * as ROUTES from "@constants/routes";
 import { ProfileScreenProps } from "@navigators/ProfileStackNavigator";
 import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
-import { deleteUser } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { OnboardingScreen } from "@screens/OnboardingScreen";
+import { userApi } from "@api/client/apis";
+import { toHoursAndMinutes } from "@utils/time";
 
 const copyToClipboard = async (content: string) => {
   await Clipboard.setStringAsync(content);
@@ -67,8 +68,14 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
               text: "Yes, delete it",
               onPress: async () => {
                 try {
+                  // Fetch token *before* signing out
+                  const token = await user!.getIdToken();
                   await signOut();
-                  await deleteUser(userProfile!.email);
+                  await userApi.deleteUserProfile({
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  });
                 } catch (error) {
                   displayError(
                     `Failed to delete user account. Try again later. ${error}`
@@ -112,20 +119,22 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
             {user!.displayName}
           </StyledText>
           <StyledText style={styles.email}>{user!.email}</StyledText>
-          <StyledText style={styles.points}>1271 points</StyledText>
+          <StyledText style={styles.points}>
+            {userProfile?.rewardPointBalance || 0} points
+          </StyledText>
         </View>
       </View>
       <View style={styles.referralBox}>
         <StyledText>Your Unique Referral Code</StyledText>
         <TouchableOpacity
-          onPress={() => copyToClipboard("ABX89K")}
+          onPress={() => copyToClipboard(userProfile!.referralCode)}
           style={styles.halfWidth}
         >
           <View style={[styles.referralRow]}>
             <StyledText
               style={[theme.styles.primaryColor, styles.referralCode]}
             >
-              ABX89K
+              {userProfile!.referralCode}
             </StyledText>
             <Feather
               name="copy"
@@ -146,7 +155,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
         <List.Item>
           <InfoSection
             text="Time spent waiting in line"
-            subtext="7 hrs 2 min"
+            subtext={toHoursAndMinutes(userProfile!.timeInLine)}
           />
         </List.Item>
       </List>

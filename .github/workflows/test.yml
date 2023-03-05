@@ -16,5 +16,11 @@ jobs:
       - name: Install npm dependencies
         run: npm install
 
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "BASE_URL=/" >> .env
+          echo "ENVIRONMENT=test >> .env"
+
       - name: Run jest tests
         run: npm run test

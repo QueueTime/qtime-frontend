@@ -24,6 +24,19 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface ErrorResponse
+ */
+export interface ErrorResponse {
+    /**
+     * Error description
+     * @type {string}
+     * @memberof ErrorResponse
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
  * @interface GetAllPOI200ResponseInner
  */
 export interface GetAllPOI200ResponseInner {
@@ -79,64 +92,51 @@ export interface GetAllPOI200ResponseInner {
 /**
  * 
  * @export
- * @interface GetUserProfile200ResponseInner
+ * @interface GetPOI404Response
  */
-export interface GetUserProfile200ResponseInner {
+export interface GetPOI404Response {
     /**
-     * 
+     * Error description
      * @type {string}
-     * @memberof GetUserProfile200ResponseInner
+     * @memberof GetPOI404Response
      */
-    'color_theme'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'email': string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'hasCompletedOnboarding'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'notification_setting'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'num_lines_participated'?: number;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'poi_frequency'?: object;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'referral_code'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'reward_point_balance'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof GetUserProfile200ResponseInner
-     */
-    'time_in_line'?: number;
+    'message': string;
 }
+/**
+ * 
+ * @export
+ * @interface ListRewardEvents200ResponseInner
+ */
+export interface ListRewardEvents200ResponseInner {
+    /**
+     * Number of points added or removed
+     * @type {number}
+     * @memberof ListRewardEvents200ResponseInner
+     */
+    'points': number;
+    /**
+     * Source of the reward points change
+     * @type {string}
+     * @memberof ListRewardEvents200ResponseInner
+     */
+    'source': ListRewardEvents200ResponseInnerSourceEnum;
+    /**
+     * Timestamp of the reward event
+     * @type {string}
+     * @memberof ListRewardEvents200ResponseInner
+     */
+    'timestamp': string;
+}
+
+export const ListRewardEvents200ResponseInnerSourceEnum = {
+    ReferralBonus: 'referral_bonus',
+    ReferredBonus: 'referred_bonus',
+    WaittimeConfirm: 'waittime_confirm',
+    WaittimeSubmit: 'waittime_submit'
+} as const;
+
+export type ListRewardEvents200ResponseInnerSourceEnum = typeof ListRewardEvents200ResponseInnerSourceEnum[keyof typeof ListRewardEvents200ResponseInnerSourceEnum];
+
 /**
  * 
  * @export
@@ -209,14 +209,43 @@ export interface POISuggestion {
      * @type {string}
      * @memberof POISuggestion
      */
-    'submitted_by'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof POISuggestion
-     */
     'suggestion_name': string;
 }
+/**
+ * 
+ * @export
+ * @interface RewardEvent
+ */
+export interface RewardEvent {
+    /**
+     * Number of points added or removed
+     * @type {number}
+     * @memberof RewardEvent
+     */
+    'points': number;
+    /**
+     * Source of the reward points change
+     * @type {string}
+     * @memberof RewardEvent
+     */
+    'source': RewardEventSourceEnum;
+    /**
+     * Timestamp of the reward event
+     * @type {string}
+     * @memberof RewardEvent
+     */
+    'timestamp': string;
+}
+
+export const RewardEventSourceEnum = {
+    ReferralBonus: 'referral_bonus',
+    ReferredBonus: 'referred_bonus',
+    WaittimeConfirm: 'waittime_confirm',
+    WaittimeSubmit: 'waittime_submit'
+} as const;
+
+export type RewardEventSourceEnum = typeof RewardEventSourceEnum[keyof typeof RewardEventSourceEnum];
+
 /**
  * 
  * @export
@@ -229,12 +258,6 @@ export interface SuggestNewPOIRequest {
      * @memberof SuggestNewPOIRequest
      */
     'notes'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SuggestNewPOIRequest
-     */
-    'submitted_by'?: string;
     /**
      * 
      * @type {string}
@@ -439,6 +462,10 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -473,6 +500,10 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -505,6 +536,10 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -558,7 +593,7 @@ export const POIApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetAllPOI200ResponseInner>>> {
+        async suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.suggestNewPOI(suggestNewPOIRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -598,7 +633,7 @@ export const POIApiFactory = function (configuration?: Configuration, basePath?:
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: any): AxiosPromise<Array<GetAllPOI200ResponseInner>> {
+        suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: any): AxiosPromise<void> {
             return localVarFp.suggestNewPOI(suggestNewPOIRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -637,7 +672,7 @@ export interface POIApiInterface {
      * @throws {RequiredError}
      * @memberof POIApiInterface
      */
-    suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
+    suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
 
 }
 
@@ -693,16 +728,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
     return {
         /**
          * 
-         * @summary Deletes a specified user
-         * @param {string} email Email of a user profile
+         * @summary Deletes user account associated with client request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUserProfile: async (email: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('deleteUserProfile', 'email', email)
-            const localVarPath = `/user/{email}/delete`
-                .replace(`{${"email"}}`, encodeURIComponent(String(email)));
+        deleteUserProfile: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/delete-account`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -713,6 +744,56 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * List all events that have impacted the user\'s point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+         * @summary Retrieve events impacting user point score
+         * @param {string} [before] Timestamp to retrieve events before
+         * @param {number} [limit] Limit the number of events returned
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listRewardEvents: async (before?: string, limit?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/rewards/events`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (before !== undefined) {
+                localVarQueryParameter['before'] = (before as any instanceof Date) ?
+                    (before as any).toISOString() :
+                    before;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
+            }
 
 
     
@@ -727,16 +808,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary Get details of a specified profile
-         * @param {string} email Email of a user profile
+         * @summary Creates a new user profile associated with a UID attached to the bearer of a JWT
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserProfile: async (email: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'email' is not null or undefined
-            assertParamExists('getUserProfile', 'email', email)
-            const localVarPath = `/user/{email}/profile`
-                .replace(`{${"email"}}`, encodeURIComponent(String(email)));
+        newUserSignup: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/signup`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -744,9 +821,51 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * During signup submit a referral code to earn points as part of a referral bonus
+         * @summary Submit a referral code
+         * @param {string} code User referral code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitReferralCode: async (code: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'code' is not null or undefined
+            assertParamExists('submitReferralCode', 'code', code)
+            const localVarPath = `/user/referral/{code}`
+                .replace(`{${"code"}}`, encodeURIComponent(String(code)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
     
@@ -771,24 +890,45 @@ export const UserApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @summary Deletes a specified user
-         * @param {string} email Email of a user profile
+         * @summary Deletes user account associated with client request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteUserProfile(email: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUserProfile(email, options);
+        async deleteUserProfile(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteUserProfile(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * List all events that have impacted the user\'s point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+         * @summary Retrieve events impacting user point score
+         * @param {string} [before] Timestamp to retrieve events before
+         * @param {number} [limit] Limit the number of events returned
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async listRewardEvents(before?: string, limit?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ListRewardEvents200ResponseInner>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listRewardEvents(before, limit, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @summary Get details of a specified profile
-         * @param {string} email Email of a user profile
+         * @summary Creates a new user profile associated with a UID attached to the bearer of a JWT
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserProfile(email: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetUserProfile200ResponseInner>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserProfile(email, options);
+        async newUserSignup(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.newUserSignup(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * During signup submit a referral code to earn points as part of a referral bonus
+         * @summary Submit a referral code
+         * @param {string} code User referral code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async submitReferralCode(code: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.submitReferralCode(code, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -803,23 +943,42 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
-         * @summary Deletes a specified user
-         * @param {string} email Email of a user profile
+         * @summary Deletes user account associated with client request
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteUserProfile(email: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteUserProfile(email, options).then((request) => request(axios, basePath));
+        deleteUserProfile(options?: any): AxiosPromise<void> {
+            return localVarFp.deleteUserProfile(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * List all events that have impacted the user\'s point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+         * @summary Retrieve events impacting user point score
+         * @param {string} [before] Timestamp to retrieve events before
+         * @param {number} [limit] Limit the number of events returned
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        listRewardEvents(before?: string, limit?: number, options?: any): AxiosPromise<Array<ListRewardEvents200ResponseInner>> {
+            return localVarFp.listRewardEvents(before, limit, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get details of a specified profile
-         * @param {string} email Email of a user profile
+         * @summary Creates a new user profile associated with a UID attached to the bearer of a JWT
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserProfile(email: string, options?: any): AxiosPromise<Array<GetUserProfile200ResponseInner>> {
-            return localVarFp.getUserProfile(email, options).then((request) => request(axios, basePath));
+        newUserSignup(options?: any): AxiosPromise<void> {
+            return localVarFp.newUserSignup(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * During signup submit a referral code to earn points as part of a referral bonus
+         * @summary Submit a referral code
+         * @param {string} code User referral code
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitReferralCode(code: string, options?: any): AxiosPromise<void> {
+            return localVarFp.submitReferralCode(code, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -832,23 +991,42 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
 export interface UserApiInterface {
     /**
      * 
-     * @summary Deletes a specified user
-     * @param {string} email Email of a user profile
+     * @summary Deletes user account associated with client request
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    deleteUserProfile(email: string, options?: AxiosRequestConfig): AxiosPromise<void>;
+    deleteUserProfile(options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * List all events that have impacted the user\'s point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+     * @summary Retrieve events impacting user point score
+     * @param {string} [before] Timestamp to retrieve events before
+     * @param {number} [limit] Limit the number of events returned
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    listRewardEvents(before?: string, limit?: number, options?: AxiosRequestConfig): AxiosPromise<Array<ListRewardEvents200ResponseInner>>;
 
     /**
      * 
-     * @summary Get details of a specified profile
-     * @param {string} email Email of a user profile
+     * @summary Creates a new user profile associated with a UID attached to the bearer of a JWT
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApiInterface
      */
-    getUserProfile(email: string, options?: AxiosRequestConfig): AxiosPromise<Array<GetUserProfile200ResponseInner>>;
+    newUserSignup(options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * During signup submit a referral code to earn points as part of a referral bonus
+     * @summary Submit a referral code
+     * @param {string} code User referral code
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    submitReferralCode(code: string, options?: AxiosRequestConfig): AxiosPromise<void>;
 
 }
 
@@ -861,26 +1039,49 @@ export interface UserApiInterface {
 export class UserApi extends BaseAPI implements UserApiInterface {
     /**
      * 
-     * @summary Deletes a specified user
-     * @param {string} email Email of a user profile
+     * @summary Deletes user account associated with client request
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public deleteUserProfile(email: string, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).deleteUserProfile(email, options).then((request) => request(this.axios, this.basePath));
+    public deleteUserProfile(options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).deleteUserProfile(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * List all events that have impacted the user\'s point score either through additions stemming from submitting wait time estimates, etc. or reductions from redeeming rewards
+     * @summary Retrieve events impacting user point score
+     * @param {string} [before] Timestamp to retrieve events before
+     * @param {number} [limit] Limit the number of events returned
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public listRewardEvents(before?: string, limit?: number, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).listRewardEvents(before, limit, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Get details of a specified profile
-     * @param {string} email Email of a user profile
+     * @summary Creates a new user profile associated with a UID attached to the bearer of a JWT
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public getUserProfile(email: string, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).getUserProfile(email, options).then((request) => request(this.axios, this.basePath));
+    public newUserSignup(options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).newUserSignup(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * During signup submit a referral code to earn points as part of a referral bonus
+     * @summary Submit a referral code
+     * @param {string} code User referral code
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public submitReferralCode(code: string, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).submitReferralCode(code, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

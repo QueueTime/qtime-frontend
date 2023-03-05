@@ -15,7 +15,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { SuccessModal } from "@components/SuccessModal";
-import { renderLastUpdated } from "@utils/waitTime";
+import { renderLastUpdated } from "@utils/time";
 import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 
 export const LocationDetailsScreen = ({
@@ -221,6 +221,7 @@ export const LocationDetailsScreen = ({
               styles.waitTimeButtonHeight,
             ]}
             onPress={confirmNewWaitTime}
+            testID="confirmWaitTimeButton"
           >
             <StyledText
               style={[
@@ -292,6 +293,7 @@ export const LocationDetailsScreen = ({
               type="primary"
               style={styles.waitTimeButtonHeight}
               onPress={submitNewWaitTime}
+              testID="submitWaitTimeButton"
             >
               <StyledText style={styles.submitNewWaitTimeText}>
                 Submit New Time
