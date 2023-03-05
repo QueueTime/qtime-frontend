@@ -15,9 +15,15 @@
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "extends": "production"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "BASE_URL": "https://queuetime.tech/api",
+        "ENVIRONMENT": "prod"
+      }
+    }
   },
   "submit": {
     "production": {}
