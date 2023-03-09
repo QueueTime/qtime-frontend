@@ -123,6 +123,19 @@ export const OnboardingScreen = ({
     backgroundPermission = await Location.requestBackgroundPermissionsAsync();
   };
 
+  const completeOnboarding = async () => {
+    if (isLastOnboardingPage) {
+      await getTrackingPermission();
+      if (!backgroundPermission.granted) {
+        requestPermissions();
+      } else {
+        if (onComplete) {
+          onComplete();
+        }
+      }
+    }
+  };
+
   // Animate the fade-in and fade-out of the complete button
   const [completeFadeButtonAnimation] = useState(new Animated.Value(0));
   useEffect(() => {
@@ -227,14 +240,7 @@ export const OnboardingScreen = ({
               style={styles.completeButton}
               type="primary"
               onPress={async () => {
-                if (isLastOnboardingPage) {
-                  await getTrackingPermission();
-                  if (!backgroundPermission.granted) {
-                    requestPermissions();
-                  } else {
-                    onComplete();
-                  }
-                }
+                await completeOnboarding();
               }}
             >
               <Feather name="check" size={20} color="#ffffff" />
