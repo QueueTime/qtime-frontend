@@ -129,9 +129,7 @@ export const OnboardingScreen = ({
       if (!backgroundPermission.granted) {
         requestPermissions();
       } else {
-        if (onComplete) {
-          onComplete();
-        }
+        onComplete?.();
       }
     }
   };
