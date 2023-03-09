@@ -21,6 +21,7 @@ import { StyledText } from "@components/StyledText";
 import { AuthContext } from "@contexts/auth";
 import { completeUserOnboarding } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { usePreventBack } from "@hooks/preventBack";
 
 interface ICarouselItemProps {
   key: string;
@@ -67,6 +68,9 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
  */
 export const OnboardingScreenForNavigator = () => {
   const { userProfile } = useContext(AuthContext);
+
+  // Prevent going back
+  usePreventBack();
 
   const completeOnboarding = async () => {
     try {

@@ -71,7 +71,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
                   // Fetch token *before* signing out
                   const token = await user!.getIdToken();
                   await signOut();
-                  await userApi.deleteUserProfile({
+                  userApi.deleteUserProfile({
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },
