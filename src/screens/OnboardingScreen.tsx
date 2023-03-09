@@ -7,7 +7,10 @@ import {
   ImageSourcePropType,
   Image,
   TouchableOpacity,
+  Linking,
+  Alert,
 } from "react-native";
+import * as Location from "expo-location";
 
 import { ExpandingDot } from "react-native-animated-pagination-dots";
 import { View, Button } from "@ant-design/react-native";
@@ -48,6 +51,13 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
     content:
       "All data is stored locally on your device and your identity is not shared with anyone.\n",
     image: require("@assets/images/OnboardingC.png"),
+  },
+  {
+    key: "D",
+    title: "Allow location for accurate\nwait times.",
+    content:
+      "Allow QTime to access your location to get the most accurate wait times possible.",
+    image: require("@assets/images/OnboardingD.png"),
   },
 ];
 
@@ -92,6 +102,37 @@ export const OnboardingScreen = ({
     setActiveIndex(viewableItems[0].index);
   });
   const isLastOnboardingPage = activeIndex === CAROUSEL_ITEMS.length - 1;
+  let backgroundPermission: Location.PermissionResponse;
+
+  const requestPermissions = () => {
+    Alert.alert(
+      "Allow Location Access",
+      "In order to use this app to its full potential, please allow location access. Set location access to 'Always' for the best experience.",
+      [
+        {
+          text: "Open Settings",
+          style: "default",
+          onPress: () => Linking.openSettings(),
+        },
+      ]
+    );
+  };
+
+  const getTrackingPermission = async () => {
+    await Location.requestForegroundPermissionsAsync();
+    backgroundPermission = await Location.requestBackgroundPermissionsAsync();
+  };
+
+  const completeOnboarding = async () => {
+    if (isLastOnboardingPage) {
+      await getTrackingPermission();
+      if (!backgroundPermission.granted) {
+        requestPermissions();
+      } else {
+        onComplete?.();
+      }
+    }
+  };
 
   // Animate the fade-in and fade-out of the complete button
   const [completeFadeButtonAnimation] = useState(new Animated.Value(0));
@@ -196,10 +237,8 @@ export const OnboardingScreen = ({
             <Button
               style={styles.completeButton}
               type="primary"
-              onPress={() => {
-                if (isLastOnboardingPage) {
-                  onComplete();
-                }
+              onPress={async () => {
+                await completeOnboarding();
               }}
             >
               <Feather name="check" size={20} color="#ffffff" />
@@ -256,7 +295,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     marginTop: -60,
   },
-  completeButton: { width: 50, height: 50, borderRadius: 999, marginRight: 25 },
+  completeButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 999,
+    marginRight: 25,
+  },
   exitContainer: {
     position: "absolute",
     top: 0,

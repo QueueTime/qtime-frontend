@@ -1,9 +1,9 @@
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+// import UserLocation from "../UserLocation";
+import LTest from "../location";
 
 export const MapScreen = () => (
-  <View style={styles.container}>
-    <Text style={styles.huge}>Map Screen</Text>
-  </View>
+  <View style={styles.container}>{<LTest />}</View>
 );
 
 const styles = StyleSheet.create({
