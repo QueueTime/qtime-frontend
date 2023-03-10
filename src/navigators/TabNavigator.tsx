@@ -1,5 +1,7 @@
-import { OpaqueColorValue, StyleSheet } from "react-native";
+import { useEffect, useState, useRef } from "react";
+import { OpaqueColorValue, StyleSheet, AppState } from "react-native";
 
+import * as Location from "expo-location";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -10,6 +12,7 @@ import { MapScreen } from "@screens/MapScreen";
 import * as ROUTES from "@constants/routes";
 import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
+import { requestPermissions } from "@utils/permission";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -69,54 +72,83 @@ const renderSimpleLineIcon = (
 /**
  * Handles tab navigation for the main section of the app
  */
-export const TabNavigator = () => (
-  <Tab.Navigator
-    initialRouteName={ROUTES.WAIT_TIMES}
-    screenOptions={{
-      tabBarLabelStyle: styles.tabBarLabels,
-      headerTitleAlign: "center",
-    }}
-  >
-    <Tab.Screen
-      name={ROUTES.WAIT_TIMES}
-      component={WaitTimesNavigator}
-      options={{
-        title: "Wait Times",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderFeatherIcon("clock", color, size),
+export const TabNavigator = () => {
+  const appState = useRef(AppState.currentState);
+  const [_, setAppStateVisible] = useState(appState.current);
+
+  // Checking if the app is in foreground or background and triggering fetching background location permission each time the app is brought to foreground
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextAppState) => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active"
+      ) {
+        Location.getBackgroundPermissionsAsync().then((response) => {
+          if (!response.granted) {
+            requestPermissions();
+          }
+        });
+      }
+
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  });
+
+  return (
+    <Tab.Navigator
+      initialRouteName={ROUTES.WAIT_TIMES}
+      screenOptions={{
+        tabBarLabelStyle: styles.tabBarLabels,
+        headerTitleAlign: "center",
       }}
-    />
-    <Tab.Screen
-      name={ROUTES.MAP}
-      component={MapScreen}
-      options={{
-        title: "Map",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderFeatherIcon("map-pin", color, size),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.REWARDS}
-      component={RewardsScreen}
-      options={{
-        title: "Rewards History",
-        tabBarLabel: "Rewards",
-        tabBarIcon: ({ color, size }) => renderFeatherIcon("gift", color, size),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.PROFILE}
-      component={ProfileStackNavigator}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderSimpleLineIcon("user", color, size),
-      }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen
+        name={ROUTES.WAIT_TIMES}
+        component={WaitTimesNavigator}
+        options={{
+          title: "Wait Times",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("clock", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.MAP}
+        component={MapScreen}
+        options={{
+          title: "Map",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("map-pin", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.REWARDS}
+        component={RewardsScreen}
+        options={{
+          title: "Rewards History",
+          tabBarLabel: "Rewards",
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("gift", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.PROFILE}
+        component={ProfileStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderSimpleLineIcon("user", color, size),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const ICON_ADJUSTMENT_FACTOR = 5;
 
