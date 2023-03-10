@@ -59,7 +59,6 @@ export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
         },
       });
     } catch (e: any) {
-      console.log(e);
       setHasError(true);
       switch (e?.response?.status) {
         case 400:
