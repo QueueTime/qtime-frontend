@@ -76,7 +76,7 @@ export const TabNavigator = () => {
   const appState = useRef(AppState.currentState);
   const [_, setAppStateVisible] = useState(appState.current);
 
-  // Checking if the app is in foreground or background and triggering fetching background location permission each time the app is brought to foreground
+  // Checking if the app is in foreground or background and triggering the fetch of background location permission each time the app is brought to foreground
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       if (
