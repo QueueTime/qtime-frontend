@@ -6,15 +6,18 @@ import ConfettiCannon from "react-native-confetti-cannon";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
+import { AuthContext } from "@contexts/auth";
 import { ReferralScreenProps } from "@navigators/SignUpStackNavigator";
 import { ONBOARDING } from "@constants/routes";
 import { usePreventBack } from "@hooks/preventBack";
+import { userApi } from "@api/client/apis";
+import { displayError } from "@utils/error";
 
 const MAX_CHARS = 6;
-const PLACEHOLDER = "XCJDHC";
-const CODE = "ABCDEF";
+const PLACEHOLDER = "Enter code";
 export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
   const { theme } = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
 
   const [userInput, setUserInput] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -37,7 +40,7 @@ export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
   // Prevent going back
   usePreventBack();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (isTransitioning) {
       return; // Prevent multiple submissions once one is validated
     }
@@ -48,15 +51,30 @@ export const ReferralScreen = ({ navigation }: IReferralScreenProps) => {
       return;
     }
 
-    // TODO: Replace this with a call to check if the code is valid
-    if (userInput !== CODE) {
+    // Call backend to validate code
+    try {
+      await userApi.submitReferralCode(userInput, {
+        headers: {
+          Authorization: `Bearer ${await user!.getIdToken()}`,
+        },
+      });
+    } catch (e: any) {
       setHasError(true);
-      setErrorCode("Invalid referral code. Try again.");
+      switch (e?.response?.status) {
+        case 400:
+          setErrorCode("Invalid referral code. Try again.");
+          break;
+        case 404:
+          setErrorCode("Referral code not found. Try again.");
+          break;
+        default:
+          setErrorCode("Something went wrong. Try again.");
+          displayError(e?.response?.data || e);
+      }
       return;
     }
 
     setIsTransitioning(true);
-    // TODO: Add code to attribute points
     setTimeout(() => {
       setIsTransitioning(false);
       navigateToNextPage();

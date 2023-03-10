@@ -166,7 +166,7 @@ interface IAuthProviderProps {
   setFirebaseInitializing: Dispatch<SetStateAction<boolean>>;
 }
 
-interface IUserProfile {
+export interface IUserProfile {
   email: string;
   hasCompletedOnboarding: boolean;
   hasUsedReferralCode: boolean;

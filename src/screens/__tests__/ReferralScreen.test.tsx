@@ -4,10 +4,15 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-
-import { ReferralScreen } from "@screens/ReferralScreen";
-
+import { mock } from "jest-mock-extended";
 import "@testing-library/jest-native/extend-expect";
+
+import { AuthContext } from "@contexts/auth";
+import { ReferralScreen } from "@screens/ReferralScreen";
+import { userApi } from "@api/client/apis";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { IUserProfile } from "@contexts/auth";
+import { AxiosResponse } from "axios";
 
 // Test Utils
 const textInputId = "referral-input-textbox";
@@ -33,7 +38,22 @@ describe("<ReferralScreen />", () => {
   });
 
   it("accepts a valid referral code", async () => {
-    render(<ReferralScreen navigation={navigation} />);
+    // Mock the api call to return a resolved promise
+    userApi.submitReferralCode = jest.fn(() =>
+      Promise.resolve(mock<AxiosResponse<void, any>>())
+    );
+    render(
+      <AuthContext.Provider
+        value={{
+          user: mock<FirebaseAuthTypes.User>(),
+          userProfile: mock<IUserProfile>(),
+          signIn: jest.fn(),
+          signOut: jest.fn(),
+        }}
+      >
+        <ReferralScreen navigation={navigation} />
+      </AuthContext.Provider>
+    );
     const input = getTextInputBox();
     fireEvent.changeText(input, "ABCDEF");
     expect(input.props.value).toBe("ABCDEF");
@@ -46,12 +66,29 @@ describe("<ReferralScreen />", () => {
   });
 
   it("validates input for referral codes of 6 characters", async () => {
-    render(<ReferralScreen navigation={navigation} />);
+    // Mock the api call to return an error
+    userApi.submitReferralCode = jest.fn(() =>
+      Promise.reject({
+        response: { status: 404 },
+      })
+    );
+    render(
+      <AuthContext.Provider
+        value={{
+          user: mock<FirebaseAuthTypes.User>(),
+          userProfile: mock<IUserProfile>(),
+          signIn: jest.fn(),
+          signOut: jest.fn(),
+        }}
+      >
+        <ReferralScreen navigation={navigation} />
+      </AuthContext.Provider>
+    );
     const input = getTextInputBox();
     fireEvent.changeText(input, "ABCDEG");
     expect(input.props.value).toBe("ABCDEG");
     fireEvent(input, "submitEditing");
-    await screen.findByText("Invalid referral code. Try again.");
+    await screen.findByText("Referral code not found. Try again.");
   });
 
   it("validates input for referral codes less than 6 characters", async () => {
