@@ -7,8 +7,6 @@ import {
   ImageSourcePropType,
   Image,
   TouchableOpacity,
-  Linking,
-  Alert,
 } from "react-native";
 import * as Location from "expo-location";
 
@@ -22,6 +20,7 @@ import { AuthContext } from "@contexts/auth";
 import { completeUserOnboarding } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { usePreventBack } from "@hooks/preventBack";
+import { requestPermissions } from "@hooks/checkLocationPermission";
 
 interface ICarouselItemProps {
   key: string;
@@ -103,20 +102,6 @@ export const OnboardingScreen = ({
   });
   const isLastOnboardingPage = activeIndex === CAROUSEL_ITEMS.length - 1;
   let backgroundPermission: Location.PermissionResponse;
-
-  const requestPermissions = () => {
-    Alert.alert(
-      "Allow Location Access",
-      "In order to use this app to its full potential, please allow location access. Set location access to 'Always' for the best experience.",
-      [
-        {
-          text: "Open Settings",
-          style: "default",
-          onPress: () => Linking.openSettings(),
-        },
-      ]
-    );
-  };
 
   const getTrackingPermission = async () => {
     await Location.requestForegroundPermissionsAsync();

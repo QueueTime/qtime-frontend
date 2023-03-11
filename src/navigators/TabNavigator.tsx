@@ -10,6 +10,7 @@ import { MapScreen } from "@screens/MapScreen";
 import * as ROUTES from "@constants/routes";
 import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
+import { useLocationPermission } from "@hooks/checkLocationPermission";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -69,54 +70,59 @@ const renderSimpleLineIcon = (
 /**
  * Handles tab navigation for the main section of the app
  */
-export const TabNavigator = () => (
-  <Tab.Navigator
-    initialRouteName={ROUTES.WAIT_TIMES}
-    screenOptions={{
-      tabBarLabelStyle: styles.tabBarLabels,
-      headerTitleAlign: "center",
-    }}
-  >
-    <Tab.Screen
-      name={ROUTES.WAIT_TIMES}
-      component={WaitTimesNavigator}
-      options={{
-        title: "Wait Times",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderFeatherIcon("clock", color, size),
+export const TabNavigator = () => {
+  useLocationPermission();
+
+  return (
+    <Tab.Navigator
+      initialRouteName={ROUTES.WAIT_TIMES}
+      screenOptions={{
+        tabBarLabelStyle: styles.tabBarLabels,
+        headerTitleAlign: "center",
       }}
-    />
-    <Tab.Screen
-      name={ROUTES.MAP}
-      component={MapScreen}
-      options={{
-        title: "Map",
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderFeatherIcon("map-pin", color, size),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.REWARDS}
-      component={RewardsScreen}
-      options={{
-        title: "Rewards History",
-        tabBarLabel: "Rewards",
-        tabBarIcon: ({ color, size }) => renderFeatherIcon("gift", color, size),
-      }}
-    />
-    <Tab.Screen
-      name={ROUTES.PROFILE}
-      component={ProfileStackNavigator}
-      options={{
-        headerShown: false,
-        tabBarIcon: ({ color, size }) =>
-          renderSimpleLineIcon("user", color, size),
-      }}
-    />
-  </Tab.Navigator>
-);
+    >
+      <Tab.Screen
+        name={ROUTES.WAIT_TIMES}
+        component={WaitTimesNavigator}
+        options={{
+          title: "Wait Times",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("clock", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.MAP}
+        component={MapScreen}
+        options={{
+          title: "Map",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("map-pin", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.REWARDS}
+        component={RewardsScreen}
+        options={{
+          title: "Rewards History",
+          tabBarLabel: "Rewards",
+          tabBarIcon: ({ color, size }) =>
+            renderFeatherIcon("gift", color, size),
+        }}
+      />
+      <Tab.Screen
+        name={ROUTES.PROFILE}
+        component={ProfileStackNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) =>
+            renderSimpleLineIcon("user", color, size),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const ICON_ADJUSTMENT_FACTOR = 5;
 
