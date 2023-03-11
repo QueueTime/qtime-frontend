@@ -20,7 +20,7 @@ import { AuthContext } from "@contexts/auth";
 import { completeUserOnboarding } from "@utils/firestore";
 import { displayError } from "@utils/error";
 import { usePreventBack } from "@hooks/preventBack";
-import { requestPermissions } from "@utils/permission";
+import { requestPermissions } from "@hooks/checkLocationPermission";
 
 interface ICarouselItemProps {
   key: string;

@@ -1,7 +1,5 @@
-import { useEffect, useState, useRef } from "react";
-import { OpaqueColorValue, StyleSheet, AppState } from "react-native";
+import { OpaqueColorValue, StyleSheet } from "react-native";
 
-import * as Location from "expo-location";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -12,7 +10,7 @@ import { MapScreen } from "@screens/MapScreen";
 import * as ROUTES from "@constants/routes";
 import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
-import { requestPermissions } from "@utils/permission";
+import { useLocationPermission } from "@hooks/checkLocationPermission";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -73,31 +71,7 @@ const renderSimpleLineIcon = (
  * Handles tab navigation for the main section of the app
  */
 export const TabNavigator = () => {
-  const appState = useRef(AppState.currentState);
-  const [_, setAppStateVisible] = useState(appState.current);
-
-  // Checking if the app is in foreground or background and triggering the fetch of background location permission each time the app is brought to foreground
-  useEffect(() => {
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === "active"
-      ) {
-        Location.getBackgroundPermissionsAsync().then((response) => {
-          if (!response.granted) {
-            requestPermissions();
-          }
-        });
-      }
-
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  });
+  useLocationPermission();
 
   return (
     <Tab.Navigator
