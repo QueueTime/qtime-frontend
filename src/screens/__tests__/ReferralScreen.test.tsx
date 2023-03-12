@@ -7,11 +7,8 @@ import {
 import { mock } from "jest-mock-extended";
 import "@testing-library/jest-native/extend-expect";
 
-import { AuthContext } from "@contexts/auth";
 import { ReferralScreen } from "@screens/ReferralScreen";
 import { userApi } from "@api/client/apis";
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { IUserProfile } from "@contexts/auth";
 import { AxiosResponse } from "axios";
 import { renderWithAuthContext } from "@utils/test";
 
