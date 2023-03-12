@@ -4,8 +4,12 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import { Provider } from "@ant-design/react-native";
+import { AxiosResponse } from "axios";
+import { mock } from "jest-mock-extended";
 
+import { Provider } from "@ant-design/react-native";
+import { renderWithAuthContext } from "@utils/test";
+import { poiApi } from "@api/client/apis";
 import { POISuggestionScreen } from "@screens/POISuggestionScreen";
 
 import "@testing-library/jest-native/extend-expect";
@@ -22,8 +26,12 @@ const getSubmitButton = () => screen.getByTestId(submitButtonId);
 
 describe("<POISuggestionScreen />", () => {
   it("accepts valid input and submits a suggestion", async () => {
+    // Mock API to return 204
+    poiApi.suggestNewPOI = jest.fn(() =>
+      Promise.resolve(mock<AxiosResponse<void, any>>())
+    );
     // Provider required here for some reason to not crash
-    render(
+    renderWithAuthContext(
       <Provider>
         <POISuggestionScreen />
       </Provider>
