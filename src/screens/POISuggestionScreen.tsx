@@ -116,9 +116,9 @@ export const POISuggestionScreen = () => {
           subtitleText="Thank you for your contribution to the community!"
           imageSource={require("@assets/images/success.png")}
           showModal={showSuccessModal}
-          // onTapToClose={() => {
-          //   setShowSuccessModal(false);
-          // }}
+          onTapToClose={() => {
+            setShowSuccessModal(false);
+          }}
         />
       </View>
     </TouchableWithoutFeedback>
