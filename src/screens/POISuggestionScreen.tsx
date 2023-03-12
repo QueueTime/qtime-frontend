@@ -17,27 +17,50 @@ import { ThemeContext } from "@contexts/theme";
 import { StyledText } from "@components/StyledText";
 import { displayError } from "@utils/error";
 import { SuccessModal } from "@components/SuccessModal";
+import { AuthContext } from "@contexts/auth";
+import { poiApi } from "@api/client/apis";
 
 export const POISuggestionScreen = () => {
   const { theme } = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
 
   const [nameInput, setNameInput] = useState("");
   const [addInfoInput, setAddInfoInput] = useState("");
   const [hasError, setHasError] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  const submitForm = () => {
+  const inputTextStyle = { color: theme.styles.text.color };
+
+  const submitForm = async () => {
     Keyboard.dismiss();
     if (nameInput.length === 0) {
       setHasError(true);
       return;
     }
     setShowSuccessModal(true);
-    setNameInput("");
-    setAddInfoInput("");
-    setTimeout(() => {
+    try {
+      poiApi.suggestNewPOI(
+        {
+          suggestion_name: nameInput,
+          notes: addInfoInput,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${await user!.getIdToken()}`,
+          },
+        }
+      );
+      setNameInput("");
+      setAddInfoInput("");
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 1500);
+    } catch (e: any) {
       setShowSuccessModal(false);
-    }, 2000);
+      displayError(
+        `Failed to submit suggestion. ${e.response?.data?.message || e}`
+      );
+    }
   };
 
   return (
@@ -55,6 +78,7 @@ export const POISuggestionScreen = () => {
                 textAlign="left"
                 placeholder="Location Name"
                 placeholderTextColor={theme.styles.placeholderText.color}
+                style={inputTextStyle}
                 value={nameInput}
                 onChangeText={(value) => {
                   setNameInput(value);
@@ -72,6 +96,7 @@ export const POISuggestionScreen = () => {
             </View>
             <View style={styles.addInfoContainer}>
               <TextareaItem
+                style={inputTextStyle}
                 rows={4}
                 value={addInfoInput}
                 onChangeText={(value) => setAddInfoInput(value)}
@@ -91,9 +116,9 @@ export const POISuggestionScreen = () => {
           subtitleText="Thank you for your contribution to the community!"
           imageSource={require("@assets/images/success.png")}
           showModal={showSuccessModal}
-          onTapToClose={() => {
-            setShowSuccessModal(false);
-          }}
+          // onTapToClose={() => {
+          //   setShowSuccessModal(false);
+          // }}
         />
       </View>
     </TouchableWithoutFeedback>
