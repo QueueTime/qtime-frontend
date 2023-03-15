@@ -191,6 +191,10 @@ export const OnboardingScreen = ({
         )}
         pagingEnabled
         onViewableItemsChanged={onViewRef.current}
+        viewabilityConfig={{
+          // Tell the flatlist to trigger onViewItemChanged when 50% of the item is visible, otherwise sometimes will not trigger
+          itemVisiblePercentThreshold: 50,
+        }}
         horizontal
         decelerationRate={"normal"}
         scrollEventThrottle={16}
