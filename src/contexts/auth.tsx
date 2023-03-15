@@ -3,9 +3,12 @@ import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-import { subscribeToUserUpdates } from "@utils/firestore";
+import {
+  createUserIfNotExists,
+  firestoreDocToUserProfile,
+  subscribeToUserUpdates,
+} from "@utils/firestore";
 import { displayError } from "@utils/error";
-import { userApi } from "@api/client/apis";
 
 const AUTH_WEB_CLIENT_ID =
   "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com";
@@ -83,7 +86,7 @@ export const AuthContext = React.createContext<{
  *
  * Authentication Flow Details:
  *  1. User signs-in
- *    - Fetch user information from Google Identify provider and store in `user`.
+ *    - Fetch user information from Google Identity provider and store in `user`.
  *    - (If new user) Create a new document in firestore collection. Set `hasCompletedOnboarding` to false.
  *      - Once user completes onboarding flow (TOS, referral, etc.), sets `hasCompletedOnboarding` to true.
  *    - Subscribe to updates on user document. Store the firestore document data in `userProfile`.
@@ -105,9 +108,40 @@ export const AuthProvider = ({
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((userState) => {
-      setUser(userState);
-      if (isFirebaseInitializing) setFirebaseInitializing(false);
+    const subscriber = auth().onAuthStateChanged((user) => {
+      if (!user) {
+        setUser(null);
+        if (isFirebaseInitializing) setFirebaseInitializing(false);
+      } else if (!user.email) {
+        displayError("Cannot sign in. User account has no email.");
+        setUser(null);
+        if (isFirebaseInitializing) setFirebaseInitializing(false);
+      } else {
+        // User is signed in, but might not be in firebase yet
+        createUserIfNotExists(
+          user,
+          user.email,
+          (userDoc) => {
+            setUserProfile(
+              firestoreDocToUserProfile(userDoc.id, userDoc.data()!)
+            );
+            setUser(user);
+            // Small delay required for BaseNavigator component to re-render using new Auth context values
+            // Prevents a "flicker" of user sign-in screen before the home screen
+            setTimeout(() => {
+              if (isFirebaseInitializing) setFirebaseInitializing(false);
+            }, 200);
+          },
+          (error) => {
+            if (isFirebaseInitializing) setFirebaseInitializing(false);
+            displayError(
+              `Failed to sign in. Try again later. ${
+                error?.response?.data?.message || error
+              }`
+            );
+          }
+        );
+      }
     });
     return subscriber; // unsubscribe on unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,34 +155,7 @@ export const AuthProvider = ({
     // Subscribe to updates about the user and update userProfile
     const subscriber = subscribeToUserUpdates(user.email, async (doc) => {
       const data = doc.data();
-      if (data) {
-        setUserProfile({
-          email: doc.id,
-          hasCompletedOnboarding: data.hasCompletedOnboarding,
-          hasUsedReferralCode: data.hasUsedReferralCode,
-          notificationSetting: data.notification_setting,
-          numLinesParticipated: data.num_lines_participated,
-          poiFrequency: data.poi_frequency,
-          referralCode: data.referral_code,
-          rewardPointBalance: data.reward_point_balance,
-          timeInLine: data.time_in_line,
-        });
-      } else {
-        // Create a new user if one doesn't already exist to subscribe to
-        try {
-          await userApi.newUserSignup({
-            headers: {
-              Authorization: `Bearer ${await user.getIdToken()}`,
-            },
-          });
-        } catch (error: any) {
-          displayError(
-            `Cannot create new account. Try again later. ${
-              error?.response?.data || error
-            }`
-          );
-        }
-      }
+      if (data) setUserProfile(firestoreDocToUserProfile(doc.id, data));
     });
     return () => subscriber(); // unsubscribe on unmount
   }, [user]);
