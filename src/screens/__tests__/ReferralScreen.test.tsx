@@ -7,12 +7,10 @@ import {
 import { mock } from "jest-mock-extended";
 import "@testing-library/jest-native/extend-expect";
 
-import { AuthContext } from "@contexts/auth";
 import { ReferralScreen } from "@screens/ReferralScreen";
 import { userApi } from "@api/client/apis";
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { IUserProfile } from "@contexts/auth";
 import { AxiosResponse } from "axios";
+import { renderWithAuthContext } from "@utils/test";
 
 // Test Utils
 const textInputId = "referral-input-textbox";
@@ -42,18 +40,7 @@ describe("<ReferralScreen />", () => {
     userApi.submitReferralCode = jest.fn(() =>
       Promise.resolve(mock<AxiosResponse<void, any>>())
     );
-    render(
-      <AuthContext.Provider
-        value={{
-          user: mock<FirebaseAuthTypes.User>(),
-          userProfile: mock<IUserProfile>(),
-          signIn: jest.fn(),
-          signOut: jest.fn(),
-        }}
-      >
-        <ReferralScreen navigation={navigation} />
-      </AuthContext.Provider>
-    );
+    renderWithAuthContext(<ReferralScreen navigation={navigation} />);
     const input = getTextInputBox();
     fireEvent.changeText(input, "ABCDEF");
     expect(input.props.value).toBe("ABCDEF");
@@ -72,18 +59,7 @@ describe("<ReferralScreen />", () => {
         response: { status: 404 },
       })
     );
-    render(
-      <AuthContext.Provider
-        value={{
-          user: mock<FirebaseAuthTypes.User>(),
-          userProfile: mock<IUserProfile>(),
-          signIn: jest.fn(),
-          signOut: jest.fn(),
-        }}
-      >
-        <ReferralScreen navigation={navigation} />
-      </AuthContext.Provider>
-    );
+    renderWithAuthContext(<ReferralScreen navigation={navigation} />);
     const input = getTextInputBox();
     fireEvent.changeText(input, "ABCDEG");
     expect(input.props.value).toBe("ABCDEG");
