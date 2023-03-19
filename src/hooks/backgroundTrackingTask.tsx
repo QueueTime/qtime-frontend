@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 
-const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
+export const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
 
 // Define the background task for location tracking
 TaskManager.defineTask(
