@@ -11,6 +11,7 @@ import * as ROUTES from "@constants/routes";
 import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
 import { useLocationPermission } from "@hooks/checkLocationPermission";
+import { useBackgroundLocation } from "@hooks/backgroundTrackingTask";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -72,6 +73,7 @@ const renderSimpleLineIcon = (
  */
 export const TabNavigator = () => {
   useLocationPermission();
+  useBackgroundLocation();
 
   return (
     <Tab.Navigator
