@@ -153,6 +153,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
       average += poi.estimate;
     }
     setAggregateData({ lowest, average, highest });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(poiData)]); // This prevents multiple tiggers that can happen with an array
 
   const refresh = async () => {
