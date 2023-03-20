@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { OpaqueColorValue, StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import * as Location from "expo-location";
 
 import { RewardsScreen } from "@screens/RewardsScreen";
 import { MapScreen } from "@screens/MapScreen";
@@ -12,6 +14,7 @@ import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
 import { useLocationPermission } from "@hooks/checkLocationPermission";
 import { useBackgroundLocation } from "@hooks/backgroundTrackingTask";
+import { locationService } from "@utils/locationService";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -72,8 +75,30 @@ const renderSimpleLineIcon = (
  * Handles tab navigation for the main section of the app
  */
 export const TabNavigator = () => {
+  const [position, setPosition] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  const onLocationUpdate = ({
+    latitude,
+    longitude,
+  }: {
+    latitude: number;
+    longitude: number;
+  }) => {
+    setPosition({
+      latitude: latitude,
+      longitude: longitude,
+    });
+  };
+  // locationService.subscribe(onLocationUpdate());
   useLocationPermission();
   useBackgroundLocation();
+
+  useEffect(() => {
+    console.log(position);
+  }, [position]);
 
   return (
     <Tab.Navigator

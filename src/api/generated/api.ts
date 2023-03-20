@@ -140,6 +140,25 @@ export type ListRewardEvents200ResponseInnerSourceEnum = typeof ListRewardEvents
 /**
  * 
  * @export
+ * @interface Location
+ */
+export interface Location {
+    /**
+     * Current latitude
+     * @type {number}
+     * @memberof Location
+     */
+    'latitude': number;
+    /**
+     * Current longitude
+     * @type {number}
+     * @memberof Location
+     */
+    'longitude': number;
+}
+/**
+ * 
+ * @export
  * @interface POI
  */
 export interface POI {
@@ -249,6 +268,19 @@ export type RewardEventSourceEnum = typeof RewardEventSourceEnum[keyof typeof Re
 /**
  * 
  * @export
+ * @interface SubmitUserEstimateRequest
+ */
+export interface SubmitUserEstimateRequest {
+    /**
+     * Wait time estimate in minutes
+     * @type {number}
+     * @memberof SubmitUserEstimateRequest
+     */
+    'wait_time_estimate': number;
+}
+/**
+ * 
+ * @export
  * @interface SuggestNewPOIRequest
  */
 export interface SuggestNewPOIRequest {
@@ -264,6 +296,25 @@ export interface SuggestNewPOIRequest {
      * @memberof SuggestNewPOIRequest
      */
     'suggestion_name': string;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateUserLocationRequest
+ */
+export interface UpdateUserLocationRequest {
+    /**
+     * Current latitude
+     * @type {number}
+     * @memberof UpdateUserLocationRequest
+     */
+    'latitude': number;
+    /**
+     * Current longitude
+     * @type {number}
+     * @memberof UpdateUserLocationRequest
+     */
+    'longitude': number;
 }
 /**
  * 
@@ -516,6 +567,50 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitUserEstimate: async (poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'poiId' is not null or undefined
+            assertParamExists('submitUserEstimate', 'poiId', poiId)
+            // verify required parameter 'submitUserEstimateRequest' is not null or undefined
+            assertParamExists('submitUserEstimate', 'submitUserEstimateRequest', submitUserEstimateRequest)
+            const localVarPath = `/places/{poi_id}/estimate`
+                .replace(`{${"poi_id"}}`, encodeURIComponent(String(poiId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(submitUserEstimateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Suggest a new POI
          * @param {SuggestNewPOIRequest} suggestNewPOIRequest POI suggestion to create
@@ -587,6 +682,18 @@ export const POIApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.submitUserEstimate(poiId, submitUserEstimateRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Suggest a new POI
          * @param {SuggestNewPOIRequest} suggestNewPOIRequest POI suggestion to create
@@ -627,6 +734,17 @@ export const POIApiFactory = function (configuration?: Configuration, basePath?:
             return localVarFp.getPOI(poiId, options).then((request) => request(axios, basePath));
         },
         /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.submitUserEstimate(poiId, submitUserEstimateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @summary Suggest a new POI
          * @param {SuggestNewPOIRequest} suggestNewPOIRequest POI suggestion to create
@@ -663,6 +781,17 @@ export interface POIApiInterface {
      * @memberof POIApiInterface
      */
     getPOI(poiId: string, options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
+
+    /**
+     * Submit wait time estimate for a specified POI ID
+     * @summary Submit wait time estimate
+     * @param {string} poiId ID of specified POI
+     * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof POIApiInterface
+     */
+    submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
 
     /**
      * 
@@ -707,6 +836,19 @@ export class POIApi extends BaseAPI implements POIApiInterface {
     }
 
     /**
+     * Submit wait time estimate for a specified POI ID
+     * @summary Submit wait time estimate
+     * @param {string} poiId ID of specified POI
+     * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof POIApi
+     */
+    public submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig) {
+        return POIApiFp(this.configuration).submitUserEstimate(poiId, submitUserEstimateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 
      * @summary Suggest a new POI
      * @param {SuggestNewPOIRequest} suggestNewPOIRequest POI suggestion to create
@@ -716,6 +858,226 @@ export class POIApi extends BaseAPI implements POIApiInterface {
      */
     public suggestNewPOI(suggestNewPOIRequest: SuggestNewPOIRequest, options?: AxiosRequestConfig) {
         return POIApiFp(this.configuration).suggestNewPOI(suggestNewPOIRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * SourcingApi - axios parameter creator
+ * @export
+ */
+export const SourcingApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitUserEstimate: async (poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'poiId' is not null or undefined
+            assertParamExists('submitUserEstimate', 'poiId', poiId)
+            // verify required parameter 'submitUserEstimateRequest' is not null or undefined
+            assertParamExists('submitUserEstimate', 'submitUserEstimateRequest', submitUserEstimateRequest)
+            const localVarPath = `/places/{poi_id}/estimate`
+                .replace(`{${"poi_id"}}`, encodeURIComponent(String(poiId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(submitUserEstimateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserLocation: async (updateUserLocationRequest: UpdateUserLocationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateUserLocationRequest' is not null or undefined
+            assertParamExists('updateUserLocation', 'updateUserLocationRequest', updateUserLocationRequest)
+            const localVarPath = `/user/location`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateUserLocationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SourcingApi - functional programming interface
+ * @export
+ */
+export const SourcingApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SourcingApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.submitUserEstimate(poiId, submitUserEstimateRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUserLocation(updateUserLocationRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * SourcingApi - factory interface
+ * @export
+ */
+export const SourcingApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SourcingApiFp(configuration)
+    return {
+        /**
+         * Submit wait time estimate for a specified POI ID
+         * @summary Submit wait time estimate
+         * @param {string} poiId ID of specified POI
+         * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.submitUserEstimate(poiId, submitUserEstimateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateUserLocation(updateUserLocationRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SourcingApi - interface
+ * @export
+ * @interface SourcingApi
+ */
+export interface SourcingApiInterface {
+    /**
+     * Submit wait time estimate for a specified POI ID
+     * @summary Submit wait time estimate
+     * @param {string} poiId ID of specified POI
+     * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SourcingApiInterface
+     */
+    submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * Submit the current GPS coordinates of the user to update their current location
+     * @summary Submit current location of user
+     * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SourcingApiInterface
+     */
+    updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+}
+
+/**
+ * SourcingApi - object-oriented interface
+ * @export
+ * @class SourcingApi
+ * @extends {BaseAPI}
+ */
+export class SourcingApi extends BaseAPI implements SourcingApiInterface {
+    /**
+     * Submit wait time estimate for a specified POI ID
+     * @summary Submit wait time estimate
+     * @param {string} poiId ID of specified POI
+     * @param {SubmitUserEstimateRequest} submitUserEstimateRequest Wait time estimate to submit in minutes
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SourcingApi
+     */
+    public submitUserEstimate(poiId: string, submitUserEstimateRequest: SubmitUserEstimateRequest, options?: AxiosRequestConfig) {
+        return SourcingApiFp(this.configuration).submitUserEstimate(poiId, submitUserEstimateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Submit the current GPS coordinates of the user to update their current location
+     * @summary Submit current location of user
+     * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SourcingApi
+     */
+    public updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig) {
+        return SourcingApiFp(this.configuration).updateUserLocation(updateUserLocationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -878,6 +1240,46 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserLocation: async (updateUserLocationRequest: UpdateUserLocationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'updateUserLocationRequest' is not null or undefined
+            assertParamExists('updateUserLocation', 'updateUserLocationRequest', updateUserLocationRequest)
+            const localVarPath = `/user/location`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateUserLocationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -931,6 +1333,17 @@ export const UserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.submitReferralCode(code, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateUserLocation(updateUserLocationRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -980,6 +1393,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         submitReferralCode(code: string, options?: any): AxiosPromise<void> {
             return localVarFp.submitReferralCode(code, options).then((request) => request(axios, basePath));
         },
+        /**
+         * Submit the current GPS coordinates of the user to update their current location
+         * @summary Submit current location of user
+         * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateUserLocation(updateUserLocationRequest, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1027,6 +1450,16 @@ export interface UserApiInterface {
      * @memberof UserApiInterface
      */
     submitReferralCode(code: string, options?: AxiosRequestConfig): AxiosPromise<void>;
+
+    /**
+     * Submit the current GPS coordinates of the user to update their current location
+     * @summary Submit current location of user
+     * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApiInterface
+     */
+    updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig): AxiosPromise<void>;
 
 }
 
@@ -1082,6 +1515,18 @@ export class UserApi extends BaseAPI implements UserApiInterface {
      */
     public submitReferralCode(code: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).submitReferralCode(code, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Submit the current GPS coordinates of the user to update their current location
+     * @summary Submit current location of user
+     * @param {UpdateUserLocationRequest} updateUserLocationRequest GPS Coordinates of user
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public updateUserLocation(updateUserLocationRequest: UpdateUserLocationRequest, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).updateUserLocation(updateUserLocationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 
+import { displayError } from "@utils/error";
+import { locationService } from "@utils/locationService";
+
 export const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
 
 // Define the background task for location tracking
@@ -10,11 +13,12 @@ TaskManager.defineTask(
   LOCATION_TASK_NAME,
   async ({ data, error }: { data: any; error: any }) => {
     if (error) {
-      console.error(error);
+      displayError(error);
       return;
     }
     if (data) {
-      // Call API to update user location
+      const { latitude, longitude } = data.locations[0].coords;
+      locationService.setLocation({ latitude, longitude });
     }
   }
 );
