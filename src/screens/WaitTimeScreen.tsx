@@ -144,15 +144,17 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
 
   // Compute and update aggregate data (averages, lowest, highest, etc.)
   useEffect(() => {
-    let lowest = DEFAULT_AGGREGATE_DATA.lowest;
-    let average = DEFAULT_AGGREGATE_DATA.average;
-    let highest = DEFAULT_AGGREGATE_DATA.highest;
+    let aggregateData = {
+      lowest: DEFAULT_AGGREGATE_DATA.lowest,
+      average: DEFAULT_AGGREGATE_DATA.average,
+      highest: DEFAULT_AGGREGATE_DATA.highest,
+    };
     for (const poi of poiData) {
-      lowest = Math.min(lowest, poi.estimate);
-      highest = Math.max(highest, poi.estimate);
-      average += poi.estimate;
+      aggregateData.lowest = Math.min(aggregateData.lowest, poi.estimate);
+      aggregateData.highest = Math.max(aggregateData.highest, poi.estimate);
+      aggregateData.average += poi.estimate;
     }
-    setAggregateData({ lowest, average, highest });
+    setAggregateData(aggregateData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(poiData)]); // This prevents multiple tiggers that can happen with an array
 
