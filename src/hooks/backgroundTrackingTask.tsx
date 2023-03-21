@@ -2,9 +2,10 @@ import { useEffect } from "react";
 
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
+import { setRecoil } from "recoil-nexus";
 
 import { displayError } from "@utils/error";
-import { locationService } from "@utils/locationService";
+import { userGeolocationState } from "@atoms/geolocationAtom";
 
 export const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
 
@@ -18,7 +19,14 @@ TaskManager.defineTask(
     }
     if (data) {
       const { latitude, longitude } = data.locations[0].coords;
-      locationService.setLocation({ latitude, longitude });
+      // Delaying the update of the geolocation state to avoid getting setRecoil is not a function error
+      setTimeout(() => {
+        setRecoil(userGeolocationState, {
+          latitude,
+          longitude,
+          timestamp: Date.now(),
+        });
+      }, 1000);
     }
   }
 );
@@ -46,6 +54,7 @@ export const useBackgroundLocation = () => {
         accuracy: Location.Accuracy.Highest,
         showsBackgroundLocationIndicator: false,
         timeInterval: 10000,
+        distanceInterval: 0,
       });
     };
     startBackgroundTracking();

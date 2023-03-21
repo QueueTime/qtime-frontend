@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import { OpaqueColorValue, StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import * as Location from "expo-location";
+import { useRecoilValue } from "recoil";
+import { setRecoil } from "recoil-nexus";
 
 import { RewardsScreen } from "@screens/RewardsScreen";
 import { MapScreen } from "@screens/MapScreen";
@@ -14,7 +15,12 @@ import { ProfileStackNavigator } from "@navigators/ProfileStackNavigator";
 import { WaitTimesNavigator } from "@navigators/WaitTimeStackNavigator";
 import { useLocationPermission } from "@hooks/checkLocationPermission";
 import { useBackgroundLocation } from "@hooks/backgroundTrackingTask";
-import { locationService } from "@utils/locationService";
+import {
+  apiLastCalledTimestampState,
+  userGeolocationState,
+} from "@atoms/geolocationAtom";
+import { AuthContext } from "@contexts/auth";
+import { sourcingApi } from "@api/client/apis";
 
 // Types of parameters that are passed for each tab
 type TabNavigatorParams = {
@@ -75,30 +81,39 @@ const renderSimpleLineIcon = (
  * Handles tab navigation for the main section of the app
  */
 export const TabNavigator = () => {
-  const [position, setPosition] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-
-  const onLocationUpdate = ({
-    latitude,
-    longitude,
-  }: {
-    latitude: number;
-    longitude: number;
-  }) => {
-    setPosition({
-      latitude: latitude,
-      longitude: longitude,
-    });
-  };
-  // locationService.subscribe(onLocationUpdate());
+  const { user } = useContext(AuthContext);
+  const { latitude, longitude, timestamp } =
+    useRecoilValue(userGeolocationState);
+  const apiTimestamp = useRecoilValue(apiLastCalledTimestampState);
   useLocationPermission();
   useBackgroundLocation();
 
   useEffect(() => {
-    console.log(position);
-  }, [position]);
+    const callLocationAPI = async () => {
+      try {
+        sourcingApi.updateUserLocation(
+          {
+            latitude: latitude,
+            longitude: longitude,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${await user!.getIdToken()}`,
+            },
+          }
+        );
+        setRecoil(apiLastCalledTimestampState, Date.now());
+      } catch (error) {}
+    };
+    if (
+      latitude !== 0 &&
+      longitude !== 0 &&
+      (Date.now() - apiTimestamp) / 1000 > 9
+    ) {
+      callLocationAPI();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [latitude, longitude, timestamp, user]);
 
   return (
     <Tab.Navigator
