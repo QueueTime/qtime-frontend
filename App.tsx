@@ -5,6 +5,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import { RecoilRoot } from "recoil";
+import RecoilNexus from "recoil-nexus";
 
 import { BaseNavigator } from "@navigators/BaseNavigator";
 import { ThemeProvider } from "@contexts/theme";
@@ -63,7 +65,10 @@ const App = () => {
       isFirebaseInitializing={isFirebaseInit}
     >
       <ThemeProvider>
-        <BaseNavigator />
+        <RecoilRoot>
+          <RecoilNexus />
+          <BaseNavigator />
+        </RecoilRoot>
       </ThemeProvider>
     </AuthProvider>
   );

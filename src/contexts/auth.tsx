@@ -2,6 +2,7 @@ import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import * as Location from "expo-location";
 
 import {
   createUserIfNotExists,
@@ -9,6 +10,7 @@ import {
   subscribeToUserUpdates,
 } from "@utils/firestore";
 import { displayError } from "@utils/error";
+import { LOCATION_TASK_NAME } from "@hooks/backgroundTrackingTask";
 
 const AUTH_WEB_CLIENT_ID =
   "476284740655-hn9ftfe6at300fpgmn3i8282i3nignnj.apps.googleusercontent.com";
@@ -39,6 +41,12 @@ const signIn = async () => {
 const signOut = async () => {
   await GoogleSignin.revokeAccess(); // Allows selection of Google account after sign-out
   await auth().signOut();
+  const hasStarted = await Location.hasStartedLocationUpdatesAsync(
+    LOCATION_TASK_NAME
+  );
+  if (hasStarted) {
+    await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+  }
 };
 
 export const AuthContext = React.createContext<{
