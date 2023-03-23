@@ -51,56 +51,62 @@ export interface GetAllPOI200ResponseInner {
      * @type {string}
      * @memberof GetAllPOI200ResponseInner
      */
-    'address'?: string;
+    'class': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllPOI200ResponseInner
+     */
+    'distance': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllPOI200ResponseInner
+     */
+    'estimate': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllPOI200ResponseInner
+     */
+    'lastUpdated': number;
+    /**
+     * 
+     * @type {GetAllPOI200ResponseInnerLocation}
+     * @memberof GetAllPOI200ResponseInner
+     */
+    'location'?: GetAllPOI200ResponseInnerLocation;
     /**
      * 
      * @type {string}
      * @memberof GetAllPOI200ResponseInner
      */
-    'class'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetAllPOI200ResponseInner
-     */
-    'hours_of_operation'?: object;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof GetAllPOI200ResponseInner
      */
-    'image_url'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof GetAllPOI200ResponseInner
-     */
-    'location'?: object;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAllPOI200ResponseInner
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetAllPOI200ResponseInner
-     */
-    'type'?: string;
+    'type': string;
 }
 /**
  * 
  * @export
- * @interface GetPOI404Response
+ * @interface GetAllPOI200ResponseInnerLocation
  */
-export interface GetPOI404Response {
+export interface GetAllPOI200ResponseInnerLocation {
     /**
-     * Error description
-     * @type {string}
-     * @memberof GetPOI404Response
+     * 
+     * @type {number}
+     * @memberof GetAllPOI200ResponseInnerLocation
      */
-    'message': string;
+    'latitude': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllPOI200ResponseInnerLocation
+     */
+    'longitude': number;
 }
 /**
  * 
@@ -173,43 +179,43 @@ export interface POI {
      * @type {string}
      * @memberof POI
      */
-    'address'?: string;
+    'class': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof POI
+     */
+    'distance': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof POI
+     */
+    'estimate': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof POI
+     */
+    'lastUpdated': number;
+    /**
+     * 
+     * @type {GetAllPOI200ResponseInnerLocation}
+     * @memberof POI
+     */
+    'location'?: GetAllPOI200ResponseInnerLocation;
     /**
      * 
      * @type {string}
      * @memberof POI
      */
-    'class'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof POI
-     */
-    'hours_of_operation'?: object;
+    'name': string;
     /**
      * 
      * @type {string}
      * @memberof POI
      */
-    'image_url'?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof POI
-     */
-    'location'?: object;
-    /**
-     * 
-     * @type {string}
-     * @memberof POI
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof POI
-     */
-    'type'?: string;
+    'type': string;
 }
 /**
  * 
@@ -277,6 +283,19 @@ export interface SubmitUserEstimateRequest {
      * @memberof SubmitUserEstimateRequest
      */
     'wait_time_estimate': number;
+}
+/**
+ * 
+ * @export
+ * @interface SuggestNewPOI400Response
+ */
+export interface SuggestNewPOI400Response {
+    /**
+     * Error description
+     * @type {string}
+     * @memberof SuggestNewPOI400Response
+     */
+    'message': string;
 }
 /**
  * 
@@ -497,10 +516,18 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * 
          * @summary Read the list of POI
+         * @param {number} latitude Latitude of user location to sort POI by
+         * @param {number} longitude Longitude of user location to sort POI by
+         * @param {'queue' | 'occupancy'} [_class] Classification of POIs to get
+         * @param {'distance' | 'estimate'} [sort] Sort POI by distance or estimate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllPOI: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAllPOI: async (latitude: number, longitude: number, _class?: 'queue' | 'occupancy', sort?: 'distance' | 'estimate', options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'latitude' is not null or undefined
+            assertParamExists('getAllPOI', 'latitude', latitude)
+            // verify required parameter 'longitude' is not null or undefined
+            assertParamExists('getAllPOI', 'longitude', longitude)
             const localVarPath = `/places/list`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -517,6 +544,22 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
+            if (_class !== undefined) {
+                localVarQueryParameter['class'] = _class;
+            }
+
+            if (latitude !== undefined) {
+                localVarQueryParameter['latitude'] = latitude;
+            }
+
+            if (longitude !== undefined) {
+                localVarQueryParameter['longitude'] = longitude;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -530,7 +573,7 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
         },
         /**
          * 
-         * @summary Read one POI
+         * @summary Fetch the details of one POI
          * @param {string} poiId Point of interest name of the POI to get
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -538,7 +581,7 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
         getPOI: async (poiId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'poiId' is not null or undefined
             assertParamExists('getPOI', 'poiId', poiId)
-            const localVarPath = `/places/list/{poi_id}`
+            const localVarPath = `/places/{poi_id}/details`
                 .replace(`{${"poi_id"}}`, encodeURIComponent(String(poiId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -663,21 +706,25 @@ export const POIApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Read the list of POI
+         * @param {number} latitude Latitude of user location to sort POI by
+         * @param {number} longitude Longitude of user location to sort POI by
+         * @param {'queue' | 'occupancy'} [_class] Classification of POIs to get
+         * @param {'distance' | 'estimate'} [sort] Sort POI by distance or estimate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllPOI(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetAllPOI200ResponseInner>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPOI(options);
+        async getAllPOI(latitude: number, longitude: number, _class?: 'queue' | 'occupancy', sort?: 'distance' | 'estimate', options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetAllPOI200ResponseInner>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAllPOI(latitude, longitude, _class, sort, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @summary Read one POI
+         * @summary Fetch the details of one POI
          * @param {string} poiId Point of interest name of the POI to get
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getPOI(poiId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetAllPOI200ResponseInner>>> {
+        async getPOI(poiId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAllPOI200ResponseInner>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getPOI(poiId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -717,20 +764,24 @@ export const POIApiFactory = function (configuration?: Configuration, basePath?:
         /**
          * 
          * @summary Read the list of POI
+         * @param {number} latitude Latitude of user location to sort POI by
+         * @param {number} longitude Longitude of user location to sort POI by
+         * @param {'queue' | 'occupancy'} [_class] Classification of POIs to get
+         * @param {'distance' | 'estimate'} [sort] Sort POI by distance or estimate
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllPOI(options?: any): AxiosPromise<Array<GetAllPOI200ResponseInner>> {
-            return localVarFp.getAllPOI(options).then((request) => request(axios, basePath));
+        getAllPOI(latitude: number, longitude: number, _class?: 'queue' | 'occupancy', sort?: 'distance' | 'estimate', options?: any): AxiosPromise<Array<GetAllPOI200ResponseInner>> {
+            return localVarFp.getAllPOI(latitude, longitude, _class, sort, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Read one POI
+         * @summary Fetch the details of one POI
          * @param {string} poiId Point of interest name of the POI to get
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getPOI(poiId: string, options?: any): AxiosPromise<Array<GetAllPOI200ResponseInner>> {
+        getPOI(poiId: string, options?: any): AxiosPromise<GetAllPOI200ResponseInner> {
             return localVarFp.getPOI(poiId, options).then((request) => request(axios, basePath));
         },
         /**
@@ -766,21 +817,25 @@ export interface POIApiInterface {
     /**
      * 
      * @summary Read the list of POI
+     * @param {number} latitude Latitude of user location to sort POI by
+     * @param {number} longitude Longitude of user location to sort POI by
+     * @param {'queue' | 'occupancy'} [_class] Classification of POIs to get
+     * @param {'distance' | 'estimate'} [sort] Sort POI by distance or estimate
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof POIApiInterface
      */
-    getAllPOI(options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
+    getAllPOI(latitude: number, longitude: number, _class?: 'queue' | 'occupancy', sort?: 'distance' | 'estimate', options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
 
     /**
      * 
-     * @summary Read one POI
+     * @summary Fetch the details of one POI
      * @param {string} poiId Point of interest name of the POI to get
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof POIApiInterface
      */
-    getPOI(poiId: string, options?: AxiosRequestConfig): AxiosPromise<Array<GetAllPOI200ResponseInner>>;
+    getPOI(poiId: string, options?: AxiosRequestConfig): AxiosPromise<GetAllPOI200ResponseInner>;
 
     /**
      * Submit wait time estimate for a specified POI ID
@@ -815,17 +870,21 @@ export class POIApi extends BaseAPI implements POIApiInterface {
     /**
      * 
      * @summary Read the list of POI
+     * @param {number} latitude Latitude of user location to sort POI by
+     * @param {number} longitude Longitude of user location to sort POI by
+     * @param {'queue' | 'occupancy'} [_class] Classification of POIs to get
+     * @param {'distance' | 'estimate'} [sort] Sort POI by distance or estimate
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof POIApi
      */
-    public getAllPOI(options?: AxiosRequestConfig) {
-        return POIApiFp(this.configuration).getAllPOI(options).then((request) => request(this.axios, this.basePath));
+    public getAllPOI(latitude: number, longitude: number, _class?: 'queue' | 'occupancy', sort?: 'distance' | 'estimate', options?: AxiosRequestConfig) {
+        return POIApiFp(this.configuration).getAllPOI(latitude, longitude, _class, sort, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @summary Read one POI
+     * @summary Fetch the details of one POI
      * @param {string} poiId Point of interest name of the POI to get
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
