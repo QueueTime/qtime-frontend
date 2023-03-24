@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 
+import { useRecoilValue } from "recoil";
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
 import { Button } from "@ant-design/react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ import { AuthContext } from "@contexts/auth";
 import { poiApi } from "@api/client/apis";
 import { displayError } from "@utils/error";
 import { POIDetails } from "@api/generated/api";
+import { userGeolocationState } from "@atoms/geolocationAtom";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -62,6 +64,8 @@ export const LocationDetailsScreen = ({
   const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
 
+  const { latitude, longitude } = useRecoilValue(userGeolocationState);
+
   const [refreshing, setRefreshing] = useState(false);
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
   const [showConfirmSuccessModal, setConfirmSuccessModal] = useState(false);
@@ -79,6 +83,13 @@ export const LocationDetailsScreen = ({
         i == Math.floor(poiData.histogram.length / 2)
       ) {
         const suffix = poiData.histogram[i].time < 12 ? "am" : "pm";
+        if (
+          poiData.histogram[i].time == 0 ||
+          poiData.histogram[i].time == 12 ||
+          poiData.histogram[i].time == 24
+        ) {
+          return `12${suffix}`;
+        }
         return `${poiData.histogram[i].time % 12}${suffix}`;
       }
       return label;
@@ -86,9 +97,14 @@ export const LocationDetailsScreen = ({
 
   const fetchLocationDetails = async () => {
     try {
-      const res = await poiApi.getPOIDetails(route.params.locationId, 70, 10, {
-        headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
-      });
+      const res = await poiApi.getPOIDetails(
+        route.params.locationId,
+        latitude,
+        longitude,
+        {
+          headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+        }
+      );
       setPoiData(res.data);
     } catch (error: any) {
       displayError(
