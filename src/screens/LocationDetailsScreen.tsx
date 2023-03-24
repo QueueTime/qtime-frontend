@@ -105,6 +105,7 @@ export const LocationDetailsScreen = ({
     setRefreshing(false);
   };
 
+  // TODO: FIX THIS
   const submitNewWaitTime = () => {
     // send new wait time to backend
     // api call with newWaitTime
@@ -114,6 +115,7 @@ export const LocationDetailsScreen = ({
     }, 2000);
   };
 
+  // TODO: FIX THIS
   const confirmNewWaitTime = () => {
     // send wait time to backend
     setConfirmSuccessModal(true);
@@ -218,11 +220,11 @@ export const LocationDetailsScreen = ({
           <StyledText style={styles.headingText}>Hours</StyledText>
           {DAYS_OF_WEEK.map((day: string) => (
             <StyledText key={day} style={styles.detailsText}>
-              {day +
-                ", " +
+              {`${day}: ${
                 poiData.hoursOfOperation[
                   day as keyof typeof poiData.hoursOfOperation
-                ]}
+                ]
+              }`}
             </StyledText>
           ))}
         </View>
