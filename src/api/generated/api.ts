@@ -198,13 +198,13 @@ export interface GetPOIDetails200ResponseHistogramInner {
      * @type {number}
      * @memberof GetPOIDetails200ResponseHistogramInner
      */
-    'estimate'?: number;
+    'estimate': number;
     /**
      * 
      * @type {number}
      * @memberof GetPOIDetails200ResponseHistogramInner
      */
-    'hour'?: number;
+    'hour': number;
 }
 /**
  * 
@@ -844,6 +844,10 @@ export const POIApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication jwt required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
             if (latitude !== undefined) {
                 localVarQueryParameter['latitude'] = latitude;
