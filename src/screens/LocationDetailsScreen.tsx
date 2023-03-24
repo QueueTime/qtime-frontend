@@ -99,29 +99,43 @@ export const LocationDetailsScreen = ({
     }
   };
 
+  const sendWaitTimeEstimate = async (estimate: number) => {
+    try {
+      const payload = {
+        wait_time_estimate: estimate,
+      };
+      await poiApi.submitUserEstimate(route.params.locationId, payload, {
+        headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+      });
+    } catch (error: any) {
+      displayError(
+        `Failed to send location time estimate. ${
+          error?.response?.data?.message || error
+        }`
+      );
+    }
+  };
+
+  const submitNewWaitTime = () => {
+    setSubmittedSuccessModal(true);
+    sendWaitTimeEstimate(newWaitTime);
+    setTimeout(() => {
+      setSubmittedSuccessModal(false);
+    }, 1500);
+  };
+
+  const confirmCurrentWaitTime = () => {
+    setConfirmSuccessModal(true);
+    sendWaitTimeEstimate(poiData.estimate);
+    setTimeout(() => {
+      setConfirmSuccessModal(false);
+    }, 1500);
+  };
+
   const refresh = async () => {
     setRefreshing(true);
     await fetchLocationDetails();
     setRefreshing(false);
-  };
-
-  // TODO: FIX THIS
-  const submitNewWaitTime = () => {
-    // send new wait time to backend
-    // api call with newWaitTime
-    setSubmittedSuccessModal(true);
-    setTimeout(() => {
-      setSubmittedSuccessModal(false);
-    }, 2000);
-  };
-
-  // TODO: FIX THIS
-  const confirmNewWaitTime = () => {
-    // send wait time to backend
-    setConfirmSuccessModal(true);
-    setTimeout(() => {
-      setConfirmSuccessModal(false);
-    }, 2000);
   };
 
   // Refresh on load
@@ -250,7 +264,7 @@ export const LocationDetailsScreen = ({
               theme.styles.confirmWaitTimeButton,
               styles.waitTimeButtonHeight,
             ]}
-            onPress={confirmNewWaitTime}
+            onPress={confirmCurrentWaitTime}
             testID="confirmWaitTimeButton"
           >
             <StyledText
