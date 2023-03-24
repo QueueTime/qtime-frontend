@@ -17,16 +17,38 @@ import { StyledText } from "@components/StyledText";
 import { SuccessModal } from "@components/SuccessModal";
 import { renderLastUpdated } from "@utils/time";
 import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
+import { AuthContext } from "@contexts/auth";
 
 export const LocationDetailsScreen = ({
   navigation,
 }: ILocationDetailsScreenProps) => {
   const { theme } = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
+
   const [refreshing, setRefreshing] = useState(false);
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
   const [showConfirmSuccessModal, setConfirmSuccessModal] = useState(false);
   const [newWaitTime, setNewWaitTime] = useState(0);
   const [wasInteracted, setWasInteracted] = useState(false);
+  const [poiDetails, setPoiDetails] = useState({});
+
+  const poiData = {
+    name: "Centro",
+    address: "Commons Building",
+    distance: 2.1,
+    hours: [
+      { "Monday - Friday": "7:00 AM - 11:00 PM" },
+      { "Saturday & Sunday": "10:00 AM - 11:00 PM" },
+    ],
+    lastUpdated: 4,
+    waitTime: 10,
+    currentHour: 14,
+  };
+
+  const refresh = async () => {
+    setRefreshing(true);
+    setRefreshing(false);
+  };
 
   const chartData = [
     { hour: 7, waitTime: 1 },
@@ -48,19 +70,6 @@ export const LocationDetailsScreen = ({
     { hour: 23, waitTime: 1 },
   ];
 
-  const poiData = {
-    name: "Centro",
-    address: "Commons Building",
-    distance: 2.1,
-    hours: [
-      { "Monday - Friday": "7:00 AM - 11:00 PM" },
-      { "Saturday & Sunday": "10:00 AM - 11:00 PM" },
-    ],
-    lastUpdated: 4,
-    waitTime: 10,
-    currentHour: 14,
-  };
-
   const submitNewWaitTime = () => {
     // send new wait time to backend
     // api call with newWaitTime
@@ -77,13 +86,6 @@ export const LocationDetailsScreen = ({
       setConfirmSuccessModal(false);
     }, 2000);
   };
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
 
   useEffect(
     () =>
@@ -169,7 +171,7 @@ export const LocationDetailsScreen = ({
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={onRefresh}
+            onRefresh={refresh}
             progressBackgroundColor={theme.refreshIconBackgroundColorAndroid} // Android only: Background color of refresh icon
             tintColor={theme.iconColor}
           />
