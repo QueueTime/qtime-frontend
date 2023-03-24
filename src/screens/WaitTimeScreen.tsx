@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   ScrollView,
@@ -8,6 +8,7 @@ import {
   RefreshControl,
   Platform,
 } from "react-native";
+import { useRecoilValue } from "recoil";
 
 import {
   Button,
@@ -22,6 +23,7 @@ import {
   MaterialIcons,
   AntDesign,
   Ionicons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 
 import { StyledText } from "@components/StyledText";
@@ -29,95 +31,142 @@ import { LOCATION_DETAILS } from "@constants/routes";
 import { WaitTimeScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { ThemeContext } from "@contexts/theme";
 import { renderLastUpdated } from "@utils/time";
-import { SortByEnum } from "@utils/poi";
+import { poiApi } from "@api/client/apis";
+import { displayError } from "@utils/error";
+import { AuthContext } from "@contexts/auth";
+import { GetAllPOI200ResponseInner } from "@api/generated/api";
+import { userGeolocationState } from "@atoms/geolocationAtom";
 
-function renderIcon(type: any, theme: string): JSX.Element {
+type POI = GetAllPOI200ResponseInner;
+
+enum SortByEnum {
+  DISTANCE = "Distance",
+  TIME = "Time",
+}
+
+enum POIType {
+  EATERY = "EATERY",
+  SHOP = "SHOP",
+  TRANSPORT = "TRANSPORT",
+  LIBRARY = "LIBRARY",
+  GYM = "GYM",
+}
+
+// Default values for the aggregate wait time estimates
+const DEFAULT_AGGREGATE_DATA = {
+  lowest: Infinity,
+  average: 0,
+  highest: -1,
+};
+
+/**
+ * Render an icon based on the type of a POI
+ */
+function renderIcon(type: POIType, theme: string): JSX.Element {
   switch (type) {
-    case "food":
+    case POIType.EATERY:
       return <MaterialIcons name={"restaurant"} size={24} color={theme} />;
-    case "shopping":
+    case POIType.SHOP:
       return <AntDesign name="shoppingcart" size={24} color={theme} />;
-    case "transport":
+    case POIType.TRANSPORT:
       return <Ionicons name="bus-outline" size={24} color={theme} />;
-    default: // just temporarily for the sake of return type
-      return <MaterialIcons name={"restaurant"} size={24} color={theme} />;
+    case POIType.LIBRARY:
+      return <MaterialCommunityIcons name="library" size={24} color={theme} />;
+    case POIType.GYM:
+      return (
+        <MaterialCommunityIcons name="weight-lifter" size={24} color={theme} />
+      );
+    default: // generic map pin icon if unrecognized type
+      return <Feather name={"map-pin"} size={24} color={theme} />;
   }
 }
 
 export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const { theme } = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
+
   const [searchValue, setSearchValue] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [sortBy, setSortBy] = useState(SortByEnum.DISTANCE);
   const [refreshing, setRefreshing] = useState(false);
+  const [rawPOIData, setRawPOIData] = useState<POI[]>([]);
+  const [poiFilters, setPOIFilters] = useState<Set<POIType>>(new Set());
+  const [aggregateData, setAggregateData] = useState(DEFAULT_AGGREGATE_DATA);
+
+  const { latitude, longitude } = useRecoilValue(userGeolocationState);
 
   let searchBar: SearchBar | null;
 
-  const poiTypes = ["Food", "Transport", "Gym", "Library"];
-  const steps1 = [
-    { title: "5 mins", description: "Lowest" },
-    { title: "7 mins", description: "Average" },
-    { title: "17 mins", description: "Highest" },
+  const filters = [
+    { display: "Food", val: POIType.EATERY },
+    { display: "Shop", val: POIType.SHOP },
+    { display: "Transport", val: POIType.TRANSPORT },
+    { display: "Gym", val: POIType.GYM },
+    { display: "Library", val: POIType.LIBRARY },
   ];
 
-  const poiData = [
-    {
-      waitTime: 10,
-      location: "Centro",
-      distance: 0.5,
-      lastUpdated: 5,
-      type: "food",
-    },
-    {
-      waitTime: 7,
-      location: "MUSC",
-      distance: 0.6,
-      lastUpdated: 8,
-      type: "shopping",
-    },
-    {
-      waitTime: 15,
-      location: "Location 3",
-      distance: 1.2,
-      lastUpdated: 0,
-      type: "food",
-    },
-    {
-      waitTime: 4,
-      location: "Location 4",
-      distance: 1.5,
-      lastUpdated: 68,
-      type: "transport",
-    },
-    {
-      waitTime: 6,
-      location: "Location 5",
-      distance: 0.2,
-      lastUpdated: 1,
-      type: "shopping",
-    },
-    {
-      waitTime: 17,
-      location: "Location 6",
-      distance: 0.1,
-      lastUpdated: 4,
-      type: "food",
-    },
-    {
-      waitTime: 4,
-      location: "Location 7",
-      distance: 2.0,
-      lastUpdated: 0,
-      type: "food",
-    },
-  ];
+  const poiData = rawPOIData.filter((poi) => {
+    // Filter by search
+    return (
+      // No search or type filters
+      (searchValue.length === 0 && poiFilters.size === 0) ||
+      // Filter by search
+      (searchValue.length > 0 &&
+        poi.name.toLowerCase().includes(searchValue.toLowerCase())) ||
+      // Filter by type
+      (poiFilters.size > 0 && poiFilters.has(POIType[poi.type as POIType]))
+    );
+  });
 
-  const onRefresh = useCallback(() => {
+  /**
+   * Fetch POIs from the API
+   */
+  const fetchPOIs = async () => {
+    try {
+      const res = await poiApi.getAllPOI(
+        latitude,
+        longitude,
+        "queue",
+        sortBy === SortByEnum.DISTANCE ? "distance" : "estimate",
+        {
+          headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+        }
+      );
+      setRawPOIData(res.data);
+    } catch (err: any) {
+      displayError(
+        `Failed to fetch locations. ${err?.response?.data?.message || err}`
+      );
+    }
+  };
+
+  // Refresh on first load or anytime we change the sort by value
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortBy]);
+
+  // Compute and update aggregate data (averages, lowest, highest, etc.)
+  useEffect(() => {
+    let aggregateData = {
+      lowest: DEFAULT_AGGREGATE_DATA.lowest,
+      average: DEFAULT_AGGREGATE_DATA.average,
+      highest: DEFAULT_AGGREGATE_DATA.highest,
+    };
+    for (const poi of poiData) {
+      aggregateData.lowest = Math.min(aggregateData.lowest, poi.estimate);
+      aggregateData.highest = Math.max(aggregateData.highest, poi.estimate);
+      aggregateData.average += poi.estimate;
+    }
+    setAggregateData(aggregateData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(poiData)]); // This prevents multiple tiggers that can happen with an array
+
+  const refresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
-  }, []);
+    await fetchPOIs();
+    setRefreshing(false);
+  };
 
   const modalComponent = (
     <Modal
@@ -157,8 +206,8 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                     theme.styles.waitTimeModalSortButtons,
                   ]}
                   onPress={() => {
-                    setIsVisible(false);
                     setSortBy(SortByEnum.TIME);
+                    setIsVisible(false);
                   }}
                 >
                   <StyledText>Time</StyledText>
@@ -174,8 +223,8 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                     theme.styles.waitTimeModalSortButtons,
                   ]}
                   onPress={() => {
-                    setIsVisible(false);
                     setSortBy(SortByEnum.DISTANCE);
+                    setIsVisible(false);
                   }}
                 >
                   <StyledText>Distance</StyledText>
@@ -229,14 +278,23 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             >
               <StyledText style={styles.sortByText}>Sort By</StyledText>
             </Button>
-            {poiTypes.map((type: string) => {
+            {filters.map(({ display, val }) => {
               return (
                 <Tag
-                  key={type}
+                  key={display}
                   style={styles.tags}
                   styles={StylesOverride.tagStyles}
+                  onChange={(selected) => {
+                    if (selected) {
+                      setPOIFilters(new Set(poiFilters).add(val));
+                    } else {
+                      const next = new Set(poiFilters);
+                      next.delete(val);
+                      setPOIFilters(next);
+                    }
+                  }}
                 >
-                  {type}
+                  {display}
                 </Tag>
               );
             })}
@@ -249,60 +307,73 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
             size="small"
             direction="horizontal"
           >
-            {steps1.map((item: any) => (
-              <Steps.Step key={item.description} status={"wait"} />
-            ))}
+            <Steps.Step key={"lowest"} status={"wait"} />
+            <Steps.Step key={"average"} status={"wait"} />
+            <Steps.Step key={"highest"} status={"wait"} />
           </Steps>
         </View>
         <View style={styles.stepTextContainer}>
-          {steps1.map((item: any) => (
-            <View style={styles.stepTextView} key={item.description}>
-              <StyledText style={styles.stepTitleText}>{item.title}</StyledText>
-              <StyledText style={styles.stepDescriptionText}>
-                {item.description}
-              </StyledText>
-            </View>
-          ))}
+          <View style={styles.stepTextView} key={"Lowest"}>
+            <StyledText style={styles.stepTitleText}>
+              {poiData.length > 0 ? aggregateData.lowest + " mins" : "~ mins"}
+            </StyledText>
+            <StyledText style={styles.stepDescriptionText}>Lowest</StyledText>
+          </View>
+          <View style={styles.stepTextView} key={"Average"}>
+            <StyledText style={styles.stepTitleText}>
+              {poiData.length > 0
+                ? Math.round(aggregateData.average / poiData.length) + " mins"
+                : "~ mins"}
+            </StyledText>
+            <StyledText style={styles.stepDescriptionText}>Average</StyledText>
+          </View>
+          <View style={styles.stepTextView} key={"Highest"}>
+            <StyledText style={styles.stepTitleText}>
+              {poiData.length > 0 ? aggregateData.highest + " mins" : "~ mins"}
+            </StyledText>
+            <StyledText style={styles.stepDescriptionText}>Highest</StyledText>
+          </View>
         </View>
         <View style={styles.stepScrollDivider} />
         <ScrollView
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              onRefresh={onRefresh}
+              onRefresh={refresh}
               progressBackgroundColor={theme.refreshIconBackgroundColorAndroid} // Android only: Background color of refresh icon
               tintColor={theme.iconColor}
             />
           }
         >
           <List>
-            {poiData.map((poi: any) => (
+            {poiData.map((poi: POI) => (
               <List.Item
-                key={poi.location}
+                key={poi._id}
                 onPress={() => {
                   navigation.navigate(LOCATION_DETAILS, {
-                    location: poi.location,
+                    locationId: poi._id,
+                    locationName: poi.name,
                   });
                 }}
                 extra={
                   <View>
                     <List.Item.Brief style={styles.poiWaitTimeText}>
-                      {poi.waitTime + (poi.waitTime === 1 ? " min" : " mins")}
+                      {poi.estimate + (poi.estimate === 1 ? " min" : " mins")}
                     </List.Item.Brief>
                   </View>
                 }
                 arrow="horizontal"
                 thumb={
                   <View style={styles.poiIcon}>
-                    {renderIcon(poi.type, theme.iconColor)}
+                    {renderIcon(poi.type as POIType, theme.iconColor)}
                   </View>
                 }
                 style={styles.poiItem}
               >
                 <StyledText style={styles.poiDistanceText}>
-                  {poi.distance + " km"}
+                  {Math.round(poi.distance) + " m"}
                 </StyledText>
-                <StyledText>{poi.location}</StyledText>
+                <StyledText>{poi.name}</StyledText>
                 <StyledText style={styles.poiLastUpdatedText}>
                   {renderLastUpdated(poi.lastUpdated)}
                 </StyledText>

@@ -26,7 +26,7 @@ TaskManager.defineTask(
           longitude,
           timestamp: Date.now(),
         });
-      }, 1000);
+      }, 2000);
     }
   }
 );
