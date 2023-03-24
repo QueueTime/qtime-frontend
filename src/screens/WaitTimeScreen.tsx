@@ -8,6 +8,7 @@ import {
   RefreshControl,
   Platform,
 } from "react-native";
+import { useRecoilValue } from "recoil";
 
 import {
   Button,
@@ -34,6 +35,7 @@ import { poiApi } from "@api/client/apis";
 import { displayError } from "@utils/error";
 import { AuthContext } from "@contexts/auth";
 import { GetAllPOI200ResponseInner } from "@api/generated/api";
+import { userGeolocationState } from "@atoms/geolocationAtom";
 
 type POI = GetAllPOI200ResponseInner;
 
@@ -91,6 +93,8 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const [poiFilters, setPOIFilters] = useState<Set<POIType>>(new Set());
   const [aggregateData, setAggregateData] = useState(DEFAULT_AGGREGATE_DATA);
 
+  const { latitude, longitude } = useRecoilValue(userGeolocationState);
+
   let searchBar: SearchBar | null;
 
   const filters = [
@@ -120,8 +124,8 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
   const fetchPOIs = async () => {
     try {
       const res = await poiApi.getAllPOI(
-        43.262983, // TODO: replace with user's LATITUDE
-        -79.918611, // TODO: replace with user's LONGITUDE
+        latitude,
+        longitude,
         "queue",
         sortBy === SortByEnum.DISTANCE ? "distance" : "estimate",
         {
