@@ -20,7 +20,7 @@ import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { AuthContext } from "@contexts/auth";
 import { poiApi } from "@api/client/apis";
 import { displayError } from "@utils/error";
-import { GetPOIDetails200Response } from "@api/generated/api";
+import { POIDetails } from "@api/generated/api";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -32,7 +32,7 @@ const DAYS_OF_WEEK = [
   "Sunday",
 ];
 
-const DEFAULT_POI_DATA = {
+const DEFAULT_POI_DATA: POIDetails = {
   _id: "",
   address: "",
   class: "",
@@ -54,8 +54,6 @@ const DEFAULT_POI_DATA = {
   name: "~",
   type: "~",
 };
-
-type POIDetails = GetPOIDetails200Response;
 
 export const LocationDetailsScreen = ({
   route,
