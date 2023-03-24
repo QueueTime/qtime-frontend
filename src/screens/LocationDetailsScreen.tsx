@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   newWaitTimeButtonsContainer: {
-    flex: 2,
+    flex: 1,
     flexDirection: "row",
   },
   newWaitTimePlusMinusButton: {
@@ -456,7 +456,8 @@ const styles = StyleSheet.create({
     alignText: "center",
   },
   submitNewWaitTimeContainer: {
-    flex: 2,
+    flex: 1,
+    marginLeft: 10,
   },
   submitNewWaitTimeText: {
     color: "#FFFFFF",
