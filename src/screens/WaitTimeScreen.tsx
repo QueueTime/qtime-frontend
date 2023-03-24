@@ -122,6 +122,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
    * Fetch POIs from the API
    */
   const fetchPOIs = async () => {
+    console.log(sortBy);
     try {
       const res = await poiApi.getAllPOI(
         latitude,
@@ -132,6 +133,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
           headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
         }
       );
+      console.log(res.data);
       setRawPOIData(res.data);
     } catch (err: any) {
       displayError(
@@ -140,11 +142,11 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
     }
   };
 
-  // Refresh on first load
+  // Refresh on first load or anytime we change the sort by value
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [sortBy]);
 
   // Compute and update aggregate data (averages, lowest, highest, etc.)
   useEffect(() => {
@@ -207,7 +209,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   ]}
                   onPress={() => {
                     setSortBy(SortByEnum.TIME);
-                    refresh();
                     setIsVisible(false);
                   }}
                 >
@@ -225,7 +226,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                   ]}
                   onPress={() => {
                     setSortBy(SortByEnum.DISTANCE);
-                    refresh();
                     setIsVisible(false);
                   }}
                 >
