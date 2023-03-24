@@ -351,7 +351,8 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 key={poi._id}
                 onPress={() => {
                   navigation.navigate(LOCATION_DETAILS, {
-                    location: poi._id,
+                    locationId: poi._id,
+                    locationName: poi.name,
                   });
                 }}
                 extra={

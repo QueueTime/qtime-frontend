@@ -9,7 +9,7 @@ import * as ROUTES from "@constants/routes";
 // Types of parameters that are passed for each screen
 type WaitTimeStackNavigatorParams = {
   [ROUTES.WAIT_TIMES_HOME]: undefined;
-  [ROUTES.LOCATION_DETAILS]: { location: string };
+  [ROUTES.LOCATION_DETAILS]: { locationId: string; locationName: string };
 };
 
 // Prop types for each of the screen in the navigator
@@ -47,7 +47,7 @@ export const WaitTimesNavigator = () => (
     />
     <Stack.Screen
       options={({ route }) => ({
-        title: route.params.location,
+        title: route.params.locationName,
         ...(Platform.OS === "ios" && {
           // Used to add padding to back button on ios
           headerLeftContainerStyle: {
