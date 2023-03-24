@@ -20,6 +20,7 @@ import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
 import { AuthContext } from "@contexts/auth";
 import { poiApi } from "@api/client/apis";
 import { displayError } from "@utils/error";
+import { GetPOIDetails200Response } from "@api/generated/api";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -32,46 +33,29 @@ const DAYS_OF_WEEK = [
 ];
 
 const DEFAULT_POI_DATA = {
-  _id: "booster_juice_musc",
-  address: "McMaster University Student Centre",
-  class: "queue",
-  distance: 5546488.162500759,
-  estimate: 7,
-  histogram: [
-    { estimate: 6, time: 7 },
-    { estimate: 5, time: 8 },
-    { estimate: 10, time: 9 },
-    { estimate: 11, time: 10 },
-    { estimate: 15, time: 11 },
-    { estimate: 2, time: 12 },
-    { estimate: 15, time: 13 },
-    { estimate: 5, time: 14 },
-    { estimate: 12, time: 15 },
-    { estimate: 12, time: 16 },
-    { estimate: 14, time: 17 },
-    { estimate: 9, time: 18 },
-    { estimate: 3, time: 19 },
-    { estimate: 11, time: 20 },
-    { estimate: 8, time: 21 },
-    { estimate: 9, time: 22 },
-    { estimate: 10, time: 23 },
-  ],
+  _id: "",
+  address: "",
+  class: "",
+  distance: 0,
+  estimate: 0,
+  histogram: [],
   hoursOfOperation: {
-    Friday: "10:00 AM - 6:30 PM",
-    Monday: "10:00 AM - 6:30 PM",
-    Saturday: "Closed",
-    Sunday: "Closed",
-    Thursday: "10:00 AM - 6:30 PM",
-    Tuesday: "10:00 AM - 6:30 PM",
-    Wednesday: "10:00 AM - 6:30 PM",
+    Friday: "~",
+    Monday: "~",
+    Saturday: "~",
+    Sunday: "~",
+    Thursday: "~",
+    Tuesday: "~",
+    Wednesday: "~",
   },
-  image_url:
-    "https://discover.mcmaster.ca/app/uploads/2019/06/Booster-Juice.jpg",
-  lastUpdated: 6,
-  location: { latitude: 43.263532187492686, longitude: -79.91758503073444 },
-  name: "Booster Juice MUSC",
-  type: "EATERY",
+  imageUrl: "",
+  lastUpdated: 0,
+  location: { latitude: 0, longitude: 0 },
+  name: "~",
+  type: "~",
 };
+
+type POIDetails = GetPOIDetails200Response;
 
 export const LocationDetailsScreen = ({
   route,
@@ -86,7 +70,7 @@ export const LocationDetailsScreen = ({
   const [newWaitTime, setNewWaitTime] = useState(0);
   const [wasInteracted, setWasInteracted] = useState(false);
 
-  const [poiData, setPoiData] = useState(DEFAULT_POI_DATA);
+  const [poiData, setPoiData] = useState<POIDetails>(DEFAULT_POI_DATA);
   const tickLabels = Array(poiData.histogram.length)
     .fill("")
     .map((label, i) => {
@@ -213,16 +197,20 @@ export const LocationDetailsScreen = ({
           />
         }
       >
-        <View style={styles.imgContainer}>
-          <Image
-            style={styles.img}
-            source={{
-              uri: poiData.image_url,
-            }}
-          />
-        </View>
+        {poiData.imageUrl && (
+          <View style={styles.imgContainer}>
+            <Image
+              style={styles.img}
+              source={{
+                uri: poiData.imageUrl,
+              }}
+            />
+          </View>
+        )}
         <View style={styles.addressContainer}>
-          <StyledText style={styles.headingText}>{poiData.name}</StyledText>
+          <StyledText style={styles.headingText}>
+            {route.params.locationName}
+          </StyledText>
           <StyledText style={styles.detailsText}>
             {`${poiData.address} • ${Math.round(poiData.distance)} m away`}
           </StyledText>
@@ -389,6 +377,7 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     alignItems: "center",
+    paddingBottom: 10,
   },
   waitTimeContainer: {
     borderTopColor: "#EEEEEE",
