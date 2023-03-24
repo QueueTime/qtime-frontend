@@ -122,7 +122,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
    * Fetch POIs from the API
    */
   const fetchPOIs = async () => {
-    console.log(sortBy);
     try {
       const res = await poiApi.getAllPOI(
         latitude,
@@ -133,7 +132,6 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
           headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
         }
       );
-      console.log(res.data);
       setRawPOIData(res.data);
     } catch (err: any) {
       displayError(
