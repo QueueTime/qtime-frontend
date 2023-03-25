@@ -78,9 +78,9 @@ export const LocationDetailsScreen = ({
     .map((label, i) => {
       // Return numbered labels for start, middle and end of list
       if (
-        i == 0 ||
-        i == poiData.histogram.length - 1 ||
-        i == Math.floor(poiData.histogram.length / 2)
+        i === 0 ||
+        i === poiData.histogram.length - 1 ||
+        i === Math.floor(poiData.histogram.length / 2)
       ) {
         const suffix = poiData.histogram[i].time < 12 ? "am" : "pm";
         if (
@@ -157,6 +157,7 @@ export const LocationDetailsScreen = ({
   // Refresh on load
   useEffect(() => {
     refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(
