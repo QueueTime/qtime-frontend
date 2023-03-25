@@ -58,8 +58,8 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
     content:
       "Allow QTime to access your location to get the most out of the app.\n\n" +
       (Platform.OS === "ios"
-        ? 'Make sure to change the location permissions to "Always Allow" for QTime.\nGo to Settings > Privacy > Location Services > QTime > "Always Allow"'
-        : 'Make sure to enable "Always Allow" for QTime in your location permissions.\nGo to Settings > Apps > QTime > Permissions > Location (Always Allow)'),
+        ? 'Make sure to "Always Allow" the location permissions QTime.\nPress "Allow while using the app" then press "Change to Always Allow"'
+        : 'Make sure to enable "Always Allow" for QTime in your location permissions'),
 
     image: require("@assets/images/OnboardingD.png"),
   },
