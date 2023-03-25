@@ -26,7 +26,7 @@ export const MapScreen = () => {
         const res = await poiApi.getAllPOI(
           latitude,
           longitude,
-          undefined,
+          "queue",
           undefined,
           {
             headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
