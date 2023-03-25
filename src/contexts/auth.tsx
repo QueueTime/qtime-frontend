@@ -116,24 +116,24 @@ export const AuthProvider = ({
   const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
 
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged((user) => {
-      if (!user) {
+    const subscriber = auth().onAuthStateChanged((userState) => {
+      if (!userState) {
         setUser(null);
         if (isFirebaseInitializing) setFirebaseInitializing(false);
-      } else if (!user.email) {
+      } else if (!userState.email) {
         displayError("Cannot sign in. User account has no email.");
         setUser(null);
         if (isFirebaseInitializing) setFirebaseInitializing(false);
       } else {
         // User is signed in, but might not be in firebase yet
         createUserIfNotExists(
-          user,
-          user.email,
+          userState,
+          userState.email,
           (userDoc) => {
             setUserProfile(
               firestoreDocToUserProfile(userDoc.id, userDoc.data()!)
             );
-            setUser(user);
+            setUser(userState);
             // Small delay required for BaseNavigator component to re-render using new Auth context values
             // Prevents a "flicker" of user sign-in screen before the home screen
             setTimeout(() => {
