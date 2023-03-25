@@ -148,6 +148,7 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
 
   // Compute and update aggregate data (averages, lowest, highest, etc.)
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     let aggregateData = {
       lowest: DEFAULT_AGGREGATE_DATA.lowest,
       average: DEFAULT_AGGREGATE_DATA.average,

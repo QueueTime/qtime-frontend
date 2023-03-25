@@ -7,6 +7,7 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { useRecoilValue } from "recoil";
 import { setRecoil } from "recoil-nexus";
+import haversine from "haversine-distance";
 
 import { RewardsScreen } from "@screens/RewardsScreen";
 import { MapScreen } from "@screens/MapScreen";
@@ -108,7 +109,12 @@ export const TabNavigator = () => {
     if (
       latitude !== 0 &&
       longitude !== 0 &&
-      (Date.now() - apiTimestamp) / 1000 > 9
+      (Date.now() - apiTimestamp) / 1000 > 9 &&
+      // Check if the user is within 550m of the McMaster campus
+      haversine(
+        { latitude: latitude, longitude: longitude },
+        { latitude: 43.26271, longitude: -79.91914 }
+      ) > 550
     ) {
       callLocationAPI();
     }
