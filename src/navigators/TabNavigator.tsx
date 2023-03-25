@@ -114,7 +114,7 @@ export const TabNavigator = () => {
       haversine(
         { latitude: latitude, longitude: longitude },
         { latitude: 43.26271, longitude: -79.91914 }
-      ) > 550
+      ) <= 550
     ) {
       callLocationAPI();
     }
