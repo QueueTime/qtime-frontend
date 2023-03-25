@@ -2,12 +2,16 @@ import { useEffect } from "react";
 
 import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
+
 import { setRecoil } from "recoil-nexus";
 
 import { displayError } from "@utils/error";
 import { userGeolocationState } from "@atoms/geolocationAtom";
 
 export const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
+
+// Use is ready var to track when the app is fully rendered
+process.env["IS_READY"] = "false";
 
 // Define the background task for location tracking
 TaskManager.defineTask(
@@ -19,14 +23,14 @@ TaskManager.defineTask(
     }
     if (data) {
       const { latitude, longitude } = data.locations[0].coords;
-      // Delaying the update of the geolocation state to avoid getting setRecoil is not a function error
-      setTimeout(() => {
+      // Use IS_READY to delay the update of the geolocation state to avoid getting setRecoil is not a function error
+      if (process.env.IS_READY === "true") {
         setRecoil(userGeolocationState, {
           latitude,
           longitude,
           timestamp: Date.now(),
         });
-      }, 2000);
+      }
     }
   }
 );
