@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 
+import { useRecoilValue } from "recoil";
 import { VictoryBar, VictoryChart, VictoryAxis } from "victory-native";
 import { Button } from "@ant-design/react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,72 +18,146 @@ import { StyledText } from "@components/StyledText";
 import { SuccessModal } from "@components/SuccessModal";
 import { renderLastUpdated } from "@utils/time";
 import { LocationDetailsScreenProps } from "@navigators/WaitTimeStackNavigator";
+import { AuthContext } from "@contexts/auth";
+import { poiApi } from "@api/client/apis";
+import { displayError } from "@utils/error";
+import { POIDetails } from "@api/generated/api";
+import { userGeolocationState } from "@atoms/geolocationAtom";
+
+const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+const DEFAULT_POI_DATA: POIDetails = {
+  _id: "",
+  address: "",
+  class: "",
+  distance: 0,
+  estimate: 0,
+  histogram: [],
+  hoursOfOperation: {
+    Friday: "~",
+    Monday: "~",
+    Saturday: "~",
+    Sunday: "~",
+    Thursday: "~",
+    Tuesday: "~",
+    Wednesday: "~",
+  },
+  imageUrl: "",
+  lastUpdated: 0,
+  location: { latitude: 0, longitude: 0 },
+  name: "~",
+  type: "~",
+};
 
 export const LocationDetailsScreen = ({
+  route,
   navigation,
 }: ILocationDetailsScreenProps) => {
   const { theme } = useContext(ThemeContext);
+  const { user } = useContext(AuthContext);
+
+  const { latitude, longitude } = useRecoilValue(userGeolocationState);
+
   const [refreshing, setRefreshing] = useState(false);
   const [showSubmittedSuccessModal, setSubmittedSuccessModal] = useState(false);
   const [showConfirmSuccessModal, setConfirmSuccessModal] = useState(false);
   const [newWaitTime, setNewWaitTime] = useState(0);
   const [wasInteracted, setWasInteracted] = useState(false);
 
-  const chartData = [
-    { hour: 7, waitTime: 1 },
-    { hour: 8, waitTime: 2 },
-    { hour: 9, waitTime: 1 },
-    { hour: 10, waitTime: 4 },
-    { hour: 11, waitTime: 6 },
-    { hour: 12, waitTime: 15 },
-    { hour: 13, waitTime: 6 },
-    { hour: 14, waitTime: 4 },
-    { hour: 15, waitTime: 5 },
-    { hour: 16, waitTime: 5 },
-    { hour: 17, waitTime: 7 },
-    { hour: 18, waitTime: 3 },
-    { hour: 19, waitTime: 15 },
-    { hour: 20, waitTime: 3 },
-    { hour: 21, waitTime: 2 },
-    { hour: 22, waitTime: 5 },
-    { hour: 23, waitTime: 1 },
-  ];
+  const [poiData, setPoiData] = useState<POIDetails>(DEFAULT_POI_DATA);
+  const tickLabels = Array(poiData.histogram.length)
+    .fill("")
+    .map((label, i) => {
+      // Return numbered labels for start, middle and end of list
+      if (
+        i === 0 ||
+        i === poiData.histogram.length - 1 ||
+        i === Math.floor(poiData.histogram.length / 2)
+      ) {
+        const suffix = poiData.histogram[i].time < 12 ? "am" : "pm";
+        if (
+          poiData.histogram[i].time == 0 ||
+          poiData.histogram[i].time == 12 ||
+          poiData.histogram[i].time == 24
+        ) {
+          return `12${suffix}`;
+        }
+        return `${poiData.histogram[i].time % 12}${suffix}`;
+      }
+      return label;
+    });
 
-  const poiData = {
-    name: "Centro",
-    address: "Commons Building",
-    distance: 2.1,
-    hours: [
-      { "Monday - Friday": "7:00 AM - 11:00 PM" },
-      { "Saturday & Sunday": "10:00 AM - 11:00 PM" },
-    ],
-    lastUpdated: 4,
-    waitTime: 10,
-    currentHour: 14,
+  const fetchLocationDetails = async () => {
+    try {
+      const res = await poiApi.getPOIDetails(
+        route.params.locationId,
+        latitude,
+        longitude,
+        {
+          headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+        }
+      );
+      setPoiData(res.data);
+    } catch (error: any) {
+      displayError(
+        `Failed to fetch location details. ${
+          error?.response?.data?.message || error
+        }`
+      );
+    }
+  };
+
+  const sendWaitTimeEstimate = async (estimate: number) => {
+    try {
+      const payload = {
+        wait_time_estimate: estimate,
+      };
+      await poiApi.submitUserEstimate(route.params.locationId, payload, {
+        headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+      });
+    } catch (error: any) {
+      displayError(
+        `Failed to send location time estimate. ${
+          error?.response?.data?.message || error
+        }`
+      );
+    }
   };
 
   const submitNewWaitTime = () => {
-    // send new wait time to backend
-    // api call with newWaitTime
     setSubmittedSuccessModal(true);
+    sendWaitTimeEstimate(newWaitTime);
     setTimeout(() => {
       setSubmittedSuccessModal(false);
-    }, 2000);
+    }, 1500);
   };
 
-  const confirmNewWaitTime = () => {
-    // send wait time to backend
+  const confirmCurrentWaitTime = () => {
     setConfirmSuccessModal(true);
+    sendWaitTimeEstimate(poiData.estimate);
     setTimeout(() => {
       setConfirmSuccessModal(false);
-    }, 2000);
+    }, 1500);
   };
 
-  const onRefresh = useCallback(() => {
+  const refresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+    await fetchLocationDetails();
+    setRefreshing(false);
+  };
+
+  // Refresh on load
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(
@@ -114,31 +189,9 @@ export const LocationDetailsScreen = ({
   const popularTimeChart = (
     <VictoryChart height={175}>
       <VictoryAxis
-        // tickValues specifies both the number of ticks and where
-        // they are placed on the axis
-        // TODO: Will need to change this to be dynamic based on the hours of operation
-        tickValues={[
-          7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-        ]}
-        tickFormat={[
-          "7am",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "3pm",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          "11pm",
-        ]}
+        // tickValues specifies both the number of ticks and where they are placed on the axis
+        tickValues={poiData.histogram.map(({ time }) => time)}
+        tickFormat={tickLabels}
         style={{
           tickLabels: { fill: theme.styles.placeholderText.color },
           axis: { stroke: "none" },
@@ -149,13 +202,13 @@ export const LocationDetailsScreen = ({
           data: {
             fill: "#1677FF",
             opacity: ({ datum }) =>
-              datum.hour === new Date().getHours() ? 1 : 0.5,
+              datum.time === new Date().getHours() ? 1 : 0.5,
           },
         }}
         cornerRadius={{ top: 3, bottom: 3 }}
-        data={chartData}
-        x="hour"
-        y="waitTime"
+        data={poiData.histogram}
+        x="time"
+        y="estimate"
         barWidth={15}
       />
     </VictoryChart>
@@ -169,34 +222,42 @@ export const LocationDetailsScreen = ({
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
-            onRefresh={onRefresh}
+            onRefresh={refresh}
             progressBackgroundColor={theme.refreshIconBackgroundColorAndroid} // Android only: Background color of refresh icon
             tintColor={theme.iconColor}
           />
         }
       >
-        <View style={styles.imgContainer}>
-          <Image
-            style={styles.img}
-            source={require("@assets/images/centro.png")}
-          />
-        </View>
+        {poiData.imageUrl && (
+          <View style={styles.imgContainer}>
+            <Image
+              style={styles.img}
+              source={{
+                uri: poiData.imageUrl,
+              }}
+            />
+          </View>
+        )}
         <View style={styles.addressContainer}>
-          <StyledText style={styles.headingText}>{poiData.name}</StyledText>
+          <StyledText style={styles.headingText}>
+            {route.params.locationName}
+          </StyledText>
           <StyledText style={styles.detailsText}>
-            {`${poiData.address} • ${poiData.distance} km away`}
+            {`${poiData.address} • ${Math.round(poiData.distance)} m away`}
           </StyledText>
         </View>
         <View style={styles.divider} />
         <View>
           <StyledText style={styles.headingText}>Hours</StyledText>
-          {poiData.hours.map((day) => {
-            return (
-              <StyledText key={Object.keys(day)[0]} style={styles.detailsText}>
-                {Object.keys(day) + ", " + Object.values(day)}
-              </StyledText>
-            );
-          })}
+          {DAYS_OF_WEEK.map((day: string) => (
+            <StyledText key={day} style={styles.detailsText}>
+              {`${day}: ${
+                poiData.hoursOfOperation[
+                  day as keyof typeof poiData.hoursOfOperation
+                ]
+              }`}
+            </StyledText>
+          ))}
         </View>
         <View style={styles.divider} />
         <View>
@@ -208,8 +269,8 @@ export const LocationDetailsScreen = ({
         <View>
           <StyledText style={styles.waitTimeText}>Wait Time</StyledText>
           <StyledText style={styles.detailsText}>
-            {`Current time is ${poiData.waitTime} ${
-              poiData.waitTime === 1 ? `min` : `mins`
+            {`Current time is ${poiData.estimate} ${
+              poiData.estimate === 1 ? `min` : `mins`
             } • ${renderLastUpdated(poiData.lastUpdated)}`}
           </StyledText>
         </View>
@@ -220,7 +281,7 @@ export const LocationDetailsScreen = ({
               theme.styles.confirmWaitTimeButton,
               styles.waitTimeButtonHeight,
             ]}
-            onPress={confirmNewWaitTime}
+            onPress={confirmCurrentWaitTime}
             testID="confirmWaitTimeButton"
           >
             <StyledText
@@ -229,8 +290,8 @@ export const LocationDetailsScreen = ({
                 styles.confirnWaitTimeButtonText,
               ]}
             >
-              {`Confirm ${poiData.waitTime} ${
-                poiData.waitTime === 1 ? `min` : `mins`
+              {`Confirm ${poiData.estimate} ${
+                poiData.estimate === 1 ? `min` : `mins`
               }`}
             </StyledText>
           </Button>
@@ -332,6 +393,7 @@ const styles = StyleSheet.create({
   img: {
     borderRadius: 6,
     width: "100%",
+    height: 150,
   },
   addressContainer: {
     marginTop: 35,
@@ -346,6 +408,7 @@ const styles = StyleSheet.create({
   },
   chartContainer: {
     alignItems: "center",
+    paddingBottom: 10,
   },
   waitTimeContainer: {
     borderTopColor: "#EEEEEE",
@@ -370,7 +433,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   newWaitTimeButtonsContainer: {
-    flex: 2,
+    flex: 1,
     flexDirection: "row",
   },
   newWaitTimePlusMinusButton: {
@@ -394,7 +457,8 @@ const styles = StyleSheet.create({
     alignText: "center",
   },
   submitNewWaitTimeContainer: {
-    flex: 2,
+    flex: 1,
+    marginLeft: 10,
   },
   submitNewWaitTimeText: {
     color: "#FFFFFF",
@@ -409,5 +473,6 @@ const styles = StyleSheet.create({
 });
 
 interface ILocationDetailsScreenProps {
+  route: LocationDetailsScreenProps["route"];
   navigation: LocationDetailsScreenProps["navigation"];
 }

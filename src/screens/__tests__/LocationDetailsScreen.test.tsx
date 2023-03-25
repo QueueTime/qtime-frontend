@@ -9,6 +9,7 @@ import { Provider } from "@ant-design/react-native";
 import { LocationDetailsScreen } from "@screens/LocationDetailsScreen";
 
 import "@testing-library/jest-native/extend-expect";
+import { RecoilRoot } from "recoil";
 
 // Test Utils
 const confirmButtonId = "confirmWaitTimeButton";
@@ -18,6 +19,9 @@ const getSubmitWaitTimeButton = () => screen.getByTestId(submitButtonId);
 
 describe("<LocationDetailsScreen />", () => {
   const mockNavigate = jest.fn();
+  const mockRoute: any = {
+    params: { locationdId: "testLocationId", locationName: "testLocationName" },
+  };
   const navigation: any = {
     navigate: mockNavigate,
     addListener: jest.fn().mockImplementation((event, callback) => {
@@ -32,9 +36,11 @@ describe("<LocationDetailsScreen />", () => {
 
   it("confirm success modal pops up when user confirms wait time", async () => {
     render(
-      <Provider>
-        <LocationDetailsScreen navigation={navigation} />
-      </Provider>
+      <RecoilRoot>
+        <Provider>
+          <LocationDetailsScreen navigation={navigation} route={mockRoute} />
+        </Provider>
+      </RecoilRoot>
     );
     fireEvent.press(getConfirmWaitTimeButton());
 
@@ -50,9 +56,11 @@ describe("<LocationDetailsScreen />", () => {
 
   it("submit success modal pops up when user submits wait time", async () => {
     render(
-      <Provider>
-        <LocationDetailsScreen navigation={navigation} />
-      </Provider>
+      <RecoilRoot>
+        <Provider>
+          <LocationDetailsScreen navigation={navigation} route={mockRoute} />
+        </Provider>
+      </RecoilRoot>
     );
     fireEvent.press(getSubmitWaitTimeButton());
 
