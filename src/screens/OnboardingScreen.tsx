@@ -7,6 +7,7 @@ import {
   ImageSourcePropType,
   Image,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import * as Location from "expo-location";
 
@@ -34,28 +35,32 @@ const CAROUSEL_ITEMS: ICarouselItemProps[] = [
     key: "A",
     title: "Your connection\nis the key.",
     content:
-      "Anonymous identifier keys are constantly exchanged between people using QTime wherever you go.",
+      "For QTime to come up with accurate estimates, anonomized device location GPS data is exchanged with QTime while you're on campus.",
     image: require("@assets/images/OnboardingA.png"),
   },
   {
     key: "B",
     title: "Help out your McMaster\ncommunity.",
     content:
-      "Everyone's time is valuable, so share your estimated wait times for POIs on campus and view times submitted by others.",
+      "Everyone's time is valuable, so you can share your estimates for wait times around campus to help others.",
     image: require("@assets/images/OnboardingB.png"),
   },
   {
     key: "C",
-    title: "Privacy is our number\none priority.",
+    title: "Privacy is our priority.",
     content:
-      "All data is stored locally on your device and your identity is not shared with anyone.\n",
+      "All data is stored securely, with sensitive data anonymized and encrypted on QTime systems. Your data is never sold or shared with third parties.",
     image: require("@assets/images/OnboardingC.png"),
   },
   {
     key: "D",
     title: "Allow location for accurate\nwait times.",
     content:
-      "Allow QTime to access your location to get the most accurate wait times possible.",
+      "Allow QTime to access your location to get the most out of the app.\n\n" +
+      (Platform.OS === "ios"
+        ? 'Make sure to "Always Allow" the location permissions QTime.\nPress "Allow while using the app" then press "Change to Always Allow"'
+        : 'Make sure to enable "Always Allow" for QTime in your location permissions'),
+
     image: require("@assets/images/OnboardingD.png"),
   },
 ];

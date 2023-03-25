@@ -32,10 +32,11 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
 
   // Navigation details for the list of buttons at the bottom of the screen
   const navigationOptions = [
-    {
-      name: "Notification Settings",
-      onPress: () => navigation.navigate(ROUTES.NOTIFICATIONS),
-    },
+    // Hidden for now since not implemented for expo
+    // {
+    //   name: "Notification Settings",
+    //   onPress: () => navigation.navigate(ROUTES.NOTIFICATIONS),
+    // },
     {
       name: "App Appearance",
       onPress: () => navigation.navigate(ROUTES.THEME),
