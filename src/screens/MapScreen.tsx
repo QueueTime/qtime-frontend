@@ -26,7 +26,7 @@ export const MapScreen = () => {
         const res = await poiApi.getAllPOI(
           latitude,
           longitude,
-          "queue",
+          undefined,
           undefined,
           {
             headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
@@ -62,7 +62,11 @@ export const MapScreen = () => {
             longitude: poi.location?.longitude || 0,
           }}
           title={poi.name}
-          description={poi.estimate + (poi.estimate === 1 ? " min" : " mins")}
+          description={
+            poi.class === "queue"
+              ? poi.estimate + (poi.estimate === 1 ? " min" : " mins")
+              : `${poi.estimate}% full`
+          }
           image={require("@assets/images/location-pin.png")}
         />
       ))}
