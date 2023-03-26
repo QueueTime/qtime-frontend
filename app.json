@@ -42,7 +42,12 @@
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/android-icon.png",
       "package": "com.capstone.QTime",
-      "permissions": ["ACCESS_BACKGROUND_LOCATION", "ACCESS_FINE_LOCATION"]
+      "permissions": ["ACCESS_BACKGROUND_LOCATION", "ACCESS_FINE_LOCATION"],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCMNo6cmAGfp4OXo3LpWxSAWK-5Wu7_jys"
+        }
+      }
     },
     "extra": {
       "eas": {
