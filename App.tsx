@@ -57,7 +57,7 @@ const App = () => {
 
   // Set IS_READY to true to allow the background tracking task to update the geolocation state without breaking
   useEffect(() => {
-    process.env["IS_READY"] = "true";
+    process.env.IS_READY = "true";
   }, []);
 
   if (!fontsLoaded) {

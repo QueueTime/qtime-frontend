@@ -11,7 +11,7 @@ import { userGeolocationState } from "@atoms/geolocationAtom";
 export const LOCATION_TASK_NAME = "LOCATION_BACKGROUND_TRACKING";
 
 // Use is ready var to track when the app is fully rendered
-process.env["IS_READY"] = "false";
+process.env.IS_READY = "false";
 
 // Define the background task for location tracking
 TaskManager.defineTask(
