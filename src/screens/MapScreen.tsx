@@ -10,17 +10,30 @@ import { poiApi } from "@api/client/apis";
 import { GetAllPOI200ResponseInner } from "@api/generated/api";
 import { displayError } from "@utils/error";
 import { AuthContext } from "@contexts/auth";
+import { ThemeContext } from "@contexts/theme";
 import { userGeolocationState } from "@atoms/geolocationAtom";
 import { StyledText } from "@components/StyledText";
+import { WHITE_COLOR } from "@constants/styles";
 
 type POI = GetAllPOI200ResponseInner;
 
 export const MapScreen = () => {
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [poiData, setPoiData] = useState<POI[]>([]);
   const { latitude, longitude } = useRecoilValue(userGeolocationState);
   const isFocused = useIsFocused();
 
+  const styleWithTheme = StyleSheet.create({
+    callout: {
+      padding: 10,
+      borderRadius: 10,
+      backgroundColor:
+        Platform.OS === "ios"
+          ? theme.styles.screenContainer.backgroundColor
+          : WHITE_COLOR,
+    },
+  });
   useEffect(() => {
     const getAllPOIs = async () => {
       try {
@@ -46,6 +59,7 @@ export const MapScreen = () => {
 
   return (
     <MapView
+      userInterfaceStyle={theme.name as "light" | "dark"}
       provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
       style={styles.map}
       initialRegion={{
@@ -65,8 +79,8 @@ export const MapScreen = () => {
           }}
           image={require("@assets/images/location-pin.png")}
         >
-          <Callout>
-            <View style={styles.callout}>
+          <Callout style={styleWithTheme.callout} tooltip={true}>
+            <View>
               <StyledText fontWeight="bold">{poi.name}</StyledText>
               <StyledText style={styles.calloutDescription}>
                 {poi.class === "queue"
@@ -85,9 +99,6 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-  },
-  callout: {
-    padding: 1,
   },
   calloutDescription: {
     textAlign: "center",
