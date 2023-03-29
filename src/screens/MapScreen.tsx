@@ -13,7 +13,7 @@ import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
 import { userGeolocationState } from "@atoms/geolocationAtom";
 import { StyledText } from "@components/StyledText";
-import * as STYLES from "@constants/styles";
+import { WHITE_COLOR } from "@constants/styles";
 
 type POI = GetAllPOI200ResponseInner;
 
@@ -31,7 +31,7 @@ export const MapScreen = () => {
       backgroundColor:
         Platform.OS === "ios"
           ? theme.styles.screenContainer.backgroundColor
-          : STYLES.WHITE_COLOR,
+          : WHITE_COLOR,
     },
   });
   useEffect(() => {
