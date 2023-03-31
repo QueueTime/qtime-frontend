@@ -13,7 +13,7 @@ import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
 import { userGeolocationState } from "@atoms/geolocationAtom";
 import { StyledText } from "@components/StyledText";
-import { WHITE_COLOR } from "@constants/styles";
+import { WHITE_COLOR, BLACK_COLOR } from "@constants/styles";
 
 type POI = GetAllPOI200ResponseInner;
 
@@ -32,6 +32,9 @@ export const MapScreen = () => {
         Platform.OS === "ios"
           ? theme.styles.screenContainer.backgroundColor
           : WHITE_COLOR,
+    },
+    calloutText: {
+      color: Platform.OS === "ios" ? theme.styles.text.color : BLACK_COLOR,
     },
   });
   useEffect(() => {
@@ -81,8 +84,12 @@ export const MapScreen = () => {
         >
           <Callout style={styleWithTheme.callout} tooltip={true}>
             <View>
-              <StyledText fontWeight="bold">{poi.name}</StyledText>
-              <StyledText style={styles.calloutDescription}>
+              <StyledText style={styleWithTheme.calloutText} fontWeight="bold">
+                {poi.name}
+              </StyledText>
+              <StyledText
+                style={[styles.calloutDescription, styleWithTheme.calloutText]}
+              >
                 {poi.class === "queue"
                   ? poi.estimate + (poi.estimate === 1 ? " min" : " mins")
                   : `${poi.estimate}% full`}
