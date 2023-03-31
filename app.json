@@ -47,7 +47,8 @@
         "googleMaps": {
           "apiKey": "AIzaSyCMNo6cmAGfp4OXo3LpWxSAWK-5Wu7_jys"
         }
-      }
+      },
+      "versionCode": 3
     },
     "extra": {
       "eas": {
