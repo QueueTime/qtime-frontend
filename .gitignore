@@ -22,3 +22,6 @@ web-build/
 # Firebase debug
 firestore-debug.log
 ui-debug.log
+
+# Android Google Play service key
+expo-service-key.json
