@@ -11,6 +11,7 @@
     "emulators": "firebase emulators:start --only firestore,auth --project qtime-bd47e",
     "build:android": "eas build --profile development --platform android",
     "build:ios": "eas build --profile development-ios --platform ios",
+    "submit:android": "eas build --profile production --platform android --auto-submit",
     "generate:api": "x(){ openapi-generator-cli generate -i $1 -g typescript-axios -o src/api/generated --additional-properties=supportsES6=true,withInterfaces=true; };x",
     "test": "jest",
     "format": "prettier --write .",
