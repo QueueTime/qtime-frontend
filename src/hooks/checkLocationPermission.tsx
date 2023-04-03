@@ -39,8 +39,16 @@ export const requestPermissions = () => {
       {
         text: "Open Settings",
         style: "default",
+        isPreferred: true, // @ts-ignore This is only available on iOS
         onPress: () => Linking.openSettings(),
       },
-    ]
+      {
+        text: "Later",
+        style: "cancel",
+      },
+    ],
+    {
+      cancelable: true,
+    }
   );
 };
