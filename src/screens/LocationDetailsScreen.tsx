@@ -96,11 +96,13 @@ export const LocationDetailsScreen = ({
     });
 
   const fetchLocationDetails = async () => {
+    const nonNullLatitude = latitude || 0;
+    const nonNullLongitude = longitude || 0;
     try {
       const res = await poiApi.getPOIDetails(
         route.params.locationId,
-        latitude,
-        longitude,
+        nonNullLatitude,
+        nonNullLongitude,
         {
           headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
         }
@@ -243,7 +245,11 @@ export const LocationDetailsScreen = ({
             {route.params.locationName}
           </StyledText>
           <StyledText style={styles.detailsText}>
-            {`${poiData.address} • ${Math.round(poiData.distance)} m away`}
+            {`${poiData.address} ${
+              latitude && longitude
+                ? " • " + Math.round(poiData.distance) + " m away"
+                : ""
+            }`}
           </StyledText>
         </View>
         <View style={styles.divider} />

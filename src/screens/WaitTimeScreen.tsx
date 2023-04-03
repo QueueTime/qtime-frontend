@@ -122,10 +122,13 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
    * Fetch POIs from the API
    */
   const fetchPOIs = async () => {
+    const nonNullLatitude = latitude || 0;
+    const nonNullLongitude = longitude || 0;
+
     try {
       const res = await poiApi.getAllPOI(
-        latitude,
-        longitude,
+        nonNullLatitude,
+        nonNullLongitude,
         "queue",
         sortBy === SortByEnum.DISTANCE ? "distance" : "estimate",
         {
@@ -371,9 +374,11 @@ export const WaitTimeScreen = ({ navigation }: IWaitTimeScreenProps) => {
                 }
                 style={styles.poiItem}
               >
-                <StyledText style={styles.poiDistanceText}>
-                  {Math.round(poi.distance) + " m"}
-                </StyledText>
+                {latitude && longitude && (
+                  <StyledText style={styles.poiDistanceText}>
+                    {Math.round(poi.distance) + " m"}
+                  </StyledText>
+                )}
                 <StyledText>{poi.name}</StyledText>
                 <StyledText style={styles.poiLastUpdatedText}>
                   {renderLastUpdated(poi.lastUpdated)}

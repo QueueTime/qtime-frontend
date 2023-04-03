@@ -148,10 +148,7 @@ export const ProfileScreen = ({ navigation }: IProfileScreenProps) => {
       </View>
       <List>
         <List.Item>
-          <InfoSection
-            text="Most frequented POI"
-            subtext="Location 6 • 0.1 km away"
-          />
+          <InfoSection text="Most frequented POI" subtext="Location 6" />
         </List.Item>
         <List.Item>
           <InfoSection
