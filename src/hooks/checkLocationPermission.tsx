@@ -31,7 +31,7 @@ export const useLocationPermission = () => {
   }, []);
 };
 
-export const requestPermissions = () => {
+export const requestPermissions = (onCancel?: () => void) => {
   Alert.alert(
     "Allow Location Access",
     "In order to use this app to its full potential, please allow location access. Set location access to 'Always' for the best experience.",
@@ -44,6 +44,7 @@ export const requestPermissions = () => {
       {
         text: "Later",
         style: "cancel",
+        onPress: () => onCancel?.(),
       },
     ],
     {

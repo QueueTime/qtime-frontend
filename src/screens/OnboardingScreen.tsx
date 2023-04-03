@@ -117,7 +117,7 @@ export const OnboardingScreen = ({
     if (isLastOnboardingPage) {
       await getTrackingPermission();
       if (!backgroundPermission.granted) {
-        requestPermissions();
+        requestPermissions(onComplete);
       } else {
         onComplete?.();
       }
