@@ -90,6 +90,8 @@ export const TabNavigator = () => {
   useBackgroundLocation();
 
   useEffect(() => {
+    if (!latitude || !longitude) return;
+
     const callLocationAPI = async () => {
       try {
         sourcingApi.updateUserLocation(

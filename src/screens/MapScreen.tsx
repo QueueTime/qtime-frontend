@@ -1,6 +1,5 @@
 import { useEffect, useContext, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
-import { useRecoilValue } from "recoil";
 import { useIsFocused } from "@react-navigation/native";
 
 import MapView from "react-native-maps";
@@ -11,7 +10,6 @@ import { GetAllPOI200ResponseInner } from "@api/generated/api";
 import { displayError } from "@utils/error";
 import { AuthContext } from "@contexts/auth";
 import { ThemeContext } from "@contexts/theme";
-import { userGeolocationState } from "@atoms/geolocationAtom";
 import { StyledText } from "@components/StyledText";
 import { WHITE_COLOR, BLACK_COLOR } from "@constants/styles";
 
@@ -21,7 +19,6 @@ export const MapScreen = () => {
   const { user } = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
   const [poiData, setPoiData] = useState<POI[]>([]);
-  const { latitude, longitude } = useRecoilValue(userGeolocationState);
   const isFocused = useIsFocused();
 
   const styleWithTheme = StyleSheet.create({
@@ -40,15 +37,9 @@ export const MapScreen = () => {
   useEffect(() => {
     const getAllPOIs = async () => {
       try {
-        const res = await poiApi.getAllPOI(
-          latitude,
-          longitude,
-          undefined,
-          undefined,
-          {
-            headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
-          }
-        );
+        const res = await poiApi.getAllPOI(0, 0, undefined, undefined, {
+          headers: { Authorization: `Bearer ${await user!.getIdToken()}` },
+        });
         setPoiData(res.data);
       } catch (err: any) {
         displayError(
