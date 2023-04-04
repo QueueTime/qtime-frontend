@@ -67,9 +67,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 30,
   },
-  appleButton: {
-    width: "85%",
-    height: 45,
-    marginTop: 20,
-  },
 });
