@@ -39,9 +39,9 @@
       "infoPlist": {
         "UIBackgroundModes": ["location", "fetch"],
         "CFBundleVersion": "1.0.2",
-        "NSLocationUsageDescription": "This app uses your location to locate the nearby point of interests and helps us compute an accurate wait time for point of interests.",
-        "NSLocationAlwaysUsageDescription": "This app uses your background location to help us compute an accurate wait time for point of interests that you might be waiting in line for.",
-        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate the nearby point of interests and helps us compute an accurate wait time for point of interests."
+        "NSLocationUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest.",
+        "NSLocationAlwaysUsageDescription": "This app uses your location in the background to help us compute an accurate wait time for points of interest that you might be waiting in line for.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest."
       }
     },
     "android": {
