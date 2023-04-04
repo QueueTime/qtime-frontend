@@ -3,7 +3,7 @@
     "name": "QTime",
     "owner": "queuetime",
     "slug": "QTime",
-    "version": "1.0.1",
+    "version": "1.0.0",
     "plugins": [
       "@react-native-google-signin/google-signin",
       "expo-build-properties",
