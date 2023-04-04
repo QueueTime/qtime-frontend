@@ -3,10 +3,11 @@
     "name": "QTime",
     "owner": "queuetime",
     "slug": "QTime",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "plugins": [
       "@react-native-google-signin/google-signin",
       "expo-build-properties",
+      "expo-apple-authentication",
       "@react-native-firebase/app",
       [
         "expo-build-properties",
@@ -30,12 +31,17 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "usesAppleSignIn": true,
+      "supportsTablet": false,
       "icon": "./assets/ios-icon.png",
       "bundleIdentifier": "com.capstone.QTime",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": ["location", "fetch"],
+        "CFBundleVersion": "1.0.2",
+        "NSLocationUsageDescription": "This app uses your location to locate the nearby point of interests and helps us compute an accurate wait time for point of interests.",
+        "NSLocationAlwaysUsageDescription": "This app uses your background location to help us compute an accurate wait time for point of interests that you might be waiting in line for.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate the nearby point of interests and helps us compute an accurate wait time for point of interests."
       }
     },
     "android": {

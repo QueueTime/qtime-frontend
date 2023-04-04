@@ -73,7 +73,9 @@
     "react-navigation-tabs": "^2.11.2",
     "recoil": "^0.7.7",
     "recoil-nexus": "^0.4.0",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "expo-apple-authentication": "~5.0.1",
+    "expo-crypto": "~12.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
