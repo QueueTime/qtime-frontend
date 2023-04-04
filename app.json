@@ -7,6 +7,7 @@
     "plugins": [
       "@react-native-google-signin/google-signin",
       "expo-build-properties",
+      "expo-apple-authentication",
       "@react-native-firebase/app",
       [
         "expo-build-properties",
@@ -30,12 +31,17 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
+      "usesAppleSignIn": true,
+      "supportsTablet": false,
       "icon": "./assets/ios-icon.png",
       "bundleIdentifier": "com.capstone.QTime",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": ["location", "fetch"],
+        "CFBundleVersion": "1.0.2",
+        "NSLocationUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest.",
+        "NSLocationAlwaysUsageDescription": "This app uses your location in the background to help us compute an accurate wait time for points of interest that you might be waiting in line for.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest."
       }
     },
     "android": {

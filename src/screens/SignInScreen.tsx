@@ -1,14 +1,20 @@
-import { useContext } from "react";
-import { StyleSheet, Image } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, Image, View } from "react-native";
 
-import { View } from "@ant-design/react-native";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 import { StyledText } from "@components/StyledText";
 import { ThemeContext } from "@contexts/theme";
 import { GoogleSignInButton } from "@components/GoogleSignInButton";
+import { AppleSignInButton } from "@components/AppleSignInButton";
 
 export const SignInScreen = () => {
   const { theme } = useContext(ThemeContext);
+  const [isAppleLoginAvailable, setIsAppleLoginAvailable] = useState(false);
+
+  useEffect(() => {
+    AppleAuthentication.isAvailableAsync().then(setIsAppleLoginAvailable);
+  }, []);
 
   return (
     <View style={[theme.styles.screenContainer, styles.container]}>
@@ -28,7 +34,10 @@ export const SignInScreen = () => {
         style={styles.hourglass}
         source={require("@assets/images/Hourglass.png")}
       />
-      <GoogleSignInButton />
+      <View style={styles.buttons}>
+        <GoogleSignInButton />
+        {isAppleLoginAvailable && <AppleSignInButton />}
+      </View>
     </View>
   );
 };
@@ -44,10 +53,18 @@ const styles = StyleSheet.create({
     width: 150,
     resizeMode: "contain",
   },
-  hourglass: { resizeMode: "contain", height: 320 },
+  hourglass: {
+    resizeMode: "contain",
+    height: 320,
+  },
   container: {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-around",
+  },
+  buttons: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 30,
   },
 });
