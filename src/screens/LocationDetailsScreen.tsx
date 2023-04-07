@@ -137,6 +137,8 @@ export const LocationDetailsScreen = ({
   const submitNewWaitTime = () => {
     setSubmittedSuccessModal(true);
     sendWaitTimeEstimate(newWaitTime);
+    setWasInteracted(false);
+    setNewWaitTime(0);
     setTimeout(() => {
       setSubmittedSuccessModal(false);
     }, 1500);
