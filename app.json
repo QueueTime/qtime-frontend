@@ -29,9 +29,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": false,
@@ -39,25 +37,18 @@
       "bundleIdentifier": "com.capstone.QTime",
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
-        "UIBackgroundModes": [
-          "location",
-          "fetch"
-        ],
+        "UIBackgroundModes": ["location", "fetch"],
         "CFBundleVersion": "1.0.2",
         "NSLocationUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest.",
         "NSLocationAlwaysUsageDescription": "This app uses your location in the background to help us compute an accurate wait time for points of interest that you might be waiting in line for.",
         "NSLocationWhenInUseUsageDescription": "This app uses your location to locate nearby points of interest and to help us compute accurate wait times and occupancy estimates for points of interest."
-      },
-      "buildNumber": "2"
+      }
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "icon": "./assets/android-icon.png",
       "package": "com.capstone.QTime",
-      "permissions": [
-        "ACCESS_BACKGROUND_LOCATION",
-        "ACCESS_FINE_LOCATION"
-      ],
+      "permissions": ["ACCESS_BACKGROUND_LOCATION", "ACCESS_FINE_LOCATION"],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyCMNo6cmAGfp4OXo3LpWxSAWK-5Wu7_jys"
