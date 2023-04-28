@@ -118,3 +118,13 @@ This project leverages [jest](https://jestjs.io/) to run unit and snapshot tests
 - [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/): testing library for React Native inspired by `React Testing Library`.
 
 > Tip: Install the jest vscode extension to simplify running single tests directly from the editor.
+
+## Gallery
+
+<img src="./screenshots/Screenshot_20230327-113833.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-113847.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-113902.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-113907.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-113942.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-114058.jpg" height="500"/>
+<img src="./screenshots/Screenshot_20230327-113928.jpg" height="500"/>
